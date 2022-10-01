@@ -1,0 +1,14 @@
+.appbar {
+  height: 60px;
+  padding: 0px 64px;
+}
+
+.appBarContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+.navLink {
+  margin-left: 16px;
+}
