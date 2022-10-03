@@ -45,6 +45,7 @@ function App() {
                     setOpenTab(name);
                   }}
                   variant="text"
+                  key={name}
                 >
                   {name}
                 </Button>

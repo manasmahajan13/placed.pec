@@ -1,22 +1,28 @@
 import "./HomeFeedCard.css";
-import React from "react";
+import React, { useState } from "react";
 
 const HomeFeedCard = ({ feedData }) => {
   return (
     <div className="HomeFeedCard">
       <div className="homeFeedCardHeader">
+        <div className="feedCardAvatar">HC</div>
         <div>
-          Open for Applications - {feedData.companyName} - {feedData.jobProfile}
+          <div>
+            <b>
+              Open for Applications - {feedData.companyName} -{" "}
+              {feedData.jobProfile}
+            </b>
+          </div>
+          <div>{feedData.postedBy}</div>
         </div>
-        <div>{feedData.postedBy}</div>
       </div>
       <p>
-        Applications are being accepted for {feedData.companyName}'s job
+        Applications are being accepted for <b>{feedData.companyName}</b>'s job
         profile: {feedData.jobProfile}
       </p>
       <p>
-        Eligible students will be able to find this job profile under JOB
-        PROFILES options, and apply.
+        Eligible students will be able to find this job profile under{" "}
+        <b>JOBS</b> options, and apply.
       </p>
       <b>Applicable Course</b>
       <ol>

@@ -4,6 +4,7 @@ import HomeFeedCard from "./HomeFeedCard";
 
 const dummyFeed = [
   {
+    id: "1",
     postedBy: "Head CDGC",
     companyName: "Microsoft",
     jobProfile: "Software Development Engineer",
@@ -38,6 +39,7 @@ const dummyFeed = [
     deadline: "September 28, 08:00 PM",
   },
   {
+    id: "2",
     postedBy: "Head CDGC",
     companyName: "JP Morgan & Chase",
     jobProfile: "Software Engineer",
@@ -83,7 +85,7 @@ const Home = () => {
       </div> */}
       <div className="homeFeedContainer">
         {dummyFeed.map((feed) => {
-          return <HomeFeedCard feedData={feed} />;
+          return <HomeFeedCard feedData={feed} key={feed.id} />;
         })}
       </div>
     </div>

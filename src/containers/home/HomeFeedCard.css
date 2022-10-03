@@ -5,6 +5,22 @@
   border-radius: 2px;
 }
 
+.homeFeedCardHeader {
+  display: flex;
+}
+
+.feedCardAvatar {
+  background-color: peru;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  margin-right: 16px;
+  color: white;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .deadlineText {
   color: red;
 }
