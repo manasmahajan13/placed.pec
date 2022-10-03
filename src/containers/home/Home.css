@@ -1,13 +1,16 @@
 .homeWrapperMain {
   padding: 32px;
-  display: flex;
 }
 
 .homeFeedContainer {
-  max-width: 600px;
+  width: 70%;
+  max-width: 800px;
 }
 
 .logo {
   margin-right: 16px;
   border-radius: 2px;
+  position: absolute;
+  right: 16px;
+  top: 92px;
 }

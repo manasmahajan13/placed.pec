@@ -19,6 +19,6 @@
 
 .contentWrapperMain {
   flex-grow: 1;
-  background-color: gray;
+  background-color: lightgray;
   min-height: calc(100% - 60px);
 }
