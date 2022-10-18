@@ -1,0 +1,21 @@
+.jobDetails {
+  display: flex;
+  justify-content: center;
+}
+.jobDetailsContainer {
+  width: 70%;
+  padding: 16px;
+  margin: 32px;
+  display: flex;
+}
+.detailsSection {
+  width: calc(100% - 200px);
+  padding: 16px;
+}
+.applySection {
+  display: flex;
+  justify-content: center;
+  padding: 32px;
+  width: 200px;
+  border-left: 1px solid gray;
+}

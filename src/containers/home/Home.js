@@ -80,9 +80,9 @@ const dummyFeed = [
 const Home = () => {
   return (
     <div className="homeWrapperMain">
-      {/* <div className="logo">
+      <div className="logo">
         <img src={require("../../assets/images/pec-logo.png")} />
-      </div> */}
+      </div>
       <div className="homeFeedContainer">
         {dummyFeed.map((feed) => {
           return <HomeFeedCard feedData={feed} key={feed.id} />;

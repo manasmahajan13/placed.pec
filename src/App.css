@@ -23,3 +23,25 @@
   background-color: lightgray;
   min-height: calc(100% - 60px);
 }
+
+.loginContainer {
+  display: flex;
+}
+.loginDialogContainer {
+  height: 100vh;
+  width: -webkit-fill-available;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.loginDialog {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.homeImg {
+  height: 100vh;
+  overflow: hidden;
+}
