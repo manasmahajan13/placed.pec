@@ -1,8 +1,9 @@
-
-.profileLink{
-    color: blue;
+.profileLink {
+  color: blue;
 }
-
+.jobRow {
+  height: 100px;
+}
 /* .jobDataWrapper{
     display: flex;
     position: relative;

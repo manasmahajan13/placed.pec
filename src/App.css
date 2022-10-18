@@ -23,3 +23,10 @@
   background-color: lightgray;
   min-height: calc(100% - 60px);
 }
+
+.loginDialog {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  max-width: 400px;
+}
