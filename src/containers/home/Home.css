@@ -3,14 +3,15 @@
 }
 
 .homeFeedContainer {
-  width: 70%;
+  width: calc(100% - 300px);
   max-width: 800px;
+  padding-left: 300px;
 }
 
 .logo {
   margin-right: 16px;
   border-radius: 2px;
-  position: absolute;
-  right: 16px;
-  top: 92px;
+  position: fixed;
+  left: 48px;
+  top: 108px;
 }

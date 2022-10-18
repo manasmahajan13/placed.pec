@@ -1,27 +1,30 @@
-.jobSection{
-    background-color: #ebeff1;
-    height: 100vh;
-    padding: 32px;
+.jobSection {
+  background-color: #ebeff1;
+  padding: 32px;
 }
 
-.componentWrapper{
-    position: relative;
-    width: 80%;
-    left: 10%;
-    background-color: white;
-    padding: 32px;
+.sectionHeading {
+  padding: 0px 16px;
 }
 
-.tableWrapper{
-    padding: 16px;
+.componentWrapper {
+  position: relative;
+  width: 80%;
+  left: 10%;
+  background-color: white;
+  padding: 32px;
 }
 
-table{
-    width:100%;
-    table-layout: fixed;
-    overflow-wrap: break-word;
-    text-align: left;
- }
+.tableWrapper {
+  padding: 16px;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  overflow-wrap: break-word;
+  text-align: left;
+}
 
 /* .header{
     display: flex;

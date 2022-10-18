@@ -1,7 +1,12 @@
 import React from "react";
+import JobDetails from "../jobs/jobDetails/JobDetails";
 
 const Profile = () => {
-  return <div>Profile</div>;
+  return (
+    <div>
+      <JobDetails />
+    </div>
+  );
 };
 
 export default Profile;
