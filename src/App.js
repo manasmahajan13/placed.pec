@@ -63,20 +63,30 @@ function App() {
           <div className="contentWrapperMain">{componentSwitcher(openTab)}</div>
         </>
       ) : (
-        <div className="loginDialog">
-          <TextField
-            id="email"
-            label="E-mail"
-            variant="outlined"
-            className="textInput"
-          />
-          <TextField
-            id="password"
-            label="Password"
-            variant="outlined"
-            className="textInput"
-          />
-          <Button onClick={() => setLoggedIn(true)}>Login</Button>
+        <div className="loginContainer">
+          <div className="homeImg">
+            <img src={require("./assets/images/pec-home.jpg")} />
+          </div>
+          <div className="loginDialogContainer">
+            <div className="loginDialog">
+              <h1>Sign in</h1>
+              <TextField
+                id="email"
+                label="E-mail"
+                variant="outlined"
+                sx={{ paddingBottom: "16px" }}
+              />
+              <TextField
+                id="password"
+                label="Password"
+                variant="outlined"
+                sx={{ paddingBottom: "16px" }}
+              />
+              <Button onClick={() => setLoggedIn(true)} variant="contained">
+                Login
+              </Button>
+            </div>
+          </div>
         </div>
       )}
     </div>
