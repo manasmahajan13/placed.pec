@@ -27,9 +27,15 @@ function App() {
   };
   return (
     <div className="App">
-      <AppBar position="static" className="appbar" color="transparent">
+      <AppBar
+        position="sticky"
+        className="appbar"
+        sx={{ backgroundColor: "#fff" }}
+      >
         <div className="appBarContent">
-          <div className="appLogo">placed.pec</div>
+          <div className="appLogo">
+            <img src={require("./assets/images/pec-logo.png")} height={60} />
+          </div>
           <div className="appBarTabs">
             {Object.values(tabsList).map((name, link) => {
               return (
@@ -39,6 +45,7 @@ function App() {
                     setOpenTab(name);
                   }}
                   variant="text"
+                  key={name}
                 >
                   {name}
                 </Button>

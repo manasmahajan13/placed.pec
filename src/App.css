@@ -1,3 +1,8 @@
+.App {
+  height: 100vh;
+  color: #36454f;
+}
+
 .appbar {
   height: 60px;
   padding: 0px 64px;
@@ -11,4 +16,10 @@
 }
 .navLink {
   margin-left: 16px;
+}
+
+.contentWrapperMain {
+  flex-grow: 1;
+  background-color: lightgray;
+  min-height: calc(100% - 60px);
 }
