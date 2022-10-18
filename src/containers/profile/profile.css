@@ -1,0 +1,58 @@
+.profileWrapper{
+    padding: 32px;
+}
+
+.profileContentWrapper{
+    padding: 0px 64px;
+    display: flex;
+    position: relative;
+}
+
+.sideMenuBar{
+    
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0px 16px 0px 0px;
+    height: 500px;
+    width: 25%;
+    overflow-y: scroll;
+}
+
+.sideMenuBarItems{
+    padding: 8px 0px;
+    background-color: rgb(74, 74, 74);
+    color: aliceblue;
+    /* width: 100%; */
+}
+
+.profileContent{
+    background-color: whitesmoke;
+    display: flex;
+    /* position: relative; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profileContentItems{
+    /* justify-content: center; */
+    padding: 16px 64px;
+}
+
+.name{
+    font-size: xx-large;
+}
+
+.passoutInfo{
+    font-size: larger;
+}
+
+.degreeInfo{
+    font-size: medium;
+}
+
+.accountID{
+    font-size: small;
+}
