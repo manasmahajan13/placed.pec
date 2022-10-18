@@ -1,0 +1,34 @@
+.jobSection{
+    background-color: #ebeff1;
+    height: 100vh;
+    padding: 32px;
+}
+
+.componentWrapper{
+    position: relative;
+    width: 80%;
+    left: 10%;
+    background-color: white;
+    padding: 32px;
+}
+
+.tableWrapper{
+    padding: 16px;
+}
+
+table{
+    width:100%;
+    table-layout: fixed;
+    overflow-wrap: break-word;
+    text-align: left;
+ }
+
+/* .header{
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    padding: 8px;
+}
+.jobDataWrapper2{
+    width: 100%;
+} */
