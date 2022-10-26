@@ -1,6 +1,6 @@
 import "./App.css";
-import { AppBar, Button, TextField } from "@mui/material";
-import { useState } from "react";
+import { Alert, AppBar, Button, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 import Home from "./containers/home/Home";
 import Jobs from "./containers/jobs/Jobs";
 import Profile from "./containers/profile/Profile";
@@ -12,6 +12,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "./firebase-config";
+import { async } from "@firebase/util";
 
 const tabsList = {
   home: "home",
@@ -24,14 +25,18 @@ function App() {
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [loginCodeMessage, setLoginCodeMessage] = useState();
 
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
 
-  // To update/fetch current user session #Donot remove
-  // onAuthStateChanged(auth, (currentUser) => {
-  //   setUser(currentUser);
-  // });
-
+  useEffect(() => {
+    onAuthStateChanged(auth, async (currentUser) => {
+      console.log(currentUser);
+      setUser(currentUser);
+    }); 
+    
+  }, []);
+  
   const login = async () => {
     try {
       const user = await signInWithEmailAndPassword(
@@ -42,6 +47,16 @@ function App() {
       console.log(user);
       setLoggedIn(true);
     } catch (error) {
+      {
+        switch(error.code){
+          case 'auth/wrong-password' :
+            setLoginCodeMessage("Username and Password did not match.")
+            break;
+          case 'auth/user-not-found' :
+            setLoginCodeMessage("User doesn't exist")
+            break;
+        }
+      }
       console.log(error.message);
     }
   };
@@ -127,6 +142,7 @@ function App() {
                  variant="contained">
                 Login
               </Button>
+              <p>{loginCodeMessage}</p>
             </div>
           </div>
         </div>
