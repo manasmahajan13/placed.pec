@@ -5,6 +5,14 @@ import Home from "./containers/home/Home";
 import Jobs from "./containers/jobs/Jobs";
 import Profile from "./containers/profile/Profile";
 
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
+import { auth } from "./firebase-config";
+
 const tabsList = {
   home: "home",
   profile: "profile",
@@ -13,6 +21,31 @@ const tabsList = {
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [openTab, setOpenTab] = useState(tabsList.home);
+
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  const [user, setUser] = useState({});
+
+  // To update/fetch current user session #Donot remove
+  // onAuthStateChanged(auth, (currentUser) => {
+  //   setUser(currentUser);
+  // });
+
+  const login = async () => {
+    try {
+      const user = await signInWithEmailAndPassword(
+        auth,
+        loginEmail,
+        loginPassword
+      );
+      console.log(user);
+      setLoggedIn(true);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
 
   const componentSwitcher = (component) => {
     switch (component) {
@@ -72,17 +105,26 @@ function App() {
               <h1>Sign in</h1>
               <TextField
                 id="email"
-                label="E-mail"
+                label="Email"
                 variant="outlined"
+                value={loginEmail}
+                onChange={(event) => {
+                  setLoginEmail(event.target.value);
+                }}
                 sx={{ paddingBottom: "16px" }}
               />
               <TextField
                 id="password"
                 label="Password"
                 variant="outlined"
+                onChange={(event) => {
+                  setLoginPassword(event.target.value);
+                }}
                 sx={{ paddingBottom: "16px" }}
               />
-              <Button onClick={() => setLoggedIn(true)} variant="contained">
+              <Button 
+                onClick={login}
+                 variant="contained">
                 Login
               </Button>
             </div>
