@@ -6,7 +6,7 @@ export default function JobProfile({ jobData }) {
     <>
       {jobData.map((job) => (
         // <div className="jobDataWrapper">
-        <tr className="jobRow">
+        <tr className="jobRow" key={`${job.companyName}${job.jobProfile}`}>
           <td className="jobDataElement profileLink">{job.jobProfile}</td>
           <td className="jobDataElement">{job.companyName}</td>
           <td className="jobDataElement">{job.location}</td>
@@ -16,7 +16,7 @@ export default function JobProfile({ jobData }) {
         </tr>
       ))}
       <tr>
-        <td colspan="4">
+        <td colSpan="4">
           <hr />
         </td>
       </tr>

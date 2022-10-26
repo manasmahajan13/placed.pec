@@ -83,12 +83,6 @@ const Jobs = () => {
       status: "Not Eligible",
     },
     {
-      jobProfile: "SDE",
-      companyName: "Amazon",
-      location: "Gurgaon",
-      status: "Not Eligible",
-    },
-    {
       jobProfile: "Software Manager",
       companyName: "Byju's",
       location: "Ahemedabad",
@@ -102,18 +96,20 @@ const Jobs = () => {
           <h3 className="sectionHeading">Job Profiles</h3>
           <div className="tableWrapper">
             <table>
-              <tr>
-                <th>Job Profile</th>
-                <th>Company</th>
-                <th>Location</th>
-                <th>Status</th>
-              </tr>
-              <tr>
-                <td colspan="4">
-                  <hr />
-                </td>
-              </tr>
-              <JobProfile jobData={jobData} />
+              <tbody>
+                <tr>
+                  <th>Job Profile</th>
+                  <th>Company</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                </tr>
+                <tr>
+                  <td colSpan="4">
+                    <hr />
+                  </td>
+                </tr>
+                <JobProfile jobData={jobData} />
+              </tbody>
             </table>
           </div>
         </div>

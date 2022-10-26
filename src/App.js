@@ -13,6 +13,7 @@ import {
 } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { async } from "@firebase/util";
+import { Link, Route, Routes } from "react-router-dom";
 
 const tabsList = {
   home: "home",
@@ -33,10 +34,9 @@ function App() {
     onAuthStateChanged(auth, async (currentUser) => {
       console.log(currentUser);
       setUser(currentUser);
-    }); 
-    
+    });
   }, []);
-  
+
   const login = async () => {
     try {
       const user = await signInWithEmailAndPassword(
@@ -48,12 +48,12 @@ function App() {
       setLoggedIn(true);
     } catch (error) {
       {
-        switch(error.code){
-          case 'auth/wrong-password' :
-            setLoginCodeMessage("Username and Password did not match.")
+        switch (error.code) {
+          case "auth/wrong-password":
+            setLoginCodeMessage("Username and Password did not match.");
             break;
-          case 'auth/user-not-found' :
-            setLoginCodeMessage("User doesn't exist")
+          case "auth/user-not-found":
+            setLoginCodeMessage("User doesn't exist");
             break;
         }
       }
@@ -61,19 +61,6 @@ function App() {
     }
   };
 
-
-  const componentSwitcher = (component) => {
-    switch (component) {
-      case tabsList.home:
-        return <Home />;
-      case tabsList.jobs:
-        return <Jobs />;
-      case tabsList.profile:
-        return <Profile />;
-      default:
-        return <div>error</div>;
-    }
-  };
   return (
     <div className="App">
       {loggedIn ? (
@@ -93,22 +80,19 @@ function App() {
               <div className="appBarTabs">
                 {Object.values(tabsList).map((name, link) => {
                   return (
-                    <Button
-                      className="navLink"
-                      onClick={() => {
-                        setOpenTab(name);
-                      }}
-                      variant="text"
-                      key={name}
-                    >
-                      {name}
+                    <Button className="navLink" variant="text" key={name}>
+                      <Link to={`/${name}`}>{name}</Link>
                     </Button>
                   );
                 })}
               </div>
             </div>
           </AppBar>
-          <div className="contentWrapperMain">{componentSwitcher(openTab)}</div>
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/jobs" element={<Jobs />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
         </>
       ) : (
         <div className="loginContainer">
@@ -137,9 +121,7 @@ function App() {
                 }}
                 sx={{ paddingBottom: "16px" }}
               />
-              <Button 
-                onClick={login}
-                 variant="contained">
+              <Button onClick={login} variant="contained">
                 Login
               </Button>
               <p>{loginCodeMessage}</p>
