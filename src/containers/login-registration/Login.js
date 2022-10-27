@@ -1,9 +1,10 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
+import { Link, Outlet } from "react-router-dom";
 
 import { useAuth } from "../../contexts/AuthContext";
 
-function Login({ setLoggedIn }) {
+function Login(props) {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
@@ -63,7 +64,9 @@ function Login({ setLoggedIn }) {
             Login
           </Button>
           <p>{loginCodeMessage}</p>
-          <div>Don't have an account yet? Signup instead</div>
+          <div>
+            Don't have an account yet? <Link to="/signup">Sign Up</Link> instead
+          </div>
         </div>
       </div>
     </div>

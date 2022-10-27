@@ -6,6 +6,7 @@ import Profile from "./containers/profile/Profile";
 
 import { Route, Routes } from "react-router-dom";
 import Login from "./containers/login-registration/Login";
+import Signup from "./containers/login-registration/Signup";
 import NavBar from "./containers/navbar/NavigationBar";
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -15,18 +16,17 @@ function App() {
   return (
     <AuthProvider>
       <div className="App">
-        {loggedIn ? (
-          <>
-            <NavBar />
-            <Routes>
-              <Route path="/home" element={<Home />} />
+        <>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route element={<NavBar />}>
+              <Route path="/" element={<Home />} />
               <Route path="/jobs" element={<Jobs />} />
               <Route path="/profile" element={<Profile />} />
-            </Routes>
-          </>
-        ) : (
-          <Login setLoggedIn={setLoggedIn} />
-        )}
+            </Route>
+          </Routes>
+        </>
       </div>
     </AuthProvider>
   );
