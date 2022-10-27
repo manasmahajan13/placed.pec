@@ -20,7 +20,7 @@ function Login(props) {
     try {
       setLoading(true);
       await signIn(loginEmail, loginPassword);
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (error) {
       switch (error.code) {
         case "auth/wrong-password":

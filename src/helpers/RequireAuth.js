@@ -6,7 +6,7 @@ export function RequireAuth({ children }) {
   const { currentUser } = useAuth();
 
   if (!currentUser) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace />;
   }
 
   return children;
