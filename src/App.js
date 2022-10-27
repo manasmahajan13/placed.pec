@@ -9,6 +9,7 @@ import Login from "./containers/login-registration/Login";
 import Signup from "./containers/login-registration/Signup";
 import NavBar from "./containers/navbar/NavigationBar";
 import { AuthProvider } from "./contexts/AuthContext";
+import { RequireAuth } from "./helpers/RequireAuth";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -21,9 +22,30 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route element={<NavBar />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/jobs" element={<Jobs />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route
+                path="/"
+                element={
+                  <RequireAuth>
+                    <Home />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/jobs"
+                element={
+                  <RequireAuth>
+                    <Jobs />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <RequireAuth>
+                    <Profile />
+                  </RequireAuth>
+                }
+              />
             </Route>
           </Routes>
         </>

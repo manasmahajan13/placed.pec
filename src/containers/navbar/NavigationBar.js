@@ -1,14 +1,16 @@
 import { AppBar, Button } from "@mui/material";
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase-config";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+
+import { useAuth } from "../../contexts/AuthContext";
 
 function NavBar(props) {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const logoutFunction = async () => {
     try {
-      const response = await signOut(auth);
-      console.log(response);
+      await logout();
+      navigate("/login");
     } catch (error) {
       console.log(error.message);
     }

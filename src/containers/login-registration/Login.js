@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -14,10 +14,13 @@ function Login(props) {
 
   const { signIn, currentUser } = useAuth();
 
+  const navigate = useNavigate();
+
   const login = async () => {
     try {
       setLoading(true);
       await signIn(loginEmail, loginPassword);
+      navigate("/");
     } catch (error) {
       switch (error.code) {
         case "auth/wrong-password":
