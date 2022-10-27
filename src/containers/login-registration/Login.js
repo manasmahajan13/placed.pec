@@ -1,7 +1,7 @@
 import { Button, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../firebase-config";
+import React, { useState } from "react";
+
+import { useAuth } from "../../contexts/AuthContext";
 
 function Login({ setLoggedIn }) {
   const [loginEmail, setLoginEmail] = useState("");
@@ -9,38 +9,28 @@ function Login({ setLoggedIn }) {
 
   const [loginCodeMessage, setLoginCodeMessage] = useState();
 
-  const [user, setUser] = useState();
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    onAuthStateChanged(auth, async (currentUser) => {
-      console.log(currentUser);
-      setUser(currentUser);
-    });
-  }, []);
+  const { signIn, currentUser } = useAuth();
 
   const login = async () => {
     try {
-      const user = await signInWithEmailAndPassword(
-        auth,
-        loginEmail,
-        loginPassword
-      );
-      console.log(user);
-      setLoggedIn(true);
+      setLoading(true);
+      await signIn(loginEmail, loginPassword);
     } catch (error) {
-      {
-        switch (error.code) {
-          case "auth/wrong-password":
-            setLoginCodeMessage("Username and Password did not match.");
-            break;
-          case "auth/user-not-found":
-            setLoginCodeMessage("User doesn't exist");
-            break;
-        }
+      switch (error.code) {
+        case "auth/wrong-password":
+          setLoginCodeMessage("Username and Password did not match.");
+          break;
+        case "auth/user-not-found":
+          setLoginCodeMessage("User doesn't exist");
+          break;
       }
-      console.log(error.message);
     }
+
+    setLoading(false);
   };
+
   return (
     <div className="loginContainer">
       <div className="homeImg">
@@ -49,6 +39,7 @@ function Login({ setLoggedIn }) {
       <div className="loginDialogContainer">
         <div className="loginDialog">
           <h1>Sign in</h1>
+          <h2>{currentUser?.email}</h2>
           <TextField
             id="email"
             label="Email"
@@ -68,7 +59,7 @@ function Login({ setLoggedIn }) {
             }}
             sx={{ paddingBottom: "16px" }}
           />
-          <Button onClick={login} variant="contained">
+          <Button onClick={login} variant="contained" disabled={loading}>
             Login
           </Button>
           <p>{loginCodeMessage}</p>
