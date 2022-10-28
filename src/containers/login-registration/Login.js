@@ -29,6 +29,9 @@ function Login(props) {
         case "auth/user-not-found":
           setLoginCodeMessage("User doesn't exist");
           break;
+        default :
+        setLoginCodeMessage(error.code);
+        console.log(error.code);
       }
     }
 
@@ -56,8 +59,10 @@ function Login(props) {
           />
           <TextField
             id="password"
+            autoComplete="off"
             label="Password"
             variant="outlined"
+            type="password"
             onChange={(event) => {
               setLoginPassword(event.target.value);
             }}
