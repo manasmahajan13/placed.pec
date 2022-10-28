@@ -1,5 +1,6 @@
 import "./HomeFeedCard.css";
 import React, { useState } from "react";
+import moment from "moment";
 
 const HomeFeedCard = ({ feedData }) => {
   return (
@@ -7,17 +8,13 @@ const HomeFeedCard = ({ feedData }) => {
       <div className="homeFeedCardHeader">
         <div className="feedCardAvatar">HC</div>
         <div>
-          <div>
-            <b>
-              Open for Applications - {feedData.companyName} -{" "}
-              {feedData.jobProfile}
-            </b>
-          </div>
-          <div>{feedData.postedBy}</div>
+          <b>
+            Open for Applications - {feedData.name} - {feedData.jobProfile}
+          </b>
         </div>
       </div>
       <p>
-        Applications are being accepted for <b>{feedData.companyName}</b>'s job
+        Applications are being accepted for <b>{feedData.name}</b>'s job
         profile: {feedData.jobProfile}
       </p>
       <p>
@@ -26,22 +23,22 @@ const HomeFeedCard = ({ feedData }) => {
       </p>
       <b>Applicable Course</b>
       <ol>
-        {feedData.applicableCourses.map((course) => {
-          return <li>{course}</li>;
+        {feedData.eligibleCourses.map((course) => {
+          return <li key={course}>{course}</li>;
         })}{" "}
       </ol>
       <b>Eligibility</b>
       <ol>
         {Object.entries(feedData.eligibility).map(([criterea, value]) => {
           return (
-            <li>
+            <li key={criterea}>
               {criterea}: {value}
             </li>
           );
         })}
       </ol>
-      <b>Hiring Process - Stages</b>
-      <ol>
+      {/* <b>Hiring Process - Stages</b> */}
+      {/* <ol>
         {feedData.process.map((stage) => {
           return (
             <>
@@ -62,9 +59,10 @@ const HomeFeedCard = ({ feedData }) => {
             </>
           );
         })}
-      </ol>
+      </ol> */}
       <b className="deadlineText">
-        The deadline for applications is {feedData.deadline}
+        The deadline for applications is{" "}
+        {moment(feedData.deadline.seconds * 1000).format("DD-MMMM-YYYY hh:mm")}
       </b>
     </div>
   );
