@@ -24,17 +24,17 @@
   min-height: calc(100% - 60px);
 }
 
-.loginContainer {
+.loginContainer, .signupContainer{
   display: flex;
 }
-.loginDialogContainer {
+.loginDialogContainer, .signupDialogContainer{
   height: 100vh;
   width: -webkit-fill-available;
   justify-content: center;
   align-items: center;
   display: flex;
 }
-.loginDialog {
+.loginDialog, .signupDialog {
   width: 100%;
   max-width: 400px;
   display: flex;
