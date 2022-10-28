@@ -30,8 +30,7 @@ function Login(props) {
           setLoginCodeMessage("User doesn't exist");
           break;
         default :
-        setLoginCodeMessage(error.code);
-        console.log(error.code);
+          setLoginCodeMessage(error.message);
       }
     }
 
