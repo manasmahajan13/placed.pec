@@ -6,13 +6,10 @@ export default function JobProfile({ jobData }) {
     <>
       {jobData.map((job) => (
         // <div className="jobDataWrapper">
-        <tr className="jobRow" key={`${job.companyName}${job.jobProfile}`}>
+        <tr className="jobRow" key={`${job.name}${job.jobProfile}`}>
           <td className="jobDataElement profileLink">{job.jobProfile}</td>
-          <td className="jobDataElement">{job.companyName}</td>
+          <td className="jobDataElement">{job.name}</td>
           <td className="jobDataElement">{job.location}</td>
-          <td className="jobDataElement">
-            <b>{job.status}</b>
-          </td>
         </tr>
       ))}
       <tr>

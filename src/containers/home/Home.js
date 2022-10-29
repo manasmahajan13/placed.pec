@@ -4,11 +4,12 @@ import HomeFeedCard from "./HomeFeedCard";
 import { getJobs } from "../../pagination_comp";
 import { Button } from "@mui/material";
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 4;
 
 const Home = () => {
   const [lastDoc, setLastDoc] = useState(null);
   const [jobs, setJobs] = useState([]);
+  const [hasNextPage, setHasNextPage] = useState(true);
 
   const getMoreJobs = async (firstPage = false) => {
     const response = await getJobs(PAGE_SIZE, lastDoc);
@@ -17,6 +18,9 @@ const Home = () => {
       setJobs(response.jobsList);
     } else {
       setJobs((jobs) => [...jobs, ...response.jobsList]);
+    }
+    if (response.jobsList == null || response.jobsList.length < PAGE_SIZE) {
+      setHasNextPage(false);
     }
   };
 
@@ -31,9 +35,13 @@ const Home = () => {
       </div>
       <div className="homeFeedContainer">
         {jobs.map((job) => {
-          return <HomeFeedCard feedData={job} key={job.documentId} />;
+          return <HomeFeedCard feedData={job} key={job.documentID} />;
         })}
-        <Button onClick={() => getMoreJobs()}>Load more</Button>
+        {hasNextPage && (
+          <Button variant="contained" onClick={() => getMoreJobs()}>
+            Load more
+          </Button>
+        )}
       </div>
     </div>
   );

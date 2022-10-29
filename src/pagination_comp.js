@@ -2,18 +2,15 @@ import { db } from "./firebase-config";
 import {
   collection,
   getDocs,
-  doc,
   query,
   orderBy,
   startAfter,
   limit,
-  getDoc,
 } from "firebase/firestore";
 
 export const getJobs = async (pageSize, lastDoc) => {
   var Query;
   if (lastDoc) {
-    console.log("getting new jobs", lastDoc);
     Query = query(
       collection(db, "jobPostings"),
       orderBy("published"),
