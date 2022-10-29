@@ -10,6 +10,7 @@ import Signup from "./containers/login-registration/Signup";
 import NavBar from "./containers/navbar/NavigationBar";
 import { AuthProvider } from "./contexts/AuthContext";
 import { RequireAuth } from "./helpers/RequireAuth";
+import SignupUserData from "./containers/login-registration/SignupUserData";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -21,6 +22,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/signup/user-data" element={<SignupUserData />} />
             <Route element={<NavBar />}>
               <Route
                 path="/"

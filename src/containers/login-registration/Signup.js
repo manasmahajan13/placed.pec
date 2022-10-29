@@ -25,7 +25,7 @@ function Signup() {
         registerEmail,
         registerPassword
       );
-      navigate("/");
+      navigate("/signup/user-data");
       console.log(user);
     } catch (error) {
       switch (error.code) {
