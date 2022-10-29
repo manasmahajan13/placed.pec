@@ -13,7 +13,7 @@ export default function JobProfile({ jobData }) {
         </tr>
       ))}
       <tr>
-        <td colSpan="4">
+        <td colSpan="3">
           <hr />
         </td>
       </tr>
