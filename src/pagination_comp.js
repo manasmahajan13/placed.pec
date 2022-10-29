@@ -10,37 +10,33 @@ import {
   getDoc,
 } from "firebase/firestore";
 
-export const CompanyDataRetrieval = async (page_size, page_no) => {
-  var Query = query(
-    collection(db, "jobPostings"),
-    orderBy("published"),
-    limit(page_size)
-  );
-
-  for (let i = 0; i < page_no - 1; i++) {
-    const documentSnapshot = await getDocs(Query);
-
-    // Get the last visible document
-    const lastVisible = documentSnapshot.docs[documentSnapshot.docs.length - 1];
-
-    // Construct a new query starting at this document,
+export const getJobs = async (pageSize, lastDoc) => {
+  var Query;
+  if (lastDoc) {
+    console.log("getting new jobs", lastDoc);
     Query = query(
       collection(db, "jobPostings"),
       orderBy("published"),
-      startAfter(lastVisible),
-      limit(page_size)
+      limit(pageSize),
+      startAfter(lastDoc)
+    );
+  } else {
+    Query = query(
+      collection(db, "jobPostings"),
+      orderBy("published"),
+      limit(pageSize)
     );
   }
+  const jobsList = [];
   const documentSnapshots = await getDocs(Query);
-  const InfoOfCompany = [];
-  console.log(documentSnapshots.docs.length);
-  for (let j = 0; j < documentSnapshots.docs.length; j++) {
-    const compId = documentSnapshots.docs[j].id;
-    const docRef = doc(db, "jobPostings", compId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      InfoOfCompany.push(docSnap.data());
-    }
-  }
-  return InfoOfCompany;
+  documentSnapshots.docs.forEach((doc) => {
+    jobsList.push(doc.data());
+  });
+
+  const response = {
+    lastDoc: documentSnapshots.docs[documentSnapshots.docs.length - 1],
+    jobsList: jobsList,
+  };
+
+  return response;
 };

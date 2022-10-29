@@ -1,6 +1,7 @@
 .homeWrapperMain {
   padding: 32px;
   background-color: grey;
+  min-height: 100vh;
 }
 
 .homeFeedContainer {
