@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -8,11 +8,10 @@ import {
 } from "firebase/auth";
 import { Button, TextField } from "@mui/material";
 
-
 import { auth } from "../../firebase-config";
 
-
 function Signup() {
+  const navigate = useNavigate();
 
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
@@ -26,20 +25,22 @@ function Signup() {
         registerEmail,
         registerPassword
       );
+      navigate("/");
       console.log(user);
     } catch (error) {
-      switch (error.code){
-        case "auth/email-already-in-use" :
-          setsignupErrorCode("User already exists. Kindly proceed to Login page.");
+      switch (error.code) {
+        case "auth/email-already-in-use":
+          setsignupErrorCode(
+            "User already exists. Kindly proceed to Login page."
+          );
           break;
         case "auth/weak-password":
           setsignupErrorCode("Password should be at least 6 characters");
           break;
         default:
           setsignupErrorCode(error.message);
-
       }
-      
+
       console.log(error);
     }
   };
