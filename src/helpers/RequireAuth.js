@@ -1,13 +1,14 @@
 import React from "react";
-import { Navigate, Route } from "react-router-dom";
+import { Navigate, Outlet, Route, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-export function RequireAuth({ children }) {
+export function RequireAuth() {
   const { currentUser } = useAuth();
+  const location = useLocation();
 
-  if (!currentUser) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
+  return currentUser ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" state={{ from: location }} replace />
+  );
 }

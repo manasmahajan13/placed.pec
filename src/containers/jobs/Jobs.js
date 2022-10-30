@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { getJobs } from "../../pagination_comp.js";
+import { getJobs } from "../../api/jobsApi.js";
 import JobProfile from "./jobProfiles/JobProfile.js";
 import "./jobs.css";
 
@@ -46,11 +46,15 @@ const Jobs = () => {
                   </td>
                 </tr>
                 <JobProfile jobData={jobs} />
-                {hasNextPage && (
-                  <Button variant="contained" onClick={() => getMoreJobs()}>
-                    Load more
-                  </Button>
-                )}
+                <tr>
+                  <td>
+                    {hasNextPage && (
+                      <Button variant="contained" onClick={() => getMoreJobs()}>
+                        Load more
+                      </Button>
+                    )}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>

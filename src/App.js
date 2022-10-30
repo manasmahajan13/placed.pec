@@ -11,6 +11,7 @@ import NavBar from "./containers/navbar/NavigationBar";
 import { AuthProvider } from "./contexts/AuthContext";
 import { RequireAuth } from "./helpers/RequireAuth";
 import SignupUserData from "./containers/login-registration/SignupUserData";
+import AdminPanel from "./containers/admin/AdminPanel";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -24,30 +25,15 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/signup/user-data" element={<SignupUserData />} />
             <Route element={<NavBar />}>
-              <Route
-                path="/"
-                element={
-                  <RequireAuth>
-                    <Home />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/jobs"
-                element={
-                  <RequireAuth>
-                    <Jobs />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <RequireAuth>
-                    <Profile />
-                  </RequireAuth>
-                }
-              />
+              <Route element={<RequireAuth />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/jobs" element={<Jobs />} />
+                <Route path="/profile" element={<Profile />} />
+              </Route>
+
+              <Route element={<RequireAuth />}>
+                <Route path="/admin" element={<AdminPanel />} />
+              </Route>
             </Route>
           </Routes>
         </>

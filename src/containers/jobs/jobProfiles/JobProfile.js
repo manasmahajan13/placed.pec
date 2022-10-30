@@ -4,7 +4,7 @@ import "./jobProfile.css";
 export default function JobProfile({ jobData }) {
   return (
     <>
-      {jobData.map((job) => (
+      {jobData?.map((job) => (
         // <div className="jobDataWrapper">
         <tr className="jobRow" key={`${job.name}${job.jobProfile}`}>
           <td className="jobDataElement profileLink">{job.jobProfile}</td>
