@@ -39,6 +39,9 @@ function NavBar(props) {
             <Button className="navLink" variant="text">
               <Link to={`/profile`}>Profile</Link>
             </Button>
+            <Button className="navLink" variant="text">
+              <Link to={`/admin`}>Admin</Link>
+            </Button>
           </div>
           <Button onClick={() => logoutFunction()}>Logout</Button>
         </div>

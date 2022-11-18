@@ -23,19 +23,20 @@ const HomeFeedCard = ({ feedData }) => {
       </p>
       <b>Applicable Course</b>
       <ol>
-        {feedData.eligibleCourses.map((course) => {
+        {feedData.eligibleCourses?.map((course) => {
           return <li key={course}>{course}</li>;
         })}{" "}
       </ol>
       <b>Eligibility</b>
       <ol>
-        {Object.entries(feedData.eligibility).map(([criterea, value]) => {
-          return (
-            <li key={criterea}>
-              {criterea}: {value}
-            </li>
-          );
-        })}
+        {feedData.eligibility &&
+          Object.entries(feedData.eligibility)?.map(([criterea, value]) => {
+            return (
+              <li key={criterea}>
+                {criterea}: {value}
+              </li>
+            );
+          })}
       </ol>
       {/* <b>Hiring Process - Stages</b> */}
       {/* <ol>

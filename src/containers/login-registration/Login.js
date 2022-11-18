@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -15,12 +15,14 @@ function Login(props) {
   const { signIn, currentUser } = useAuth();
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const login = async () => {
     try {
       setLoading(true);
       await signIn(loginEmail, loginPassword);
-      navigate("/", { replace: true });
+      navigate(from, { replace: true });
     } catch (error) {
       switch (error.code) {
         case "auth/wrong-password":
@@ -29,7 +31,7 @@ function Login(props) {
         case "auth/user-not-found":
           setLoginCodeMessage("User doesn't exist");
           break;
-        default :
+        default:
           setLoginCodeMessage(error.message);
       }
     }

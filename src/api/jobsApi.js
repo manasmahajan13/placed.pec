@@ -1,4 +1,4 @@
-import { db } from "./firebase-config";
+import { db } from "../firebase-config";
 import {
   collection,
   getDocs,
@@ -6,6 +6,9 @@ import {
   orderBy,
   startAfter,
   limit,
+  addDoc,
+  updateDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 
 export const getJobs = async (pageSize, lastDoc) => {
@@ -36,4 +39,14 @@ export const getJobs = async (pageSize, lastDoc) => {
   };
 
   return response;
+};
+
+export const createJobPosting = async (data) => {
+  const docRef = await addDoc(collection(db, "jobPostings"), data);
+  await updateDoc(docRef, {
+    documentID: docRef.id,
+    published: serverTimestamp(),
+  });
+
+  console.log("successful creation of jobPostings!:::::", docRef.id);
 };

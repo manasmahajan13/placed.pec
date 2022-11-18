@@ -1,7 +1,7 @@
 import "./Home.css";
 import React, { useEffect, useState } from "react";
 import HomeFeedCard from "./HomeFeedCard";
-import { getJobs } from "../../pagination_comp";
+import { getJobs } from "../../api/jobsApi";
 import { Button } from "@mui/material";
 
 const PAGE_SIZE = 4;
@@ -34,7 +34,7 @@ const Home = () => {
         <img src={require("../../assets/images/pec-logo.png")} />
       </div>
       <div className="homeFeedContainer">
-        {jobs.map((job) => {
+        {jobs?.map((job) => {
           return <HomeFeedCard feedData={job} key={job.documentID} />;
         })}
         {hasNextPage && (
