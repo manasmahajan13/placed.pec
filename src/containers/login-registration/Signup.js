@@ -16,6 +16,8 @@ function Signup() {
 
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [sid, setSid] = useState("");
 
   const [signupErrorCode, setsignupErrorCode] = useState("");
 
@@ -28,7 +30,10 @@ function Signup() {
     ).then((userCredential) => {
       const user = userCredential.user;
       const data={
-        email: registerEmail}
+        email: {registerEmail},
+        Name: {fullName},
+        Sid: {sid}
+      }
       const usersRef= collection(db,"users")
       setDoc(doc(db, "users", user.uid), data);
       console.log("successful creation of user!",user)
@@ -60,6 +65,26 @@ function Signup() {
         <div className="signupDialog">
           <h1>Sign up</h1>
           {/* <h2>{currentUser?.email}</h2> */}
+          <TextField
+            id="fullName"
+            label="Full Name"
+            variant="outlined"
+            value={fullName}
+            onChange={(event) => {
+              setFullName(event.target.value);
+            }}
+            sx={{ paddingBottom: "16px" }}
+          />
+          <TextField
+            id="sid"
+            label="SID"
+            variant="outlined"
+            value={sid}
+            onChange={(event) => {
+              setSid(event.target.value);
+            }}
+            sx={{ paddingBottom: "16px" }}
+          />
           <TextField
             id="email"
             label="Email"
