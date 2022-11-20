@@ -212,6 +212,7 @@ export default function AdminPanel() {
           })}
         </Grid>
       </Grid>
+      <br />
       <Button onClick={handleSubmission} variant="contained">
         Submit
       </Button>

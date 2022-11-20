@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { getProfile } from "../../api/profileApi";
+import { getProfile, updateProfile } from "../../api/profileApi";
 import ResumeUpload from "../../api/resume";
 import { openInNewTab } from "../../helpers/UtilityFunctions";
 import "./profile.css";
@@ -53,20 +53,24 @@ const Profile = () => {
           </div>
           <hr />
           <h3>Summary</h3>
-          <div className="summarySection">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <div>
-              <Button onClick={() => setEditSummaryOpen(true)}>Edit</Button>
+
+          {profileData.summary ? (
+            <div className="summarySection">
+              <p>{profileData.summary}</p>
+              <div>
+                <Button onClick={() => setEditSummaryOpen(true)}>Edit</Button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <Button
+              onClick={() =>
+                updateProfile({ summary: "Hello this is a new summary" })
+              }
+            >
+              Add a summary
+            </Button>
+          )}
+
           <h3>Resume</h3>
           {profileData.urlResume ? (
             <Button
