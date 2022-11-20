@@ -10,7 +10,7 @@ import Signup from "./containers/login-registration/Signup";
 import NavBar from "./containers/navbar/NavigationBar";
 import { AuthProvider } from "./contexts/AuthContext";
 import { RequireAuth } from "./helpers/RequireAuth";
-import SignupUserData from "./containers/login-registration/SignupUserData";
+// import SignupUserData from "./containers/login-registration/SignupUserData";
 import AdminPanel from "./containers/admin/AdminPanel";
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/signup/user-data" element={<SignupUserData />} />
+            {/* <Route path="/signup/user-data" element={<SignupUserData />} /> */}
             <Route element={<NavBar />}>
               <Route element={<RequireAuth />}>
                 <Route path="/" element={<Home />} />

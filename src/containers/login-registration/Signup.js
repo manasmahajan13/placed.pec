@@ -7,9 +7,9 @@ import {
   signOut,
 } from "firebase/auth";
 import { Button, TextField } from "@mui/material";
-import {getAuth} from "firebase/auth"; 
-import {collection,doc,setDoc} from "firebase/firestore"
-import {db} from "../../firebase-config"
+import { getAuth } from "firebase/auth";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { db } from "../../firebase-config";
 
 function Signup() {
   const navigate = useNavigate();
@@ -22,39 +22,40 @@ function Signup() {
   const [signupErrorCode, setsignupErrorCode] = useState("");
 
   const register = async () => {
-    const auth=getAuth();
+    const auth = getAuth();
     const user = await createUserWithEmailAndPassword(
       auth,
       registerEmail,
       registerPassword
-    ).then((userCredential) => {
-      const user = userCredential.user;
-      const data={
-        email: registerEmail,
-        fullName: fullName,
-        SID: sid
-      }
-      const usersRef= collection(db,"users")
-      setDoc(doc(db, "users", user.uid), data);
-      console.log("successful creation of user!",user)
-      navigate("/signup/user-data");
-    }).
-    catch( (error) =>{
-    switch (error.code) {
-      case "auth/email-already-in-use":
-        setsignupErrorCode(
-          "User already exists. Kindly proceed to Login page."
-        );
-        break;
-      case "auth/weak-password":
-        setsignupErrorCode("Password should be at least 6 characters");
-        break;
-      default:
-        setsignupErrorCode(error.message);
-    }
-    console.log(error);
-  });
-}
+    )
+      .then((userCredential) => {
+        const user = userCredential.user;
+        const data = {
+          email: registerEmail,
+          fullName: fullName,
+          SID: sid,
+        };
+        const usersRef = collection(db, "users");
+        setDoc(doc(db, "users", user.uid), data);
+        console.log("successful creation of user!", user);
+        navigate("/");
+      })
+      .catch((error) => {
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            setsignupErrorCode(
+              "User already exists. Kindly proceed to Login page."
+            );
+            break;
+          case "auth/weak-password":
+            setsignupErrorCode("Password should be at least 6 characters");
+            break;
+          default:
+            setsignupErrorCode(error.message);
+        }
+        console.log(error);
+      });
+  };
 
   return (
     <div className="signupContainer">

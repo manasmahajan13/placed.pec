@@ -16,20 +16,15 @@
   flex-direction: column;
   margin-right: 16px;
   width: 300px;
-  overflow-y: scroll;
 }
 
 .sideMenuBarItems {
   padding: 12px 8px;
-  background-color: rgb(74, 74, 74);
-  color: white;
 }
 
 .profileContent {
-  background-color: white;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: -webkit-fill-available;
   padding: 64px;
@@ -38,4 +33,8 @@
 .profileImg {
   height: 150px;
   border-radius: 50%;
+}
+
+.summarySection {
+  display: flex;
 }
