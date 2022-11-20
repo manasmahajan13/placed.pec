@@ -30,9 +30,9 @@ function Signup() {
     ).then((userCredential) => {
       const user = userCredential.user;
       const data={
-        email: {registerEmail},
-        Name: {fullName},
-        Sid: {sid}
+        email: registerEmail,
+        fullName: fullName,
+        SID: sid
       }
       const usersRef= collection(db,"users")
       setDoc(doc(db, "users", user.uid), data);
