@@ -69,7 +69,7 @@ function CreateJobPosting() {
   };
   return (
     <div>
-      <h1>Create Job Posting</h1>
+      <h2>Create Job Posting</h2>
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <h3>Name</h3>

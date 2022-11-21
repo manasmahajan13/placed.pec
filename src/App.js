@@ -16,6 +16,7 @@ import JobDetails from "./containers/jobs/jobDetails/JobDetails";
 import AdminJobs from "./containers/admin/adminJobs/AdminJobs";
 import AdminDashboard from "./containers/admin/adminDashboard/AdminDashboard";
 import AdminJobDetails from "./containers/admin/adminJobs/adminJobDetails/AdminJobDetails";
+import CreateJobPosting from "./containers/admin/adminJobs/CreateJobPosting";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -41,6 +42,10 @@ function App() {
                   <Route path="/admin/dashboard" element={<AdminDashboard />} />
                   <Route path="/admin/jobs" element={<AdminJobs />} />
                   <Route path="/admin/jobs/:id" element={<AdminJobDetails />} />
+                  <Route
+                    path="/admin/jobs/create-new"
+                    element={<CreateJobPosting />}
+                  />
                 </Route>
               </Route>
             </Route>

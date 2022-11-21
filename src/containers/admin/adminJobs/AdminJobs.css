@@ -6,3 +6,12 @@
 .adminJobRow :hover {
   background: whitesmoke;
 }
+
+.jobsAdminHeader {
+  display: flex;
+  align-items: center;
+}
+
+.createJobButton {
+  padding: 0px 16px;
+}

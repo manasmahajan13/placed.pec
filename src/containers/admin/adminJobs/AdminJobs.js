@@ -25,6 +25,7 @@ function JobProfile({ jobData }) {
 }
 
 const AdminJobs = () => {
+  const navigate = useNavigate();
   const [lastDoc, setLastDoc] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [hasNextPage, setHasNextPage] = useState(true);
@@ -47,7 +48,17 @@ const AdminJobs = () => {
   }, []);
   return (
     <div className="jobsAdmin">
-      <h3>Job Profiles</h3>
+      <div className="jobsAdminHeader">
+        <h3>Job Profiles</h3>
+        <div className="createJobButton">
+          <Button
+            onClick={() => navigate("/admin/jobs/create-new")}
+            variant="contained"
+          >
+            New
+          </Button>
+        </div>
+      </div>
       <table>
         <tbody>
           <tr>
