@@ -87,21 +87,28 @@ export const applyJobs = async (compId) => {
   //users
   const auth = getAuth();
   const user = auth.currentUser;
-  const docRef = doc(db, "users", user.uid);
-  const docSnap = await getDoc(docRef);
-  const mapOfJobs = docSnap.data()["statusListOfCompany"];
+  let docRef = doc(db, "users", user.uid);
+  let docSnap = await getDoc(docRef);
+  let mapOfJobs = docSnap.data()["statusListOfCompany"];
+  if (!mapOfJobs) {
+    updateDoc(docRef, { statusListOfCompany: {} });
+    docRef = doc(db,"users",user.uid)
+    docSnap = await getDoc(docRef)
+    mapOfJobs = docSnap.data()["statusListOfCompany"];
+  }
   mapOfJobs[compId] = "applied";
   updateDoc(docRef, { statusListOfCompany: mapOfJobs });
 
   //company
-  const jobRef = doc(db, "jobPostings", compId);
-  const jobSnap = await getDoc(jobRef);
+  let jobRef = doc(db, "jobPostings", compId);
+  let jobSnap = await getDoc(jobRef);
   let appliedUsers = jobSnap.data()["usersApplied"];
   if (!appliedUsers) {
-    updateDoc(jobRef, { usersApplied: [] });
+    updateDoc(jobRef, { usersApplied: {} });
+    jobRef = doc(db,"jobPostings",compId)
+    jobSnap = await getDoc(jobRef)
     appliedUsers = jobSnap.data()["usersApplied"];
   }
-  appliedUsers.push(user.uid);
-
+  appliedUsers[compId]="yes";
   updateDoc(jobRef, { usersApplied: appliedUsers });
 };
