@@ -74,7 +74,7 @@ export const listOfusersApplied = async (compId) => {
   const appliedUsers = jobSnap.data()["usersApplied"];
   const usersApplicant = [];
   for (let i = 0; i < appliedUsers.length; i++) {
-    const docRef = doc(db, "users", appliedUsers[i]);
+    const docRef = doc(db, "users", appliedUsers[i].first);
     const docSnap = await getDoc(docRef);
     const name = docSnap.data()["fullName"];
     const resume = docSnap.data()["urlResume"];
@@ -104,11 +104,11 @@ export const applyJobs = async (compId) => {
   let jobSnap = await getDoc(jobRef);
   let appliedUsers = jobSnap.data()["usersApplied"];
   if (!appliedUsers) {
-    updateDoc(jobRef, { usersApplied: {} });
+    updateDoc(jobRef, { usersApplied: [] });
     jobRef = doc(db,"jobPostings",compId)
     jobSnap = await getDoc(jobRef)
     appliedUsers = jobSnap.data()["usersApplied"];
   }
-  appliedUsers[compId]="yes";
+  appliedUsers.push(user.uid)
   updateDoc(jobRef, { usersApplied: appliedUsers });
 };
