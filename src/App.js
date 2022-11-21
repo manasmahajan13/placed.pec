@@ -12,6 +12,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { RequireAuth } from "./helpers/RequireAuth";
 // import SignupUserData from "./containers/login-registration/SignupUserData";
 import AdminPanel from "./containers/admin/AdminPanel";
+import JobDetails from "./containers/jobs/jobDetails/JobDetails";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -28,6 +29,7 @@ function App() {
               <Route element={<RequireAuth />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/jobs" element={<Jobs />} />
+                <Route path="/jobs/:id" element={<JobDetails />} />
                 <Route path="/profile" element={<Profile />} />
               </Route>
 

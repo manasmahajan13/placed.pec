@@ -1,50 +1,82 @@
-import { Paper } from "@mui/material";
-import React from "react";
+import { Button, Paper } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { applyJobs, getJobDetails } from "../../../api/jobsApi";
 import "./JobDetails.css";
 
 const JobDetails = () => {
+  const { id } = useParams();
+
+  const [jobDetails, setJobDetails] = useState({});
+
+  const fetchJobDetails = async () => {
+    const details = await getJobDetails(id);
+    console.log(details.deadline);
+    setJobDetails(details);
+  };
+
+  const applyForJob = async () => {
+    const response = await applyJobs(jobDetails.documentID);
+  };
+
+  useEffect(() => {
+    fetchJobDetails();
+  }, []);
+
   return (
     <div className="jobDetails">
       <Paper className="jobDetailsContainer">
         <div className="detailsSection">
-          <h1>Software Engineer</h1>
-          <h2>Atlassian | Bangalore</h2>
+          <h1>{jobDetails.jobProfile}</h1>
+          <h2>
+            {jobDetails.name} | {jobDetails.location}
+          </h2>
           <hr />
           <h3>Opening Overview</h3>
           <hr />
           <table>
-            <tr>
+            {/* <tr>
               <td>
                 <b>Category</b>
               </td>
               <td>Tier Fantasy</td>
-            </tr>
+            </tr> */}
             <tr>
               <td>
                 <b>Job Functions</b>
               </td>
-              <td>Software Engineering</td>
+              <td>{jobDetails.jobProfile}</td>
             </tr>
-            <tr>
+            {/* <tr>
               <td>
                 <b>CTC</b>
               </td>
               <td>Rs 8300000</td>
-            </tr>
+            </tr> */}
             <tr>
               <td>
                 <b>Salary Break-up</b>
               </td>
               <td>
                 <ul>
-                  <li>BASE PAY – INR 20,80,000</li>
+                  {jobDetails.description &&
+                    Object.entries(jobDetails.description).map(
+                      ([key, value]) => {
+                        return (
+                          <li>
+                            {key} - {value}
+                          </li>
+                        );
+                      }
+                    )}
+                  {/* <li>BASE PAY – {jobDetails?.description?.fixedCTC}</li>
                   <li>Restricted Stock Units – USD 75,000</li>
-                  <li>SIGN-ON BONUS – INR 50,000</li>
+                  <li>SIGN-ON BONUS – INR 50,000</li> */}
                 </ul>
               </td>
             </tr>
           </table>
-          <h3>About Atlassian</h3>
+          <h3>About {jobDetails.name}</h3>
           <hr />
           <b>1000+ Employees | Private | Founded 2002</b>
           <h3>Job Description</h3>
@@ -60,9 +92,11 @@ const JobDetails = () => {
             Atlassian
           </p>
         </div>
+        {/* {moment(jobDetails.deadline.seconds * 1000)} */}
         <div className="applySection">
-          Applications are now closed. You were not eligible to apply for this
-          Job Profile
+          <Button onClick={() => applyForJob()}>Apply</Button>
+          {/* Applications are now closed. You were not eligible to apply for this
+          Job Profile */}
         </div>
       </Paper>
     </div>

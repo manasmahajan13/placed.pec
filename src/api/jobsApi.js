@@ -9,8 +9,10 @@ import {
   addDoc,
   updateDoc,
   serverTimestamp,
-  getDoc
+  doc,
+  getDoc,
 } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 export const getJobs = async (pageSize, lastDoc) => {
   var Query;
@@ -42,6 +44,20 @@ export const getJobs = async (pageSize, lastDoc) => {
   return response;
 };
 
+export const getJobDetails = async (jobId) => {
+  const docRef = doc(db, "jobPostings", jobId);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    // console.log("Document data:", docSnap.data());
+    return docSnap.data();
+  } else {
+    // doc.data() will be undefined in this case
+    // console.log("No such document!");
+    return "No such document!";
+  }
+};
+
 export const createJobPosting = async (data) => {
   const docRef = await addDoc(collection(db, "jobPostings"), data);
   await updateDoc(docRef, {
@@ -52,38 +68,40 @@ export const createJobPosting = async (data) => {
   console.log("successful creation of jobPostings!:::::", docRef.id);
 };
 
-const listOfusersApplied = async(compId)=>{
+export const listOfusersApplied = async (compId) => {
   const jobRef = doc(db, "jobPostings", compId);
   const jobSnap = await getDoc(jobRef);
-  const appliedUsers = docSnap.data()[usersApplied];
+  const appliedUsers = jobSnap.data()["usersApplied"];
   const usersApplicant = [];
   for (let i = 0; i < appliedUsers.length; i++) {
     const docRef = doc(db, "users", appliedUsers[i]);
     const docSnap = await getDoc(docRef);
-    const name = docSnap.data()[fullName]
-    const resume = docSnap.data()[urlResume]
-    usersApplicant.push(name,resume)
+    const name = docSnap.data()["fullName"];
+    const resume = docSnap.data()["urlResume"];
+    usersApplicant.push(name, resume);
   }
   return usersApplicant;
-}
+};
 
-
-const applyJobs = async(compId)=>{
-
+export const applyJobs = async (compId) => {
   //users
   const auth = getAuth();
   const user = auth.currentUser;
   const docRef = doc(db, "users", user.uid);
   const docSnap = await getDoc(docRef);
-  const mapOfJobs = docSnap.data()[statusListOfCompany]
-  mapOfJobs[compId]="applied";
-  updateDoc(docRef,{statusListOfCompany:mapOfJobs});
+  const mapOfJobs = docSnap.data()["statusListOfCompany"];
+  mapOfJobs[compId] = "applied";
+  updateDoc(docRef, { statusListOfCompany: mapOfJobs });
 
   //company
   const jobRef = doc(db, "jobPostings", compId);
   const jobSnap = await getDoc(jobRef);
-  const appliedUsers = docSnap.data()[usersApplied];
+  let appliedUsers = jobSnap.data()["usersApplied"];
+  if (!appliedUsers) {
+    updateDoc(jobRef, { usersApplied: [] });
+    appliedUsers = jobSnap.data()["usersApplied"];
+  }
   appliedUsers.push(user.uid);
-  updateDoc(jobRef,{usersApplied:appliedUsers});
 
-}
+  updateDoc(jobRef, { usersApplied: appliedUsers });
+};

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./jobProfile.css";
 
 export default function JobProfile({ jobData }) {
@@ -7,7 +8,9 @@ export default function JobProfile({ jobData }) {
       {jobData?.map((job) => (
         // <div className="jobDataWrapper">
         <tr className="jobRow" key={`${job.name}${job.jobProfile}`}>
-          <td className="jobDataElement profileLink">{job.jobProfile}</td>
+          <td className="jobDataElement">
+            <Link to={`/jobs/${job.documentID}`}>{job.jobProfile}</Link>
+          </td>
           <td className="jobDataElement">{job.name}</td>
           <td className="jobDataElement">{job.location}</td>
         </tr>
