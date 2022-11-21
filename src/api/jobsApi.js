@@ -9,6 +9,7 @@ import {
   addDoc,
   updateDoc,
   serverTimestamp,
+  getDoc
 } from "firebase/firestore";
 
 export const getJobs = async (pageSize, lastDoc) => {
@@ -50,3 +51,39 @@ export const createJobPosting = async (data) => {
 
   console.log("successful creation of jobPostings!:::::", docRef.id);
 };
+
+const listOfusersApplied = async(compId)=>{
+  const jobRef = doc(db, "jobPostings", compId);
+  const jobSnap = await getDoc(jobRef);
+  const appliedUsers = docSnap.data()[usersApplied];
+  const usersApplicant = [];
+  for (let i = 0; i < appliedUsers.length; i++) {
+    const docRef = doc(db, "users", appliedUsers[i]);
+    const docSnap = await getDoc(docRef);
+    const name = docSnap.data()[fullName]
+    const resume = docSnap.data()[urlResume]
+    usersApplicant.push(name,resume)
+  }
+  return usersApplicant;
+}
+
+
+const applyJobs = async(compId)=>{
+
+  //users
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const docRef = doc(db, "users", user.uid);
+  const docSnap = await getDoc(docRef);
+  const mapOfJobs = docSnap.data()[statusListOfCompany]
+  mapOfJobs[compId]="applied";
+  updateDoc(docRef,{statusListOfCompany:mapOfJobs});
+
+  //company
+  const jobRef = doc(db, "jobPostings", compId);
+  const jobSnap = await getDoc(jobRef);
+  const appliedUsers = docSnap.data()[usersApplied];
+  appliedUsers.push(user.uid);
+  updateDoc(jobRef,{usersApplied:appliedUsers});
+
+}

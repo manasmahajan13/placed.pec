@@ -47,6 +47,7 @@ export default function AdminPanel() {
       backlogsAllowed: false,
     },
     eligibleCourses: { ...initialEligibleCoursesMap },
+    usersApplied:[]
   };
 
   const [jobData, setJobData] = useState(initialData);
