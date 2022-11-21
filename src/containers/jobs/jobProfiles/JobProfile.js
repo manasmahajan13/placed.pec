@@ -16,6 +16,7 @@ export default function JobProfile({ jobData }) {
           <td className="jobDataElement">{job.jobProfile}</td>
           <td className="jobDataElement">{job.name}</td>
           <td className="jobDataElement">{job.location}</td>
+          <td className="jobDataElement">{job.description.fixedCTC}</td>
         </tr>
       ))}
     </>

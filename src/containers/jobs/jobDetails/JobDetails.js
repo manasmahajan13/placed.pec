@@ -96,7 +96,9 @@ const JobDetails = () => {
         </div>
         {/* {moment(jobDetails.deadline.seconds * 1000)} */}
         <div className="applySection">
-          <Button onClick={() => applyForJob()}>Apply</Button>
+          <Button onClick={() => applyForJob()} variant="contained">
+            Apply
+          </Button>
           {/* Applications are now closed. You were not eligible to apply for this
           Job Profile */}
         </div>

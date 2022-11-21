@@ -39,9 +39,10 @@ const Jobs = () => {
                   <th>Job Profile</th>
                   <th>Company</th>
                   <th>Location</th>
+                  <th>CTC</th>
                 </tr>
                 <tr>
-                  <td colSpan="3">
+                  <td colSpan="4">
                     <hr />
                   </td>
                 </tr>

@@ -15,10 +15,14 @@ import "./profile.css";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({});
+  const [addLinkedInOpen, setAddLinkedInOpen] = useState(false);
   const [editSummaryOpen, setEditSummaryOpen] = useState(false);
 
   const handleEditSummaryClose = () => {
     setEditSummaryOpen(false);
+  };
+  const handleAddLinkedInClose = () => {
+    setAddLinkedInOpen(false);
   };
 
   const getProfileData = async () => {
@@ -49,9 +53,23 @@ const Profile = () => {
             <b>Electrical Engineering</b>
           </div>
           <div>
-            <b>PEC UNIVERSITY OF TECHNOLOGY</b>
+            <b>PEC (DEEMED TO BE UNIVERSITY)</b>
           </div>
           <hr />
+          {profileData.linkedin ? (
+            <a href={profileData.linkedin}>{profileData.linkedin}</a>
+          ) : (
+            <div>
+              Add you linkedIn account{" "}
+              <Button
+                variant="contained"
+                onClick={() => setAddLinkedInOpen(true)}
+              >
+                LinkedIn
+              </Button>
+            </div>
+          )}
+
           <h3>Summary</h3>
 
           {profileData.summary ? (
@@ -109,6 +127,28 @@ const Profile = () => {
             margin="dense"
             id="summary"
             label="Summary"
+            fullWidth
+            variant="standard"
+            multiline
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleEditSummaryClose}>Cancel</Button>
+          <Button onClick={handleEditSummaryClose}>Save</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={addLinkedInOpen} onClose={handleAddLinkedInClose}>
+        <DialogTitle>Add LinkedIn Account</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Enter your LinkedIn account details
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="linkedIn"
+            label="LinkedIn URL"
             fullWidth
             variant="standard"
             multiline
