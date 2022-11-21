@@ -18,6 +18,7 @@ function Signup() {
   const [registerPassword, setRegisterPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [sid, setSid] = useState("");
+  const [cgpa, setCgpa] = useState("");
 
   const [signupErrorCode, setsignupErrorCode] = useState("");
 
@@ -34,7 +35,8 @@ function Signup() {
           email: registerEmail,
           fullName: fullName,
           SID: sid,
-          statusListOfCompany:{}
+          cgpa: cgpa,
+          statusListOfCompany: {},
         };
         const usersRef = collection(db, "users");
         setDoc(doc(db, "users", user.uid), data);
@@ -68,26 +70,6 @@ function Signup() {
           <h1>Sign up</h1>
           {/* <h2>{currentUser?.email}</h2> */}
           <TextField
-            id="fullName"
-            label="Full Name"
-            variant="outlined"
-            value={fullName}
-            onChange={(event) => {
-              setFullName(event.target.value);
-            }}
-            sx={{ paddingBottom: "16px" }}
-          />
-          <TextField
-            id="sid"
-            label="SID"
-            variant="outlined"
-            value={sid}
-            onChange={(event) => {
-              setSid(event.target.value);
-            }}
-            sx={{ paddingBottom: "16px" }}
-          />
-          <TextField
             id="email"
             label="Email"
             variant="outlined"
@@ -108,6 +90,38 @@ function Signup() {
             }}
             sx={{ paddingBottom: "16px" }}
           />
+          <TextField
+            id="fullName"
+            label="Full Name"
+            variant="outlined"
+            value={fullName}
+            onChange={(event) => {
+              setFullName(event.target.value);
+            }}
+            sx={{ paddingBottom: "16px" }}
+          />
+          <TextField
+            id="sid"
+            label="SID"
+            variant="outlined"
+            value={sid}
+            onChange={(event) => {
+              setSid(event.target.value);
+            }}
+            sx={{ paddingBottom: "16px" }}
+          />
+
+          <TextField
+            id="cgpa"
+            label="CGPA"
+            variant="outlined"
+            value={cgpa}
+            onChange={(event) => {
+              setCgpa(event.target.value);
+            }}
+            sx={{ paddingBottom: "16px" }}
+          />
+
           <Button onClick={register} variant="contained">
             Signup
           </Button>

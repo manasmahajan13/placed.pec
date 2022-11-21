@@ -14,6 +14,36 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
+export const getAllJobs = async (pageSize, lastDoc) => {
+  var Query;
+  if (lastDoc) {
+    Query = query(
+      collection(db, "jobPostings"),
+      orderBy("published"),
+      limit(pageSize),
+      startAfter(lastDoc)
+    );
+  } else {
+    Query = query(
+      collection(db, "jobPostings"),
+      orderBy("published"),
+      limit(pageSize)
+    );
+  }
+  const jobsList = [];
+  const documentSnapshots = await getDocs(Query);
+  documentSnapshots.docs.forEach((doc) => {
+    jobsList.push(doc.data());
+  });
+
+  const response = {
+    lastDoc: documentSnapshots.docs[documentSnapshots.docs.length - 1],
+    jobsList: jobsList,
+  };
+
+  return response;
+};
+
 export const getJobs = async (pageSize, lastDoc) => {
   var Query;
   if (lastDoc) {
@@ -74,11 +104,12 @@ export const listOfusersApplied = async (compId) => {
   const appliedUsers = jobSnap.data()["usersApplied"];
   const usersApplicant = [];
   for (let i = 0; i < appliedUsers.length; i++) {
-    const docRef = doc(db, "users", appliedUsers[i].first);
+    const docRef = doc(db, "users", appliedUsers[i]);
     const docSnap = await getDoc(docRef);
     const name = docSnap.data()["fullName"];
+    const cgpa = docSnap.data()["cgpa"];
     const resume = docSnap.data()["urlResume"];
-    usersApplicant.push(name, resume);
+    usersApplicant.push({ name: name, resume: resume, cgpa: cgpa });
   }
   return usersApplicant;
 };
@@ -92,8 +123,8 @@ export const applyJobs = async (compId) => {
   let mapOfJobs = docSnap.data()["statusListOfCompany"];
   if (!mapOfJobs) {
     updateDoc(docRef, { statusListOfCompany: {} });
-    docRef = doc(db,"users",user.uid)
-    docSnap = await getDoc(docRef)
+    docRef = doc(db, "users", user.uid);
+    docSnap = await getDoc(docRef);
     mapOfJobs = docSnap.data()["statusListOfCompany"];
   }
   mapOfJobs[compId] = "applied";
@@ -105,10 +136,10 @@ export const applyJobs = async (compId) => {
   let appliedUsers = jobSnap.data()["usersApplied"];
   if (!appliedUsers) {
     updateDoc(jobRef, { usersApplied: [] });
-    jobRef = doc(db,"jobPostings",compId)
-    jobSnap = await getDoc(jobRef)
+    jobRef = doc(db, "jobPostings", compId);
+    jobSnap = await getDoc(jobRef);
     appliedUsers = jobSnap.data()["usersApplied"];
   }
-  appliedUsers.push(user.uid)
+  appliedUsers.push(user.uid);
   updateDoc(jobRef, { usersApplied: appliedUsers });
 };

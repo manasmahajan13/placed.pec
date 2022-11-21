@@ -3,16 +3,9 @@
 }
 .jobRow {
   height: 60px;
-}
-/* .jobDataWrapper{
-    display: flex;
-    position: relative;
-    justify-content: space-between;
-    padding: 8px;
+  cursor: pointer;
 }
 
-
-
-.jobDataElement{
-    width: 100%;
-} */
+.jobRow:hover {
+  background-color: whitesmoke;
+}

@@ -33,7 +33,7 @@ const Jobs = () => {
         <div className="sectionWrapper">
           <h3 className="sectionHeading">Job Profiles</h3>
           <div className="tableWrapper">
-            <table>
+            <table border="0" cellspacing="0" cellpadding="0">
               <tbody>
                 <tr>
                   <th>Job Profile</th>
@@ -48,6 +48,7 @@ const Jobs = () => {
                 <JobProfile jobData={jobs} />
                 <tr>
                   <td>
+                    <br />
                     {hasNextPage && (
                       <Button variant="contained" onClick={() => getMoreJobs()}>
                         Load more

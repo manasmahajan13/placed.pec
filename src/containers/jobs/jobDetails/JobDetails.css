@@ -14,7 +14,8 @@
 }
 .applySection {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   padding: 32px;
   width: 200px;
   border-left: 1px solid gray;

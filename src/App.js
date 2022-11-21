@@ -13,6 +13,9 @@ import { RequireAuth } from "./helpers/RequireAuth";
 // import SignupUserData from "./containers/login-registration/SignupUserData";
 import AdminPanel from "./containers/admin/AdminPanel";
 import JobDetails from "./containers/jobs/jobDetails/JobDetails";
+import AdminJobs from "./containers/admin/adminJobs/AdminJobs";
+import AdminDashboard from "./containers/admin/adminDashboard/AdminDashboard";
+import AdminJobDetails from "./containers/admin/adminJobs/adminJobDetails/AdminJobDetails";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -34,7 +37,11 @@ function App() {
               </Route>
 
               <Route element={<RequireAuth />}>
-                <Route path="/admin" element={<AdminPanel />} />
+                <Route element={<AdminPanel />}>
+                  <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                  <Route path="/admin/jobs" element={<AdminJobs />} />
+                  <Route path="/admin/jobs/:id" element={<AdminJobDetails />} />
+                </Route>
               </Route>
             </Route>
           </Routes>

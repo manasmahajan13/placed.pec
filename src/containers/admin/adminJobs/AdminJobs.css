@@ -1,0 +1,8 @@
+.adminJobRow {
+  height: 60px;
+  cursor: pointer;
+}
+
+.adminJobRow :hover {
+  background: whitesmoke;
+}

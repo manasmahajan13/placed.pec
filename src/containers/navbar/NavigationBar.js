@@ -1,10 +1,11 @@
 import { AppBar, Button } from "@mui/material";
-import React from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../contexts/AuthContext";
 
 function NavBar(props) {
+  const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
   const logoutFunction = async () => {
@@ -15,6 +16,7 @@ function NavBar(props) {
       console.log(error.message);
     }
   };
+
   return (
     <>
       <AppBar
@@ -30,18 +32,40 @@ function NavBar(props) {
             />
           </div>
           <div className="appBarTabs">
-            <Button className="navLink" variant="text">
-              <Link to={`/`}>Home</Link>
-            </Button>
-            <Button className="navLink" variant="text">
-              <Link to={`/jobs`}>Jobs</Link>
-            </Button>
-            <Button className="navLink" variant="text">
-              <Link to={`/profile`}>Profile</Link>
-            </Button>
-            <Button className="navLink" variant="text">
-              <Link to={`/admin`}>Admin</Link>
-            </Button>
+            {location.pathname.includes("admin") ? (
+              <>
+                <Button onClick={() => navigate("/admin/dashboard")}>
+                  Dashboard
+                </Button>
+                <Button onClick={() => navigate("/admin/jobs")}>
+                  Jobs List
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  className="navLink"
+                  variant="text"
+                  onClick={() => navigate("/")}
+                >
+                  Home
+                </Button>
+                <Button
+                  className="navLink"
+                  variant="text"
+                  onClick={() => navigate("/jobs")}
+                >
+                  Jobs
+                </Button>
+                <Button
+                  className="navLink"
+                  variant="text"
+                  onClick={() => navigate("/profile")}
+                >
+                  Profile
+                </Button>
+              </>
+            )}
           </div>
           <Button onClick={() => logoutFunction()}>Logout</Button>
         </div>

@@ -35,46 +35,48 @@ const JobDetails = () => {
           <h3>Opening Overview</h3>
           <hr />
           <table>
-            {/* <tr>
+            <tbody>
+              {/* <tr>
               <td>
                 <b>Category</b>
               </td>
               <td>Tier Fantasy</td>
             </tr> */}
-            <tr>
-              <td>
-                <b>Job Functions</b>
-              </td>
-              <td>{jobDetails.jobProfile}</td>
-            </tr>
-            {/* <tr>
+              <tr>
+                <td>
+                  <b>Job Functions</b>
+                </td>
+                <td>{jobDetails.jobProfile}</td>
+              </tr>
+              {/* <tr>
               <td>
                 <b>CTC</b>
               </td>
               <td>Rs 8300000</td>
             </tr> */}
-            <tr>
-              <td>
-                <b>Salary Break-up</b>
-              </td>
-              <td>
-                <ul>
-                  {jobDetails.description &&
-                    Object.entries(jobDetails.description).map(
-                      ([key, value]) => {
-                        return (
-                          <li>
-                            {key} - {value}
-                          </li>
-                        );
-                      }
-                    )}
-                  {/* <li>BASE PAY – {jobDetails?.description?.fixedCTC}</li>
+              <tr>
+                <td>
+                  <b>Salary Break-up</b>
+                </td>
+                <td>
+                  <ul>
+                    {jobDetails.description &&
+                      Object.entries(jobDetails.description).map(
+                        ([key, value]) => {
+                          return (
+                            <li key={key}>
+                              {key} - {value}
+                            </li>
+                          );
+                        }
+                      )}
+                    {/* <li>BASE PAY – {jobDetails?.description?.fixedCTC}</li>
                   <li>Restricted Stock Units – USD 75,000</li>
                   <li>SIGN-ON BONUS – INR 50,000</li> */}
-                </ul>
-              </td>
-            </tr>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
           </table>
           <h3>About {jobDetails.name}</h3>
           <hr />
