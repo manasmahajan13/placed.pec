@@ -34,6 +34,7 @@ function Signup() {
           email: registerEmail,
           fullName: fullName,
           SID: sid,
+          statusListOfCompany:{}
         };
         const usersRef = collection(db, "users");
         setDoc(doc(db, "users", user.uid), data);
