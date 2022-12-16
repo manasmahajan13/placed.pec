@@ -1,35 +1,71 @@
-import { Button, Paper } from "@mui/material";
+import { Button, CircularProgress, Paper } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { applyJobs, getJobDetails } from "../../../api/jobsApi";
 import "./JobDetails.css";
 import { useSnackbar } from "notistack";
+import { setUserData } from "../../../redux/slice/user.slice";
+import { useSelector, useDispatch } from "react-redux";
+import { getProfile } from "../../../api/profileApi";
 
 const JobDetails = () => {
+  const profileData = useSelector((state) => state.user.userData);
+  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const { id } = useParams();
-
   const [jobDetails, setJobDetails] = useState({});
+  const [companyApplicationStatus, setCompanyApplicationStatus] = useState(
+    <CircularProgress size={24.5} />
+  );
 
   const fetchJobDetails = async () => {
     const details = await getJobDetails(id);
-    console.log(details);
     setJobDetails(details);
   };
 
   const applyForJob = async () => {
     try {
-      const response = await applyJobs(jobDetails.documentID);
-      enqueueSnackbar("Successfully applied", {variant: "success"})
+      await applyJobs(jobDetails.documentID);
+      enqueueSnackbar("Successfully applied", { variant: "success" });
+      setCompanyApplicationStatus("Applied");
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-    
+  };
+
+  const getProfileData = async () => {
+    const data = await getProfile();
+    dispatch(setUserData(data));
+  };
+
+  const checkApplied = () => {
+    if (jobDetails.documentID) {
+      return profileData?.statusListOfCompany?.hasOwnProperty(
+        jobDetails.documentID
+      )
+        ? profileData.statusListOfCompany[jobDetails.documentID]
+        : "Apply";
+    } else {
+      return <CircularProgress size={24.5} />;
+    }
+  };
+
+  const onPageLoad = async () => {
+    try {
+      await fetchJobDetails();
+      await getProfileData();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
-    fetchJobDetails();
+    onPageLoad();
   }, []);
+
+  useEffect(() => {
+    setCompanyApplicationStatus(checkApplied());
+  }, [profileData]);
 
   return (
     <div className="jobDetails">
@@ -104,9 +140,16 @@ const JobDetails = () => {
         </div>
         {/* {moment(jobDetails.deadline.seconds * 1000)} */}
         <div className="applySection">
-          <Button onClick={() => applyForJob()} variant="contained">
-            Apply
-          </Button>
+          {companyApplicationStatus == "Apply" ? (
+            <Button onClick={() => applyForJob()} variant="contained">
+              {companyApplicationStatus}
+            </Button>
+          ) : (
+            <Button onClick={() => applyForJob()} disabled variant="contained">
+              {companyApplicationStatus}
+            </Button>
+          )}
+
           {/* Applications are now closed. You were not eligible to apply for this
           Job Profile */}
         </div>

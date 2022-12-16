@@ -11,10 +11,13 @@ import React, { useEffect, useState } from "react";
 import { getProfile, updateProfile } from "../../api/profileApi";
 import ResumeUpload from "../../api/resume";
 import { openInNewTab } from "../../helpers/UtilityFunctions";
+import { useSelector, useDispatch } from 'react-redux';
 import "./profile.css";
+import { setUserData } from "../../redux/slice/user.slice";
 
 const Profile = () => {
-  const [profileData, setProfileData] = useState({});
+  const profileData = useSelector((state)=>state.user.userData);
+  const dispatch = useDispatch();
   const [addLinkedInOpen, setAddLinkedInOpen] = useState(false);
   const [editSummaryOpen, setEditSummaryOpen] = useState(false);
 
@@ -27,7 +30,7 @@ const Profile = () => {
 
   const getProfileData = async () => {
     const data = await getProfile();
-    setProfileData(data);
+    dispatch(setUserData(data))
   };
 
   useEffect(() => {

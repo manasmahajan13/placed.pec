@@ -18,50 +18,53 @@ import AdminDashboard from "./containers/admin/adminDashboard/AdminDashboard";
 import AdminJobDetails from "./containers/admin/adminJobs/adminJobDetails/AdminJobDetails";
 import CreateJobPosting from "./containers/admin/adminJobs/CreateJobPosting";
 import { SnackbarProvider } from "notistack";
+import { store } from "./redux/store";
+import { Provider } from "react-redux";
+
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-
   return (
-    <SnackbarProvider maxSnack={3}>
-      <AuthProvider>
-        <div className="App">
-          <>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              {/* <Route path="/signup/user-data" element={<SignupUserData />} /> */}
-              <Route element={<NavBar />}>
-                <Route element={<RequireAuth />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/jobs" element={<Jobs />} />
-                  <Route path="/jobs/:id" element={<JobDetails />} />
-                  <Route path="/profile" element={<Profile />} />
-                </Route>
+    <Provider store={store}>
+      <SnackbarProvider maxSnack={3}>
+        <AuthProvider>
+          <div className="App">
+            <>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                {/* <Route path="/signup/user-data" element={<SignupUserData />} /> */}
+                <Route element={<NavBar />}>
+                  <Route element={<RequireAuth />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/jobs" element={<Jobs />} />
+                    <Route path="/jobs/:id" element={<JobDetails />} />
+                    <Route path="/profile" element={<Profile />} />
+                  </Route>
 
-                <Route element={<RequireAuth />}>
-                  <Route element={<AdminPanel />}>
-                    <Route
-                      path="/admin/dashboard"
-                      element={<AdminDashboard />}
-                    />
-                    <Route path="/admin/jobs" element={<AdminJobs />} />
-                    <Route
-                      path="/admin/jobs/:id"
-                      element={<AdminJobDetails />}
-                    />
-                    <Route
-                      path="/admin/jobs/create-new"
-                      element={<CreateJobPosting />}
-                    />
+                  <Route element={<RequireAuth />}>
+                    <Route element={<AdminPanel />}>
+                      <Route
+                        path="/admin/dashboard"
+                        element={<AdminDashboard />}
+                      />
+                      <Route path="/admin/jobs" element={<AdminJobs />} />
+                      <Route
+                        path="/admin/jobs/:id"
+                        element={<AdminJobDetails />}
+                      />
+                      <Route
+                        path="/admin/jobs/create-new"
+                        element={<CreateJobPosting />}
+                      />
+                    </Route>
                   </Route>
                 </Route>
-              </Route>
-            </Routes>
-          </>
-        </div>
-      </AuthProvider>
-    </SnackbarProvider>
+              </Routes>
+            </>
+          </div>
+        </AuthProvider>
+      </SnackbarProvider>
+    </Provider>
   );
 }
 
