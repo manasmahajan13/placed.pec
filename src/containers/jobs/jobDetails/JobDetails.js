@@ -11,7 +11,7 @@ const JobDetails = () => {
 
   const fetchJobDetails = async () => {
     const details = await getJobDetails(id);
-    console.log(details.deadline);
+    console.log(details);
     setJobDetails(details);
   };
 
@@ -25,7 +25,7 @@ const JobDetails = () => {
 
   return (
     <div className="jobDetails">
-      <Paper className="jobDetailsContainer">
+      <div className="jobDetailsContainer">
         <div className="detailsSection">
           <h1>{jobDetails.jobProfile}</h1>
           <h2>
@@ -102,7 +102,7 @@ const JobDetails = () => {
           {/* Applications are now closed. You were not eligible to apply for this
           Job Profile */}
         </div>
-      </Paper>
+      </div>
     </div>
   );
 };
