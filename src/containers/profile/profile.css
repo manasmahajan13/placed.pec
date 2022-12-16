@@ -1,13 +1,56 @@
 .profilePage {
   display: flex;
   justify-content: center;
+  padding: 32px;
+}
+
+.profileContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 75%;
+}
+
+.profileSection {
+  background-color: #fff;
+  border: 1px solid rgb(219, 219, 219);
+  width: 100%;
+  margin: 16px;
+}
+
+.profileContentHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid rgb(219, 219, 219);
+  padding: 32px 0px;
+}
+
+.profileImg {
+  height: 150px;
+  border-radius: 50%;
+}
+
+.summarySection {
+  display: flex;
+}
+
+.sectionHeaders {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profileSummarySection {
   padding: 16px;
 }
 
-.profileWrapper {
-  width: 75%;
+.profileResumeSection {
+  padding: 16px;
+}
+
+.resumeRow {
   display: flex;
-  position: relative;
+  justify-content: space-between;
 }
 
 .sideMenuBar {
@@ -20,21 +63,4 @@
 
 .sideMenuBarItems {
   padding: 12px 8px;
-}
-
-.profileContent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: -webkit-fill-available;
-  padding: 64px;
-}
-
-.profileImg {
-  height: 150px;
-  border-radius: 50%;
-}
-
-.summarySection {
-  display: flex;
 }

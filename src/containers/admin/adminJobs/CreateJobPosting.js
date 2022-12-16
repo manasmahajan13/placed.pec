@@ -14,6 +14,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { createJobPosting } from "../../../api/jobsApi";
 import { Timestamp } from "firebase/firestore";
 import moment from "moment/moment";
+import "./CreateJobPosting.css"
 
 export const coursesList = [
   "Computer Science Engineering",
@@ -68,7 +69,7 @@ function CreateJobPosting() {
     createJobPosting(jobDataToSubmit);
   };
   return (
-    <div>
+    <div className="newJobPostingWrapper">
       <h2>Create Job Posting</h2>
       <Grid container spacing={2}>
         <Grid item xs={6}>
@@ -120,6 +121,7 @@ function CreateJobPosting() {
             id="fixed"
             variant="outlined"
             label="Fixed"
+            style={{marginRight: "16px"}}
             onChange={(event) => {
               setJobData({
                 ...jobData,
@@ -151,6 +153,7 @@ function CreateJobPosting() {
             id="minCGPA"
             variant="outlined"
             label="Minimum CGPA"
+            style={{marginRight: "16px"}}
             onChange={(event) => {
               setJobData({
                 ...jobData,

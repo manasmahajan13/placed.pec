@@ -3,38 +3,70 @@
   color: #36454f;
 }
 
-.appbar {
-  height: 60px;
-  padding: 0px 64px;
+.appWrapper {
+  display: flex;
 }
 
-.appBarContent {
+.navArea {
+  background: #fff;
+  height: 100vh;
+  min-width: 300px;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  height: 100%;
+  border-right: 1px solid rgb(219, 219, 219);
 }
+
+.profileArea {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  border-bottom: 1px solid rgb(219, 219, 219);
+}
+
+.navBottomArea {
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid rgb(219, 219, 219);
+  width: 100%;
+}
+
+.mainContent {
+  flex-grow: 1;
+  height: 100vh;
+  overflow-y: scroll;
+  background-color: rgb(250, 250, 250);
+}
+.appBarTabs {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin: 16px 0px;
+}
+
 .navLink {
   margin-left: 16px;
 }
 
 .contentWrapperMain {
   flex-grow: 1;
-  background-color: lightgray;
   min-height: calc(100% - 60px);
 }
 
-.loginContainer, .signupContainer{
+.loginContainer,
+.signupContainer {
   display: flex;
 }
-.loginDialogContainer, .signupDialogContainer{
+.loginDialogContainer,
+.signupDialogContainer {
   height: 100vh;
   width: -webkit-fill-available;
   justify-content: center;
   align-items: center;
   display: flex;
 }
-.loginDialog, .signupDialog {
+.loginDialog,
+.signupDialog {
   width: 100%;
   max-width: 400px;
   display: flex;

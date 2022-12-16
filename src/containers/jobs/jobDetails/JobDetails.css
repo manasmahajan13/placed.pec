@@ -7,6 +7,8 @@
   padding: 16px;
   margin: 32px;
   display: flex;
+  background-color: #fff;
+  border: 1px solid rgb(219, 219, 219);
 }
 .detailsSection {
   width: calc(100% - 200px);

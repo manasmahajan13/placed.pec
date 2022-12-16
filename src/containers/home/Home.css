@@ -1,19 +1,19 @@
 .homeWrapperMain {
   padding: 32px;
-  background-color: #ebeff1;
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
 }
 
 .homeFeedContainer {
-  width: calc(100% - 300px);
   max-width: 800px;
-  padding-left: 300px;
+  width: 100%;
 }
 
 .logo {
   margin-right: 16px;
   border-radius: 2px;
   position: fixed;
-  left: 48px;
+  right: 48px;
   top: 108px;
 }

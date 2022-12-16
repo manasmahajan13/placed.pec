@@ -71,17 +71,15 @@ const AdminJobs = () => {
             </td>
           </tr>
           <JobProfile jobData={jobs} />
-          <tr>
-            <td>
-              {hasNextPage && (
-                <Button variant="contained" onClick={() => getMoreJobs()}>
-                  Load more
-                </Button>
-              )}
-            </td>
-          </tr>
         </tbody>
       </table>
+      <div className="loadMoreButtonAdminJobs">
+        {hasNextPage && (
+          <Button variant="contained" onClick={() => getMoreJobs()}>
+            Load more
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

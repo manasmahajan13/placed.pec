@@ -30,9 +30,9 @@ const Home = () => {
 
   return (
     <div className="homeWrapperMain">
-      <div className="logo">
+      {/* <div className="logo">
         <img src={require("../../assets/images/pec-logo.png")} />
-      </div>
+      </div> */}
       <div className="homeFeedContainer">
         {jobs?.map((job) => {
           return <HomeFeedCard feedData={job} key={job.documentID} />;

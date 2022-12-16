@@ -3,20 +3,28 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { applyJobs, getJobDetails } from "../../../api/jobsApi";
 import "./JobDetails.css";
+import { useSnackbar } from "notistack";
 
 const JobDetails = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const { id } = useParams();
 
   const [jobDetails, setJobDetails] = useState({});
 
   const fetchJobDetails = async () => {
     const details = await getJobDetails(id);
-    console.log(details.deadline);
+    console.log(details);
     setJobDetails(details);
   };
 
   const applyForJob = async () => {
-    const response = await applyJobs(jobDetails.documentID);
+    try {
+      const response = await applyJobs(jobDetails.documentID);
+      enqueueSnackbar("Successfully applied", {variant: "success"})
+    } catch (error) {
+      console.error(error)
+    }
+    
   };
 
   useEffect(() => {
@@ -25,7 +33,7 @@ const JobDetails = () => {
 
   return (
     <div className="jobDetails">
-      <Paper className="jobDetailsContainer">
+      <div className="jobDetailsContainer">
         <div className="detailsSection">
           <h1>{jobDetails.jobProfile}</h1>
           <h2>
@@ -102,7 +110,7 @@ const JobDetails = () => {
           {/* Applications are now closed. You were not eligible to apply for this
           Job Profile */}
         </div>
-      </Paper>
+      </div>
     </div>
   );
 };
