@@ -19,14 +19,14 @@ export const getAllJobs = async (pageSize, lastDoc) => {
   if (lastDoc) {
     Query = query(
       collection(db, "jobPostings"),
-      orderBy("published"),
+      orderBy("published","desc"),
       limit(pageSize),
       startAfter(lastDoc)
     );
   } else {
     Query = query(
       collection(db, "jobPostings"),
-      orderBy("published"),
+      orderBy("published","desc"),
       limit(pageSize)
     );
   }
@@ -49,14 +49,14 @@ export const getJobs = async (pageSize, lastDoc) => {
   if (lastDoc) {
     Query = query(
       collection(db, "jobPostings"),
-      orderBy("published"),
+      orderBy("published","desc"),
       limit(pageSize),
       startAfter(lastDoc)
     );
   } else {
     Query = query(
       collection(db, "jobPostings"),
-      orderBy("published"),
+      orderBy("published","desc"),
       limit(pageSize)
     );
   }

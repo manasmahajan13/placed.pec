@@ -181,7 +181,7 @@ function CreateJobPosting() {
           </Select>
         </Grid>
         <Grid item xs={6}>
-          <h3>Eligible Courses</h3>
+          <h3>Eligible Disciplines</h3>
           {coursesList.map((course) => {
             return (
               <FormControlLabel
