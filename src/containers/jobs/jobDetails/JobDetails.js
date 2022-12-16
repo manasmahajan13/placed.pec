@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { applyJobs, getJobDetails } from "../../../api/jobsApi";
 import "./JobDetails.css";
+import { useSnackbar } from "notistack";
 
 const JobDetails = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const { id } = useParams();
 
   const [jobDetails, setJobDetails] = useState({});
@@ -16,7 +18,13 @@ const JobDetails = () => {
   };
 
   const applyForJob = async () => {
-    const response = await applyJobs(jobDetails.documentID);
+    try {
+      const response = await applyJobs(jobDetails.documentID);
+      enqueueSnackbar("Successfully applied", {variant: "success"})
+    } catch (error) {
+      console.error(error)
+    }
+    
   };
 
   useEffect(() => {
