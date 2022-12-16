@@ -1,16 +1,13 @@
 import "./App.css";
-import { useState } from "react";
 import Home from "./containers/home/Home";
 import Jobs from "./containers/jobs/Jobs";
 import Profile from "./containers/profile/Profile";
-
 import { Route, Routes } from "react-router-dom";
 import Login from "./containers/login-registration/Login";
 import Signup from "./containers/login-registration/Signup";
 import NavBar from "./containers/navbar/NavigationBar";
 import { AuthProvider } from "./contexts/AuthContext";
 import { RequireAuth } from "./helpers/RequireAuth";
-// import SignupUserData from "./containers/login-registration/SignupUserData";
 import AdminPanel from "./containers/admin/AdminPanel";
 import JobDetails from "./containers/jobs/jobDetails/JobDetails";
 import AdminJobs from "./containers/admin/adminJobs/AdminJobs";
@@ -20,6 +17,7 @@ import CreateJobPosting from "./containers/admin/adminJobs/CreateJobPosting";
 import { SnackbarProvider } from "notistack";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
+import ResetPassword from "./containers/login-registration/ResetPassword";
 
 
 function App() {
@@ -32,6 +30,7 @@ function App() {
               <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 {/* <Route path="/signup/user-data" element={<SignupUserData />} /> */}
                 <Route element={<NavBar />}>
                   <Route element={<RequireAuth />}>

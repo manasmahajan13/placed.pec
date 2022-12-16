@@ -76,6 +76,9 @@ function Login(props) {
           <div>
             Don't have an account yet? <Link to="/signup">Sign Up</Link> instead
           </div>
+          <div>
+            Forgot Password? <Link to="/reset-password">Reset</Link>
+          </div>
         </div>
       </div>
     </div>
