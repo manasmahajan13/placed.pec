@@ -33,7 +33,7 @@ const Jobs = () => {
         <div className="sectionWrapper">
           <h3 className="sectionHeading">Job Profiles</h3>
           <div className="tableWrapper">
-            <table border="0" cellspacing="0" cellpadding="0">
+            <table border="0" cellSpacing="0" cellPadding="0">
               <tbody>
                 <tr>
                   <th>Job Profile</th>

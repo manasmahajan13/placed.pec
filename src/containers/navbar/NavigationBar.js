@@ -64,6 +64,7 @@ function NavBar(props) {
                   <TabButton
                     className="navLink"
                     variant="text"
+                    key={tab.link}
                     onClick={() => navigate(tab.link)}
                   >
                     {tab.displayName}
@@ -78,6 +79,7 @@ function NavBar(props) {
                   <TabButton
                     className="navLink"
                     variant="text"
+                    key={tab.link}
                     onClick={() => navigate(tab.link)}
                   >
                     {tab.displayName}
