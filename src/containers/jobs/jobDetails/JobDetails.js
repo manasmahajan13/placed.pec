@@ -7,6 +7,7 @@ import { useSnackbar } from "notistack";
 import { setUserData } from "../../../redux/slice/user.slice";
 import { useSelector, useDispatch } from "react-redux";
 import { getProfile } from "../../../api/profileApi";
+import moment from "moment";
 
 const JobDetails = () => {
   const profileData = useSelector((state) => state.user.userData);
@@ -40,11 +41,17 @@ const JobDetails = () => {
 
   const checkApplied = () => {
     if (jobDetails.documentID) {
-      return profileData?.statusListOfCompany?.hasOwnProperty(
-        jobDetails.documentID
-      )
-        ? profileData.statusListOfCompany[jobDetails.documentID]
-        : "Apply";
+      if (profileData.cgpa > jobDetails.eligibility.minCGPA) {
+        return profileData?.statusListOfCompany?.hasOwnProperty(
+          jobDetails.documentID
+        )
+          ? profileData.statusListOfCompany[jobDetails.documentID]
+          : moment(jobDetails.deadline.seconds * 1000).isAfter()
+          ? "Apply"
+          : "Closed";
+      } else {
+        return "Not Eligible";
+      }
     } else {
       return <CircularProgress size={24.5} />;
     }

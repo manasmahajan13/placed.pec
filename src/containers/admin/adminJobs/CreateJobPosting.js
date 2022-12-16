@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Checkbox,
   FormControlLabel,
@@ -7,6 +7,7 @@ import {
   Select,
   TextField,
   Button,
+  InputAdornment,
 } from "@mui/material";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -14,7 +15,8 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { createJobPosting } from "../../../api/jobsApi";
 import { Timestamp } from "firebase/firestore";
 import moment from "moment/moment";
-import "./CreateJobPosting.css"
+import "./CreateJobPosting.css";
+import { useSnackbar } from "notistack";
 
 export const coursesList = [
   "Computer Science Engineering",
@@ -28,6 +30,7 @@ export const coursesList = [
 ];
 
 function CreateJobPosting() {
+  const { enqueueSnackbar } = useSnackbar();
   const initialEligibleCoursesMap = {};
   coursesList.map((course) => {
     initialEligibleCoursesMap[course] = false;
@@ -39,8 +42,8 @@ function CreateJobPosting() {
     location: "",
     deadline: moment(),
     description: {
-      fixed: "",
-      variable: "",
+      fixedCTC: "",
+      variableCTC: "",
     },
     eligibility: {
       minCGPA: "",
@@ -54,6 +57,10 @@ function CreateJobPosting() {
 
   const handleSubmission = () => {
     const jobDataToSubmit = jobData;
+    jobDataToSubmit.description.fixedCTC =
+      jobDataToSubmit.description.fixedCTC + " LPA";
+    jobDataToSubmit.description.variableCTC =
+      jobDataToSubmit.description.variableCTC + " LPA";
     jobDataToSubmit.deadline = Timestamp.fromDate(
       jobDataToSubmit.deadline.toDate()
     );
@@ -65,8 +72,14 @@ function CreateJobPosting() {
     });
 
     jobDataToSubmit.eligibleCourses = eligibleCoursesArray;
-
-    createJobPosting(jobDataToSubmit);
+    console.log(jobDataToSubmit);
+    try {
+      createJobPosting(jobDataToSubmit);
+      enqueueSnackbar("Job created successfully", { variant: "success" });
+      setJobData(initialData);
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div className="newJobPostingWrapper">
@@ -121,15 +134,18 @@ function CreateJobPosting() {
             id="fixed"
             variant="outlined"
             label="Fixed"
-            style={{marginRight: "16px"}}
+            style={{ marginRight: "16px" }}
             onChange={(event) => {
               setJobData({
                 ...jobData,
                 description: {
                   ...jobData.description,
-                  fixed: event.target.value,
+                  fixedCTC: event.target.value,
                 },
               });
+            }}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">LPA</InputAdornment>,
             }}
           />
           <TextField
@@ -141,9 +157,12 @@ function CreateJobPosting() {
                 ...jobData,
                 description: {
                   ...jobData.description,
-                  variable: event.target.value,
+                  variableCTC: event.target.value,
                 },
               });
+            }}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">LPA</InputAdornment>,
             }}
           />
         </Grid>
@@ -153,7 +172,7 @@ function CreateJobPosting() {
             id="minCGPA"
             variant="outlined"
             label="Minimum CGPA"
-            style={{marginRight: "16px"}}
+            style={{ marginRight: "16px" }}
             onChange={(event) => {
               setJobData({
                 ...jobData,
