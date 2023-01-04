@@ -30,16 +30,13 @@ const Home = () => {
 
   return (
     <div className="homeWrapperMain">
-      {/* <div className="logo">
-        <img src={require("../../assets/images/pec-logo.png")} />
-      </div> */}
       <div className="homeFeedContainer">
         {jobs?.map((job) => {
           return <HomeFeedCard feedData={job} key={job.documentID} />;
         })}
         {hasNextPage && (
           <Button variant="contained" onClick={() => getMoreJobs()}>
-            Load more
+            View more
           </Button>
         )}
       </div>

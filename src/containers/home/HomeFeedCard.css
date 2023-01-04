@@ -1,27 +1,42 @@
 .HomeFeedCard {
-  padding: 16px 16px 32px 16px;
   margin-bottom: 16px;
-  background-color: #fff;
-  border-radius: 2px;
-  border: 1px solid rgb(219, 219, 219);
+  background-color: var(--background);
+  overflow: hidden;
 }
 
 .homeFeedCardHeader {
   display: flex;
+  justify-content: space-between;
+  background-color: var(--accent);
+  padding: 16px;
+  color: var(--primary-inverted);
 }
 
-.feedCardAvatar {
-  background-color: peru;
-  border-radius: 50%;
-  height: 48px;
-  width: 48px;
-  margin-right: 16px;
-  color: white;
-  font-weight: 600;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.newJobNotificationText {
+  font-size: var(--font-secondary);
+  margin-bottom: 4px;
 }
-.deadlineText {
+
+.companyName {
+  font-size: var(--font-header);
+  font-weight: 600;
+}
+
+.homeFeedCardDescription {
+  border-bottom: 1px solid var(--border-colour);
+  padding: 16px;
+}
+
+.homeFeedCardEligibilitySection {
+  padding: 24px 16px;
+}
+
+.deadlineSection {
   color: red;
+  padding: 0px 16px 24px 16px;
+  font-weight: 600;
+}
+
+.homeFeedCardApply {
+  padding: 0px 16px 16px 16px;
 }
