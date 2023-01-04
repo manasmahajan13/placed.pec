@@ -15,14 +15,14 @@ code {
 
 :root {
   --background: #fff;
-  --background-secondary: #212121;
+  --background-secondary: rgb(25, 118, 210, 0.05);
   --primary: #36454f;
   --primary-inverted: #fff;
   --secondary: #efefef;
   --accent: #1976d2;
   --border-colour: rgb(219, 219, 219);
-  --font-primary: 18px;
-  --font-secondary: 16px;
+  --font-primary: 16px;
+  --font-secondary: 14px;
   --font-title: 44px;
   --font-header: 24px;
   --font-header2: 20px;

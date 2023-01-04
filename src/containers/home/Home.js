@@ -36,7 +36,7 @@ const Home = () => {
         })}
         {hasNextPage && (
           <Button variant="contained" onClick={() => getMoreJobs()}>
-            Load more
+            View more
           </Button>
         )}
       </div>

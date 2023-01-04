@@ -1,8 +1,10 @@
-import { Button, styled } from "@mui/material";
-import React from "react";
+import { Button } from "@mui/material";
+import React, { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import "./NavigationBar.css"
+import "./NavigationBar.css";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
 const adminTabs = [
   {
@@ -30,18 +32,26 @@ const userTabs = [
   },
 ];
 
-const TabButton = styled(Button)({
-  padding: "16px",
-  color: "#36454f",
-  "&:hover": {},
-  "&:active": {},
-  "&:focus": {},
-});
-
 function NavBar(props) {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
+
+  const initialTab = location.pathname.includes("admin")
+    ? adminTabs.findIndex((obj) => {
+        return obj.link === location.pathname;
+      })
+    : userTabs.findIndex((obj) => {
+        return obj.link === location.pathname;
+      });
+
+  const [value, setValue] = React.useState(initialTab);
+
+  const handleChange = (event, newValue) => {
+    navigate(event.target.id);
+    setValue(newValue);
+  };
+
   const logoutFunction = async () => {
     try {
       await logout();
@@ -58,45 +68,49 @@ function NavBar(props) {
           <img src={require("../../assets/images/pec-logo.png")} height={200} />
         </div>
         <div className="appBarTabs">
-          {location.pathname.includes("admin") ? (
-            <>
-              {adminTabs.map((tab) => {
-                return (
-                  <TabButton
-                    className="navLink"
-                    variant="text"
-                    key={tab.link}
-                    onClick={() => navigate(tab.link)}
-                  >
-                    {tab.displayName}
-                  </TabButton>
-                );
-              })}
-            </>
-          ) : (
-            <>
-              {userTabs.map((tab) => {
-                return (
-                  <TabButton
-                    className="navLink"
-                    variant="text"
-                    key={tab.link}
-                    onClick={() => navigate(tab.link)}
-                  >
-                    {tab.displayName}
-                  </TabButton>
-                );
-              })}
-            </>
-          )}
+          <>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="navigation tabs"
+              orientation="vertical"
+              TabIndicatorProps={{
+                style: { display: "none" },
+              }}
+            >
+              {location.pathname.includes("admin")
+                ? adminTabs.map((tab, index) => {
+                    return (
+                      <Tab
+                        className="navLink"
+                        key={tab.link}
+                        id={tab.link}
+                        label={tab.displayName}
+                        disableRipple
+                      />
+                    );
+                  })
+                : userTabs.map((tab, index) => {
+                    return (
+                      <Tab
+                        className="navLink"
+                        key={tab.link}
+                        id={tab.link}
+                        label={tab.displayName}
+                        disableRipple
+                      />
+                    );
+                  })}
+            </Tabs>
+          </>
         </div>
         <div className="navBottomArea">
-          <TabButton
+          <Button
             onClick={() => logoutFunction()}
-            sx={{ color: "red", fontWeight: "600" }}
+            sx={{ color: "red", fontWeight: "600", padding: "16px" }}
           >
             Logout
-          </TabButton>
+          </Button>
         </div>
       </div>
       <div className="mainContent">

@@ -23,11 +23,11 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  margin: 16px 0px;
+  margin: 16px 16px;
 }
 
-.navLink {
-  margin-left: 16px;
+.appBarTabs button {
+  margin-bottom: 4px;
 }
 
 .navBottomArea {
@@ -41,5 +41,19 @@
   flex-grow: 1;
   height: 100vh;
   overflow-y: scroll;
-  background-color: rgb(250, 250, 250);
+  background-color: var(--background-secondary);
+}
+
+.Mui-selected {
+  color: #fff !important;
+  background-color: var(--accent) !important;
+}
+
+.MuiTab-root {
+  border-radius: 32px !important;
+  transition: 0.3s;
+}
+
+.MuiTab-root:hover {
+  background-color: rgb(25, 118, 210, 0.3);
 }

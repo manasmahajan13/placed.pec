@@ -2,6 +2,7 @@ import "./HomeFeedCard.css";
 import React, { useState } from "react";
 import moment from "moment";
 import { Button, Paper } from "@mui/material";
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const HomeFeedCard = ({ feedData }) => {
   return (
@@ -9,9 +10,9 @@ const HomeFeedCard = ({ feedData }) => {
       <div className="homeFeedCardHeader">
         <div>
           <div className="newJobNotificationText">Open for Applications</div>
-          <div className="companyName">{feedData.name}</div>
-          <div>{feedData.jobProfile}</div>
+          <div className="companyName">{feedData.name} - {feedData.jobProfile}</div>
         </div>
+        <NotificationsIcon/>
       </div>
       <div className="homeFeedCardBody">
         <div className="homeFeedCardDescription">
