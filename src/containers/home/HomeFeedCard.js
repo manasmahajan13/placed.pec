@@ -2,7 +2,7 @@ import "./HomeFeedCard.css";
 import React, { useState } from "react";
 import moment from "moment";
 import { Button, Paper } from "@mui/material";
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const HomeFeedCard = ({ feedData }) => {
   return (
@@ -10,9 +10,11 @@ const HomeFeedCard = ({ feedData }) => {
       <div className="homeFeedCardHeader">
         <div>
           <div className="newJobNotificationText">Open for Applications</div>
-          <div className="companyName">{feedData.name} - {feedData.jobProfile}</div>
+          <div className="companyName">
+            {feedData.name} - {feedData.jobProfile}
+          </div>
         </div>
-        <NotificationsIcon/>
+        <NotificationsIcon />
       </div>
       <div className="homeFeedCardBody">
         <div className="homeFeedCardDescription">
@@ -38,7 +40,8 @@ const HomeFeedCard = ({ feedData }) => {
               Object.entries(feedData.eligibility)?.map(([criterea, value]) => {
                 return (
                   <li key={criterea}>
-                    {criterea}: {value}
+                    {criterea}:{" "}
+                    {criterea == "backlogsAllowed" ? value.toString() : value}
                   </li>
                 );
               })}
