@@ -16,6 +16,7 @@ const Home = () => {
     setLastDoc(response.lastDoc);
     if (firstPage) {
       setJobs(response.jobsList);
+      console.log(response.jobsList)
     } else {
       setJobs((jobs) => [...jobs, ...response.jobsList]);
     }

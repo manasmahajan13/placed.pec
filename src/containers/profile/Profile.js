@@ -11,26 +11,35 @@ import React, { useEffect, useState } from "react";
 import { getProfile, updateProfile } from "../../api/profileApi";
 import ResumeUpload from "../../api/resume";
 import { openInNewTab } from "../../helpers/UtilityFunctions";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import "./profile.css";
 import { setUserData } from "../../redux/slice/user.slice";
 
 const Profile = () => {
-  const profileData = useSelector((state)=>state.user.userData);
+  const profileData = useSelector((state) => state.user.userData);
   const dispatch = useDispatch();
   const [addLinkedInOpen, setAddLinkedInOpen] = useState(false);
   const [editSummaryOpen, setEditSummaryOpen] = useState(false);
+  const [summaryUpdateText, setSummaryUpdateText] = useState("");
+  const [linkedinUpdateText, setLinkedinUpdateText] = useState("");
 
-  const handleEditSummaryClose = () => {
+  const handleUpdateSummary = () => {
+    updateProfile({ summary: summaryUpdateText });
+    getProfileData();
+    setSummaryUpdateText("");
     setEditSummaryOpen(false);
   };
-  const handleAddLinkedInClose = () => {
+
+  const handleUpdateLinkedIn = () => {
+    updateProfile({ linkedin: linkedinUpdateText });
+    getProfileData();
+    setLinkedinUpdateText("");
     setAddLinkedInOpen(false);
   };
 
   const getProfileData = async () => {
     const data = await getProfile();
-    dispatch(setUserData(data))
+    dispatch(setUserData(data));
   };
 
   useEffect(() => {
@@ -61,15 +70,23 @@ const Profile = () => {
             </div>
 
             {profileData.linkedin ? (
-              <a href={profileData.linkedin}>{profileData.linkedin}</a>
+              <div>
+                <a href={profileData.linkedin}>{profileData.linkedin}</a>
+                <Button
+                  onClick={() => {
+                    setAddLinkedInOpen(true);
+                    setLinkedinUpdateText(profileData.linkedin);
+                  }}
+                >
+                  Edit
+                </Button>
+              </div>
             ) : (
               <div>
-                Add you linkedIn account{" "}
                 <Button
-                  variant="contained"
                   onClick={() => setAddLinkedInOpen(true)}
                 >
-                  LinkedIn
+                  Add you linkedIn account
                 </Button>
               </div>
             )}
@@ -77,7 +94,16 @@ const Profile = () => {
           <div className="profileSummarySection">
             <div className="sectionHeaders">
               <h3>Summary</h3>
-              <Button onClick={() => setEditSummaryOpen(true)}>Edit</Button>
+              {profileData.summary && (
+                <Button
+                  onClick={() => {
+                    setEditSummaryOpen(true);
+                    setSummaryUpdateText(profileData.summary);
+                  }}
+                >
+                  Edit
+                </Button>
+              )}
             </div>
             {profileData.summary ? (
               <div className="summarySection">
@@ -85,9 +111,10 @@ const Profile = () => {
               </div>
             ) : (
               <Button
-                onClick={() =>
-                  updateProfile({ summary: "Hello this is a new summary" })
-                }
+                onClick={() => {
+                  setEditSummaryOpen(true);
+                  setSummaryUpdateText(profileData.summary);
+                }}
               >
                 Add a summary
               </Button>
@@ -133,8 +160,10 @@ const Profile = () => {
           <div className="sideMenuBarItems">My Documents</div>
         </div> */}
 
-      <Dialog open={editSummaryOpen} onClose={handleEditSummaryClose}>
-        <DialogTitle>Edit Summary</DialogTitle>
+      <Dialog open={editSummaryOpen} onClose={() => setEditSummaryOpen(false)}>
+        <DialogTitle>
+          {profileData.summary ? "Edit Summary" : "Add Summary"}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>Enter your profile summary</DialogContentText>
           <TextField
@@ -145,15 +174,17 @@ const Profile = () => {
             fullWidth
             variant="standard"
             multiline
+            value={summaryUpdateText}
+            onChange={(e) => setSummaryUpdateText(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleEditSummaryClose}>Cancel</Button>
-          <Button onClick={handleEditSummaryClose}>Save</Button>
+          <Button onClick={() => setEditSummaryOpen(false)}>Cancel</Button>
+          <Button onClick={handleUpdateSummary}>Save</Button>
         </DialogActions>
       </Dialog>
 
-      <Dialog open={addLinkedInOpen} onClose={handleAddLinkedInClose}>
+      <Dialog open={addLinkedInOpen} onClose={() => setAddLinkedInOpen(false)}>
         <DialogTitle>Add LinkedIn Account</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -167,11 +198,13 @@ const Profile = () => {
             fullWidth
             variant="standard"
             multiline
+            value={linkedinUpdateText}
+            onChange={(e) => setLinkedinUpdateText(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleEditSummaryClose}>Cancel</Button>
-          <Button onClick={handleEditSummaryClose}>Save</Button>
+          <Button onClick={() => setAddLinkedInOpen(false)}>Cancel</Button>
+          <Button onClick={handleUpdateLinkedIn}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>

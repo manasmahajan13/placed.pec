@@ -2,36 +2,16 @@
   padding: 32px;
 }
 
-.sectionHeading {
-  padding: 0px 16px;
-}
-
 .componentWrapper {
   position: relative;
   width: 80%;
   left: 10%;
   background-color: white;
-  padding: 32px;
   border: 1px solid rgb(219, 219, 219);
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .tableWrapper {
-  padding: 16px;
-}
-
-table {
   width: 100%;
-  table-layout: fixed;
-  overflow-wrap: break-word;
-  text-align: left;
 }
-
-/* .header{
-    display: flex;
-    position: relative;
-    justify-content: space-between;
-    padding: 8px;
-}
-.jobDataWrapper2{
-    width: 100%;
-} */
