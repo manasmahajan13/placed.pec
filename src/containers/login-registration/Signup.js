@@ -16,6 +16,7 @@ function Signup() {
 
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+  const [checkRegisterPassword, setCheckRegisterPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [sid, setSid] = useState("");
   const [cgpa, setCgpa] = useState("");
@@ -24,6 +25,12 @@ function Signup() {
 
   const register = async () => {
     const auth = getAuth();
+    if(registerPassword !== checkRegisterPassword){
+      setsignupErrorCode(
+        "Passwords do not match"
+      );
+      return;
+    }
     const user = await createUserWithEmailAndPassword(
       auth,
       registerEmail,
@@ -87,6 +94,17 @@ function Signup() {
             type="password"
             onChange={(event) => {
               setRegisterPassword(event.target.value);
+            }}
+            sx={{ paddingBottom: "16px" }}
+          />
+          <TextField
+            id="password-check"
+            autoComplete="off"
+            label="Re-enter Password"
+            variant="outlined"
+            type="password"
+            onChange={(event) => {
+              setCheckRegisterPassword(event.target.value);
             }}
             sx={{ paddingBottom: "16px" }}
           />
