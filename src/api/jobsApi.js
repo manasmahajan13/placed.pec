@@ -143,3 +143,4 @@ export const applyJobs = async (compId) => {
   appliedUsers.push(user.uid);
   updateDoc(jobRef, { usersApplied: appliedUsers });
 };
+ 

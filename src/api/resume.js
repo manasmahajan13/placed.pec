@@ -21,7 +21,7 @@ function App() {
     }
 
     const storageRef = ref(storage, `/files/${file.name}`);
-
+    const name = storageRef.name
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     uploadTask.on(
@@ -40,7 +40,7 @@ function App() {
           const docRef = doc(db, "users", user.uid);
           const docSnap = getDoc(docRef);
           updateDoc(docRef, { urlResume: url });
-          console.log(url);
+          updateDoc(docRef, { nameOfMainResume: name });
         });
       }
     );
@@ -51,7 +51,7 @@ function App() {
       <input type="file" onChange={handleChange} accept="application/pdf" />
       <button onClick={handleUpload}>Upload to Firebase</button>
       <p>{percent} "% done"</p>
-    </div>
+    </div> 
   );
 }
 

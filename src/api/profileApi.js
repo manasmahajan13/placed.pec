@@ -23,4 +23,4 @@ export const updateProfile = async (data) => {
   const user = auth.currentUser;
   const docRef = doc(db, "users", user.uid);
   await updateDoc(docRef, data);
-};
+}; 

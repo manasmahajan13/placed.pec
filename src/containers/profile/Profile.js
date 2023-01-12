@@ -129,7 +129,7 @@ const Profile = () => {
 
             {profileData.urlResume ? (
               <div className="resumeRow">
-                <div>Resume 1</div>
+                <div>{profileData.nameOfMainResume}</div>
                 <Button
                   onClick={() => openInNewTab(profileData.urlResume)}
                   variant="contained"
