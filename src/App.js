@@ -14,6 +14,7 @@ import AdminJobs from "./containers/admin/adminJobs/AdminJobs";
 import AdminDashboard from "./containers/admin/adminDashboard/AdminDashboard";
 import AdminJobDetails from "./containers/admin/adminJobs/adminJobDetails/AdminJobDetails";
 import CreateJobPosting from "./containers/admin/adminJobs/CreateJobPosting";
+import StudentCG from "./containers/admin/studentCG/studentCG";
 import { SnackbarProvider } from "notistack";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
@@ -47,6 +48,7 @@ function App() {
                         element={<AdminDashboard />}
                       />
                       <Route path="/admin/jobs" element={<AdminJobs />} />
+                      <Route path="/admin/studentCG" element={<StudentCG />} />
                       <Route
                         path="/admin/jobs/:id"
                         element={<AdminJobDetails />}

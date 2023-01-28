@@ -15,6 +15,10 @@ const adminTabs = [
     displayName: "Jobs List",
     link: "/admin/jobs",
   },
+  {
+    displayName: "Student's CGPA",
+    link: "/admin/studentCG"
+  },
 ];
 
 const userTabs = [
