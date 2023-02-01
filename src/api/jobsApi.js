@@ -101,20 +101,25 @@ export const createJobPosting = async (data) => {
 export const listOfusersApplied = async (compId) => {
   const jobRef = doc(db, "jobPostings", compId);
   const jobSnap = await getDoc(jobRef);
-  const appliedUsers = jobSnap.data()["usersApplied"];
+  const appliedUsers = jobSnap.data()["applications"];
   const usersApplicant = [];
   for (let i = 0; i < appliedUsers.length; i++) {
-    const docRef = doc(db, "users", appliedUsers[i]);
+    const docRef = doc(db, "users", appliedUsers[i].userId);
     const docSnap = await getDoc(docRef);
     const name = docSnap.data()["fullName"];
     const cgpa = docSnap.data()["cgpa"];
-    const resume = docSnap.data()["urlResume"];
-    usersApplicant.push({ name: name, resume: resume, cgpa: cgpa });
+    const resume = appliedUsers[i].resume;
+    usersApplicant.push({
+      name: name,
+      resume: resume,
+      cgpa: cgpa,
+      id: appliedUsers[i].userId,
+    });
   }
   return usersApplicant;
 };
 
-export const applyJobs = async (compId) => {
+export const applyJobs = async (compId, resumeUrl) => {
   //users
   const auth = getAuth();
   const user = auth.currentUser;
@@ -133,13 +138,7 @@ export const applyJobs = async (compId) => {
   //company
   let jobRef = doc(db, "jobPostings", compId);
   let jobSnap = await getDoc(jobRef);
-  let appliedUsers = jobSnap.data()["usersApplied"];
-  if (!appliedUsers) {
-    updateDoc(jobRef, { usersApplied: [] });
-    jobRef = doc(db, "jobPostings", compId);
-    jobSnap = await getDoc(jobRef);
-    appliedUsers = jobSnap.data()["usersApplied"];
-  }
-  appliedUsers.push(user.uid);
-  updateDoc(jobRef, { usersApplied: appliedUsers });
+  let appliedUsers = jobSnap.data()["applications"] || [];
+  appliedUsers.push({ userId: user.uid, resume: resumeUrl });
+  updateDoc(jobRef, { applications: appliedUsers });
 };
