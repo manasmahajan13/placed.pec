@@ -6,22 +6,31 @@ import {
   DialogContentText,
   DialogActions,
   TextField,
+  IconButton,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { getProfile, updateProfile } from "../../api/profileApi";
-import ResumeUpload from "../../api/resume";
 import { openInNewTab } from "../../helpers/UtilityFunctions";
 import { useSelector, useDispatch } from "react-redux";
 import "./profile.css";
 import { setUserData } from "../../redux/slice/user.slice";
+import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
+import handleResumeUpload from "../../api/resume";
 
 const Profile = () => {
   const profileData = useSelector((state) => state.user.userData);
   const dispatch = useDispatch();
   const [addLinkedInOpen, setAddLinkedInOpen] = useState(false);
   const [editSummaryOpen, setEditSummaryOpen] = useState(false);
+  const [addResumeModalOpen, setAddResumeModalOpen] = useState(false);
   const [summaryUpdateText, setSummaryUpdateText] = useState("");
   const [linkedinUpdateText, setLinkedinUpdateText] = useState("");
+  const [file, setFile] = useState("");
+  const [name, setName] = useState("");
+
+  function handleChange(event) {
+    setFile(event.target.files[0]);
+  }
 
   const handleUpdateSummary = () => {
     updateProfile({ summary: summaryUpdateText });
@@ -83,9 +92,7 @@ const Profile = () => {
               </div>
             ) : (
               <div>
-                <Button
-                  onClick={() => setAddLinkedInOpen(true)}
-                >
+                <Button onClick={() => setAddLinkedInOpen(true)}>
                   Add you linkedIn account
                 </Button>
               </div>
@@ -125,40 +132,29 @@ const Profile = () => {
           <div className="profileResumeSection">
             <div className="sectionHeaders">
               <h3>Resume</h3>
+              <Button onClick={() => setAddResumeModalOpen(true)}>
+                Add resume
+              </Button>
             </div>
 
-            {profileData.urlResume ? (
-              <div className="resumeRow">
-                <div>Resume 1</div>
-                <Button
-                  onClick={() => openInNewTab(profileData.urlResume)}
-                  variant="contained"
-                >
-                  Resume
-                </Button>
-              </div>
-            ) : (
-              <ResumeUpload />
-            )}
+            {profileData.resume?.length
+              ? profileData.resume.map((resume) => {
+                  return (
+                    <div className="resumeRow" key={resume.id}>
+                      <div>{resume.name}</div>
+                      <IconButton
+                        onClick={() => openInNewTab(resume.url)}
+                        variant="contained"
+                      >
+                        <AssignmentOutlinedIcon />
+                      </IconButton>
+                    </div>
+                  );
+                })
+              : null}
           </div>
         </div>
       </div>
-      {/* <div className="sideMenuBar">
-          <div className="sideMenuBarItems">Profile</div>
-          <div className="sideMenuBarItems">Summary</div>
-          <div className="sideMenuBarItems">Education</div>
-          <div className="sideMenuBarItems">Internships & Work Experience</div>
-          <div className="sideMenuBarItems">Technical Skills</div>
-          <div className="sideMenuBarItems">Positions of Responsibility</div>
-          <div className="sideMenuBarItems">Projects</div>
-          <div className="sideMenuBarItems">Subjects</div>
-          <div className="sideMenuBarItems">Communication Languages</div>
-          <div className="sideMenuBarItems">Accomplishments</div>
-          <div className="sideMenuBarItems">Volunteer Experiences</div>
-          <div className="sideMenuBarItems">Extra Curricular Activities</div>
-          <div className="sideMenuBarItems">My Resumes</div>
-          <div className="sideMenuBarItems">My Documents</div>
-        </div> */}
 
       <Dialog open={editSummaryOpen} onClose={() => setEditSummaryOpen(false)}>
         <DialogTitle>
@@ -182,6 +178,32 @@ const Profile = () => {
           <Button onClick={() => setEditSummaryOpen(false)}>Cancel</Button>
           <Button onClick={handleUpdateSummary}>Save</Button>
         </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={addResumeModalOpen}
+        onClose={() => setAddResumeModalOpen(false)}
+      >
+        <DialogTitle>Add Resume</DialogTitle>
+        <DialogContent>
+          <TextField
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+            label="Resume Name"
+          />
+          <div>
+            <input
+              type="file"
+              onChange={handleChange}
+              accept="application/pdf"
+            />
+          </div>
+          <Button onClick={() => handleResumeUpload(file, name)}>
+            Upload File
+          </Button>
+        </DialogContent>
       </Dialog>
 
       <Dialog open={addLinkedInOpen} onClose={() => setAddLinkedInOpen(false)}>

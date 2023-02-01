@@ -1,4 +1,14 @@
-import { Button, CircularProgress, Paper } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Select,
+  MenuItem
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { applyJobs, getJobDetails } from "../../../api/jobsApi";
@@ -18,6 +28,8 @@ const JobDetails = () => {
   const [companyApplicationStatus, setCompanyApplicationStatus] = useState(
     <CircularProgress size={24.5} />
   );
+  const [applyModalOpen, setApplyModalOpen] = useState(false);
+  const [selectedResume, setSelectedResume] = useState(false);
 
   const fetchJobDetails = async () => {
     const details = await getJobDetails(id);
@@ -26,9 +38,10 @@ const JobDetails = () => {
 
   const applyForJob = async () => {
     try {
-      await applyJobs(jobDetails.documentID);
+      await applyJobs(jobDetails.documentID, selectedResume);
       enqueueSnackbar("Successfully applied", { variant: "success" });
       setCompanyApplicationStatus("Applied");
+      setApplyModalOpen(false)
     } catch (error) {
       console.error(error);
     }
@@ -130,7 +143,7 @@ const JobDetails = () => {
             </tbody>
           </table>
           <h3>About {jobDetails.name}</h3>
-          <hr />
+          {/* <hr />
           <b>1000+ Employees | Private | Founded 2002</b>
           <h3>Job Description</h3>
           <hr />
@@ -143,24 +156,45 @@ const JobDetails = () => {
             we are, our growth journey and how we are changing the way teams
             work together - Development and Collaboration Software Company |
             Atlassian
-          </p>
+          </p> */}
         </div>
         {/* {moment(jobDetails.deadline.seconds * 1000)} */}
         <div className="applySection">
-          {companyApplicationStatus == "Apply" ? (
-            <Button onClick={() => applyForJob()} variant="contained">
-              {companyApplicationStatus}
-            </Button>
-          ) : (
-            <Button onClick={() => applyForJob()} disabled variant="contained">
-              {companyApplicationStatus}
-            </Button>
-          )}
-
+          <Button
+            onClick={() => setApplyModalOpen(true)}
+            disabled={companyApplicationStatus != "Apply"}
+            variant="contained"
+          >
+            {companyApplicationStatus}
+          </Button>
           {/* Applications are now closed. You were not eligible to apply for this
           Job Profile */}
         </div>
       </div>
+      <Dialog open={applyModalOpen} onClose={() => setApplyModalOpen(false)}>
+        <DialogTitle>Apply for profile</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Select resume</DialogContentText>
+          <Select
+            value={selectedResume}
+            onChange={(e) => setSelectedResume(e.target.value)}
+            sx={{width: "400px"}}
+            size="small"
+          >
+            {profileData.resume?.map((resume) => {
+              return (
+                <MenuItem key={resume.id} value={resume.url}>
+                  {resume.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setApplyModalOpen(false)}>Cancel</Button>
+          <Button onClick={()=>applyForJob()}>Save</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
