@@ -45,6 +45,7 @@ export default function handleResumeUpload(file, name) {
   );
 }
 
+
 export function starResume(id){
   const auth = getAuth();
   const user = auth.currentUser;
