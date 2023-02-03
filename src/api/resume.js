@@ -31,6 +31,7 @@ export default function handleResumeUpload(file, name) {
         const docSnap = await getDoc(docRef);
         const resumeData = docSnap.data().resume ? docSnap.data().resume : [];
         const id = uuid();
+        if(resumeData.length==0) updateDoc(docRef,{starRes:id})
         resumeData.push({
           id: id,
           name: name,
@@ -42,4 +43,26 @@ export default function handleResumeUpload(file, name) {
       });
     }
   );
+}
+
+
+export function starResume(id){
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const docRef = doc(db, "users", user.uid);
+  updateDoc(docRef, {starRes: id})
+}
+
+export function deleteResume(id){
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const docRef = doc(db, "users", user.uid);
+  const docSnap = getDoc(docRef);
+  const resumeData = docSnap.data().resume ? docSnap.data().resume : [];
+  for(let i=0;i<resumeData.length;i++)
+  {
+    if(id==resumeData[i]['id']){
+      resumeData.splice(i,1)
+    }
+  }
 }
