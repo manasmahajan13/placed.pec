@@ -35,7 +35,7 @@
 .mainContent {
   flex-grow: 1;
   height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   background-color: var(--background-secondary);
 }
 

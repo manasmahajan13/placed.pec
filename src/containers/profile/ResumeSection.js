@@ -142,7 +142,6 @@ function ResumeSection({ refreshPage }) {
               onChange={(e) => {
                 setName(e.target.value);
               }}
-              size="small"
             />
             <br />
             <div>
