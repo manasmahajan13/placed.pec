@@ -1,17 +1,22 @@
 import { storage } from "../firebase-config";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 import { getAuth } from "firebase/auth";
 import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { getDoc } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 
-export default function handleResumeUpload(file, name) {
+export function handleResumeUpload(file, name) {
   if (!file) {
     alert("Please upload a file first!");
   }
-
-  const storageRef = ref(storage, `/files/${file.name}`);
+  const id = uuid();
+  const storageRef = ref(storage, `/resume/${id}`);
 
   const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -30,8 +35,8 @@ export default function handleResumeUpload(file, name) {
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
         const resumeData = docSnap.data().resume ? docSnap.data().resume : [];
-        const id = uuid();
-        if(resumeData.length==0) updateDoc(docRef,{starRes:id})
+
+        if (resumeData.length == 0) updateDoc(docRef, { primaryResume: id });
         resumeData.push({
           id: id,
           name: name,
@@ -45,24 +50,37 @@ export default function handleResumeUpload(file, name) {
   );
 }
 
-
-export function starResume(id){
+export function starResume(id) {
   const auth = getAuth();
   const user = auth.currentUser;
   const docRef = doc(db, "users", user.uid);
-  updateDoc(docRef, {starRes: id})
+  updateDoc(docRef, { primaryResume: id });
 }
 
-export function deleteResume(id){
+function deleteRefFromStorage(id) {
+  const fileRef = ref(storage, `/resume/${id}`);
+
+  // Delete the file
+  deleteObject(fileRef)
+    .then(() => {
+      // File deleted successfully
+    })
+    .catch((error) => {
+      // Uh-oh, an error occurred!
+    });
+}
+
+export async function deleteResume(id) {
   const auth = getAuth();
   const user = auth.currentUser;
   const docRef = doc(db, "users", user.uid);
-  const docSnap = getDoc(docRef);
+  const docSnap = await getDoc(docRef);
   const resumeData = docSnap.data().resume ? docSnap.data().resume : [];
-  for(let i=0;i<resumeData.length;i++)
-  {
-    if(id==resumeData[i]['id']){
-      resumeData.splice(i,1)
+  for (let i = 0; i < resumeData.length; i++) {
+    if (id == resumeData[i]["id"]) {
+      deleteRefFromStorage(resumeData[i]["id"]);
+      resumeData.splice(i, 1);
     }
   }
+  updateDoc(docRef, { resume: resumeData });
 }
