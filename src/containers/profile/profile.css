@@ -13,10 +13,9 @@
 
 .profileSection {
   background-color: #fff;
-  border: 1px solid rgb(219, 219, 219);
   width: 100%;
   margin: 16px;
-  border-radius: 16px;
+  border-radius: 4px;
   overflow: hidden;
 }
 
@@ -40,6 +39,7 @@
 .sectionHeaders {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
 }
 
 .profileSummarySection {

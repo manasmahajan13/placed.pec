@@ -9,21 +9,19 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-right: 1px solid rgb(219, 219, 219);
 }
 
 .profileArea {
   display: flex;
   width: 100%;
   justify-content: center;
-  border-bottom: 1px solid rgb(219, 219, 219);
 }
 
 .appBarTabs {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  margin: 16px 16px;
+  margin: 16px 0px;
 }
 
 .appBarTabs button {
@@ -31,9 +29,6 @@
 }
 
 .navBottomArea {
-  display: flex;
-  justify-content: center;
-  border-top: 1px solid rgb(219, 219, 219);
   width: 100%;
 }
 
@@ -45,15 +40,15 @@
 }
 
 .Mui-selected {
-  color: #fff !important;
-  background-color: var(--accent) !important;
+  color: var(--primary) !important;
+  font-weight: 600 !important;
+  background-color: var(--background-secondary) !important;
 }
 
 .MuiTab-root {
-  border-radius: 32px !important;
   transition: 0.3s;
 }
 
 .MuiTab-root:hover {
-  background-color: rgb(25, 118, 210, 0.3);
+  background-color: rgb(25, 118, 210, 0.05);
 }

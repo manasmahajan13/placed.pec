@@ -57,17 +57,15 @@ export function starResume(id) {
   updateDoc(docRef, { primaryResume: id });
 }
 
-function deleteRefFromStorage(id) {
+async function deleteRefFromStorage(id) {
   const fileRef = ref(storage, `/resume/${id}`);
 
-  // Delete the file
-  deleteObject(fileRef)
-    .then(() => {
-      // File deleted successfully
-    })
-    .catch((error) => {
-      // Uh-oh, an error occurred!
-    });
+  try {
+    return await deleteObject(fileRef);
+  } catch (error) {
+    throw error;
+  }
+  
 }
 
 export async function deleteResume(id) {
@@ -78,9 +76,13 @@ export async function deleteResume(id) {
   const resumeData = docSnap.data().resume ? docSnap.data().resume : [];
   for (let i = 0; i < resumeData.length; i++) {
     if (id == resumeData[i]["id"]) {
-      deleteRefFromStorage(resumeData[i]["id"]);
-      resumeData.splice(i, 1);
+      try {
+        await deleteRefFromStorage(resumeData[i]["id"]);
+        resumeData.splice(i, 1);
+        updateDoc(docRef, { resume: resumeData });
+      } catch (error) {
+        throw error;
+      }
     }
   }
-  updateDoc(docRef, { resume: resumeData });
 }

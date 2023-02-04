@@ -15,7 +15,7 @@ code {
 
 :root {
   --background: #fff;
-  --background-secondary: rgb(25, 118, 210, 0.05);
+  --background-secondary: rgb(25, 118, 210, 0.1);
   --primary: #36454f;
   --primary-inverted: #fff;
   --secondary: #efefef;
