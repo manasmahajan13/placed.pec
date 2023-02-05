@@ -1,18 +1,21 @@
 .jobDetails {
   display: flex;
   justify-content: center;
+  max-height: 100vh;
+  overflow: hidden;
 }
 .jobDetailsContainer {
-  width: 70%;
-  padding: 16px;
+  width: 100%;
+  max-width: 1000px;
   margin: 32px;
   display: flex;
   background-color: #fff;
-  border: 1px solid rgb(219, 219, 219);
+  border-radius: 4px;
 }
 .detailsSection {
   width: calc(100% - 200px);
   padding: 16px;
+  overflow-y: auto;
 }
 .applySection {
   display: flex;
@@ -20,5 +23,4 @@
   justify-content: flex-start;
   padding: 32px;
   width: 200px;
-  border-left: 1px solid gray;
 }

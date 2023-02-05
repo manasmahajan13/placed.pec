@@ -111,7 +111,7 @@ function NavBar(props) {
         <div className="navBottomArea">
           <Button
             onClick={() => logoutFunction()}
-            sx={{ color: "red", fontWeight: "600", padding: "16px" }}
+            sx={{ color: "red", fontWeight: "600", padding: "16px", width: "100%" }}
           >
             Logout
           </Button>

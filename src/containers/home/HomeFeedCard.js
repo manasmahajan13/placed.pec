@@ -1,15 +1,16 @@
 import "./HomeFeedCard.css";
-import React, { useState } from "react";
+import React from "react";
 import moment from "moment";
 import { Button, Paper } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { useNavigate } from "react-router-dom";
 
 const HomeFeedCard = ({ feedData }) => {
+  const navigate = useNavigate();
   return (
-    <Paper className="HomeFeedCard" elevation={3} sx={{ borderRadius: "16px" }}>
+    <Paper className="HomeFeedCard" elevation={0} sx={{ borderRadius: "4px" }}>
       <div className="homeFeedCardHeader">
         <div>
-          <div className="newJobNotificationText">Open for Applications</div>
           <div className="companyName">
             {feedData.name} - {feedData.jobProfile}
           </div>
@@ -54,7 +55,12 @@ const HomeFeedCard = ({ feedData }) => {
           )}
         </div>
         <div className="homeFeedCardApply">
-          <Button variant="contained">Apply Now</Button>
+          <Button
+            variant="contained"
+            onClick={()=>navigate(`/jobs/${feedData.documentID}`)}
+          >
+            Apply Now
+          </Button>
         </div>
       </div>
     </Paper>

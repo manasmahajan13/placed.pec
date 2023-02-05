@@ -7,14 +7,10 @@
 .homeFeedCardHeader {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background-color: var(--accent);
   padding: 16px;
   color: var(--primary-inverted);
-}
-
-.newJobNotificationText {
-  font-size: var(--font-secondary);
-  margin-bottom: 4px;
 }
 
 .companyName {
