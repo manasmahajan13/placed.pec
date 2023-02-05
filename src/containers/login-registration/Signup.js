@@ -19,16 +19,20 @@ function Signup() {
   const [checkRegisterPassword, setCheckRegisterPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [sid, setSid] = useState("");
-  const [cgpa, setCgpa] = useState("");
+  const [cgpa, setCgpa] = useState(1.0);
 
   const [signupErrorCode, setsignupErrorCode] = useState("");
 
   const register = async () => {
     const auth = getAuth();
-    if(registerPassword !== checkRegisterPassword){
+    if (cgpa < 1.0 || cgpa > 10.0) {
       setsignupErrorCode(
-        "Passwords do not match"
+        "Please Enter a valid CGPA. CGPA must lie in the range 1.0 to 10.0"
       );
+      return;
+    }
+    if (registerPassword !== checkRegisterPassword) {
+      setsignupErrorCode("Passwords do not match");
       return;
     }
     const user = await createUserWithEmailAndPassword(
