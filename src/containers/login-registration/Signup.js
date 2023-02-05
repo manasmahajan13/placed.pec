@@ -26,12 +26,12 @@ function Signup() {
   const register = async () => {
     const auth = getAuth();
     const re = /^[0-9\b]+$/;
-    if (cgpa === '' || re.test(cgpa)) {
-         
-    }
-    else {
+    if (cgpa === "" || re.test(cgpa)) {
+    } else {
       setCgpa("");
-      setsignupErrorCode("Please Enter a valid CGPA. CGPA must lie in the range 1.0 to 10.0");
+      setsignupErrorCode(
+        "Please Enter a valid CGPA. CGPA must lie in the range 1.0 to 10.0"
+      );
       return;
     }
     if (cgpa < 1.0 || cgpa > 10.0) {
