@@ -1,5 +1,5 @@
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase-config";
 
 export const resetPassword = async (email) => {
@@ -13,7 +13,7 @@ export async function fetchUsers() {
   const users = [];
   const colRef = collection(db, "users");
   try {
-    const docsSnap = await getDocs(colRef);
+    const docsSnap = await getDocs(query(colRef, orderBy("cgpa")));
     // console.log(docsSnap.size);
     docsSnap.forEach((doc) => {
       users.push({id: doc.id, ...doc.data()});
