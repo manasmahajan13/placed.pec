@@ -37,8 +37,6 @@ const StudentCG = () => {
                   <TextField
                     size="small"
                     onKeyDown={(event) => {
-                      // console.log(event)
-                      console.log(event);
                       if (event.code === "Enter") {
                         const docRef = doc(db, "users", user.id);
                         const data = {
