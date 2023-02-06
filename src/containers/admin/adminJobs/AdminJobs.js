@@ -1,24 +1,34 @@
-import { Button } from "@mui/material";
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllJobs } from "../../../api/jobsApi.js";
+import { HeaderTableCell } from "../../jobs/Jobs.js";
 import "./AdminJobs.css";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 20;
 
 function JobProfile({ jobData }) {
   const navigate = useNavigate();
   return (
     <>
       {jobData?.map((job) => (
-        <tr
+        <TableRow
           key={`${job.name}${job.jobProfile}`}
           onClick={() => navigate(`/admin/jobs/${job.documentID}`)}
           className="adminJobRow"
         >
-          <td>{job.name}</td>
-          <td>{job.jobProfile}</td>
-        </tr>
+          <TableCell><b>{job.name}</b></TableCell>
+          <TableCell>{job.jobProfile}</TableCell>
+          <TableCell>{job.applications?.length || 0}</TableCell>
+        </TableRow>
       ))}
     </>
   );
@@ -49,37 +59,37 @@ const AdminJobs = () => {
   return (
     <div className="jobsAdmin">
       <div className="jobsAdminHeader">
-        <h3>Job Profiles</h3>
-        <div className="createJobButton">
-          <Button
-            onClick={() => navigate("/admin/jobs/create-new")}
-            variant="contained"
-          >
-            New
-          </Button>
-        </div>
+        <h2>Job Profiles</h2>
+        <Button
+          onClick={() => navigate("/admin/jobs/create-new")}
+          variant="contained"
+        >
+          New
+        </Button>
       </div>
-      <table>
-        <tbody>
-          <tr>
-            <th>Company</th>
-            <th>Job Profile</th>
-          </tr>
-          <tr>
-            <td colSpan="2">
-              <hr />
-            </td>
-          </tr>
-          <JobProfile jobData={jobs} />
-        </tbody>
-      </table>
-      <div className="loadMoreButtonAdminJobs">
-        {hasNextPage && (
-          <Button variant="contained" onClick={() => getMoreJobs()}>
-            Load more
-          </Button>
-        )}
-      </div>
+      <TableContainer sx={{ maxHeight: "calc(100vh - 66px - 60px)", backgroundColor: "white", borderRadius: "4px" }}>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <HeaderTableCell>Company</HeaderTableCell>
+              <HeaderTableCell>Job Profile</HeaderTableCell>
+              <HeaderTableCell>Applicants</HeaderTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <JobProfile jobData={jobs} />
+            <TableRow>
+              <TableCell>
+                {hasNextPage && (
+                  <Button variant="contained" onClick={() => getMoreJobs()}>
+                    Load more
+                  </Button>
+                )}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

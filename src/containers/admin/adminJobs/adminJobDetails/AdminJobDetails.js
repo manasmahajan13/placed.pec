@@ -8,9 +8,11 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
 } from "@mui/material";
+import { HeaderTableCell } from "../../../jobs/Jobs.js";
 
 function AdminJobDetails() {
   const { id } = useParams();
@@ -30,36 +32,40 @@ function AdminJobDetails() {
   }, []);
 
   return (
-    <div>
-      <h1>{jobDetails.name}</h1>
+    <div className="adminJobDetailsWrapper">
+      <h1>
+        {jobDetails.name} | {jobDetails.jobProfile}
+      </h1>
       <h2>Applicants</h2>
-      <Table>
-        <TableHead className="applicantsHeader">
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>CGPA</TableCell>
-            <TableCell>Resume</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {applicants.map((applicant) => {
-            return (
-              <TableRow className="applicantRow" key={applicant.id}>
-                <TableCell>{applicant.name}</TableCell>
-                <TableCell>{applicant.cgpa}</TableCell>
-                <TableCell>
-                  <ResumeSvg
-                    height="20px"
-                    width="20px"
-                    onClick={() => openInNewTab(applicant.resume)}
-                    style={{ cursor: "pointer" }}
-                  />
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+      <TableContainer className="jobApplicantsTable">
+        <Table>
+          <TableHead className="applicantsHeader">
+            <TableRow>
+              <HeaderTableCell>Name</HeaderTableCell>
+              <HeaderTableCell>CGPA</HeaderTableCell>
+              <HeaderTableCell>Resume</HeaderTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {applicants.map((applicant) => {
+              return (
+                <TableRow className="applicantRow" key={applicant.id}>
+                  <TableCell>{applicant.name}</TableCell>
+                  <TableCell>{applicant.cgpa}</TableCell>
+                  <TableCell>
+                    <ResumeSvg
+                      height="20px"
+                      width="20px"
+                      onClick={() => openInNewTab(applicant.resume)}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 }

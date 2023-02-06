@@ -3,25 +3,16 @@
   cursor: pointer;
 }
 
-.adminJobRow :hover {
-  background: whitesmoke;
+.jobsAdmin {
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-.jobsAdmin {
-  padding: 32px;
-  background: #fff;
-  border: 1px solid rgb(219, 219, 219);
-}
 .jobsAdminHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.loadMoreButtonAdminJobs {
-  margin-top: 16px;
-}
-
-.createJobButton {
-  padding: 0px 16px;
+  height: 68px;
 }

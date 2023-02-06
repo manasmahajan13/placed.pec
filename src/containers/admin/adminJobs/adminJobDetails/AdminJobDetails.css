@@ -5,3 +5,14 @@
 .applicantsHeader {
   font-weight: 600;
 }
+
+.adminJobDetailsWrapper {
+  padding: 32px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.jobApplicantsTable {
+  background-color: white;
+  border-radius: 4px;
+}

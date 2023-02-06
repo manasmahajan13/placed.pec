@@ -8,7 +8,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 import React, { useState, useEffect } from "react";
 import { getJobs } from "../../api/jobsApi.js";
 import JobProfile from "./jobProfiles/JobProfile.js";
@@ -16,11 +16,11 @@ import "./jobs.css";
 
 const PAGE_SIZE = 20;
 
-const HeaderTableCell = styled(TableCell)(({ theme }) => ({
+export const HeaderTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "var(--accent)",
     color: "var(--primary-inverted)",
-    fontWeight: "600"
+    fontWeight: "600",
   },
 }));
 
@@ -48,37 +48,30 @@ const Jobs = () => {
   return (
     <div className="jobSection">
       <div className="componentWrapper">
-        <div className="sectionWrapper">
-          <div className="tableWrapper">
-            <TableContainer sx={{ maxHeight: "calc(100vh - 66px)" }}>
-              <Table stickyHeader>
-                <TableHead>
-                  <TableRow>
-                    <HeaderTableCell>Job Profile</HeaderTableCell>
-                    <HeaderTableCell>Company</HeaderTableCell>
-                    <HeaderTableCell>Location</HeaderTableCell>
-                    <HeaderTableCell>CTC</HeaderTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <JobProfile jobData={jobs} />
-                  <TableRow>
-                    <TableCell>
-                      {hasNextPage && (
-                        <Button
-                          variant="contained"
-                          onClick={() => getMoreJobs()}
-                        >
-                          Load more
-                        </Button>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
-        </div>
+        <TableContainer sx={{ maxHeight: "calc(100vh - 66px)" }}>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow>
+                <HeaderTableCell>Job Profile</HeaderTableCell>
+                <HeaderTableCell>Company</HeaderTableCell>
+                <HeaderTableCell>Location</HeaderTableCell>
+                <HeaderTableCell>CTC</HeaderTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <JobProfile jobData={jobs} />
+              <TableRow>
+                <TableCell>
+                  {hasNextPage && (
+                    <Button variant="contained" onClick={() => getMoreJobs()}>
+                      Load more
+                    </Button>
+                  )}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     </div>
   );
