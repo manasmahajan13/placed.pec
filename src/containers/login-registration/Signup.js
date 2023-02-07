@@ -58,6 +58,7 @@ function Signup() {
           SID: sid,
           cgpa: cgpa,
           statusListOfCompany: {},
+          cgpaVerificationStatus: "Not Verified",
         };
         const usersRef = collection(db, "users");
         setDoc(doc(db, "users", user.uid), data);
