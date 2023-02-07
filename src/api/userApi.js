@@ -13,7 +13,7 @@ export async function fetchUsers() {
   const users = [];
   const colRef = collection(db, "users");
   try {
-    const docsSnap = await getDocs(query(colRef, orderBy("cgpa")));
+    const docsSnap = await getDocs(query(colRef, orderBy("SID")));
     // console.log(docsSnap.size);
     docsSnap.forEach((doc) => {
       users.push({id: doc.id, ...doc.data()});
