@@ -1,5 +1,6 @@
 import {
   Button,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -28,17 +29,24 @@ const Jobs = () => {
   const [lastDoc, setLastDoc] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [hasNextPage, setHasNextPage] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const getMoreJobs = async (firstPage = false) => {
-    const response = await getJobs(PAGE_SIZE, lastDoc);
-    setLastDoc(response.lastDoc);
-    if (firstPage) {
-      setJobs(response.jobsList);
-    } else {
-      setJobs((jobs) => [...jobs, ...response.jobsList]);
-    }
-    if (response.jobsList == null || response.jobsList.length < PAGE_SIZE) {
-      setHasNextPage(false);
+    setLoading(true);
+    try {
+      const response = await getJobs(PAGE_SIZE, lastDoc);
+      setLastDoc(response.lastDoc);
+      if (firstPage) {
+        setJobs(response.jobsList);
+      } else {
+        setJobs((jobs) => [...jobs, ...response.jobsList]);
+      }
+      if (response.jobsList == null || response.jobsList.length < PAGE_SIZE) {
+        setHasNextPage(false);
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
     }
   };
 
@@ -60,6 +68,23 @@ const Jobs = () => {
             </TableHead>
             <TableBody>
               <JobProfile jobData={jobs} />
+              {loading &&
+                [...Array(PAGE_SIZE)].map((e, i) => (
+                  <TableRow>
+                    <TableCell>
+                      <Skeleton width="100%" height="100%" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton width="100%" height="100%" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton width="100%" height="100%" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton width="100%" height="100%" />
+                    </TableCell>
+                  </TableRow>
+                ))}
               <TableRow>
                 <TableCell>
                   {hasNextPage && (

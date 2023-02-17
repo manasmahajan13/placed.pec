@@ -5,6 +5,7 @@ import "./profile.css";
 import { setUserData } from "../../redux/slice/user.slice";
 import ResumeSection from "./ResumeSection";
 import SummarySection from "./SummarySection";
+import { Avatar } from "@mui/material";
 
 const Profile = () => {
   const profileData = useSelector((state) => state.user.userData);
@@ -15,6 +16,11 @@ const Profile = () => {
     dispatch(setUserData(data));
   };
 
+  const sidToPassoutBatch = (sid) => {
+    const passingYear = +("20" + sid.substring(0, 2)) + 4;
+    return `${passingYear} Passout Batch`;
+  };
+
   useEffect(() => {
     refreshPage();
   }, []);
@@ -23,25 +29,22 @@ const Profile = () => {
     <div className="profilePage">
       <div className="profileContent">
         <div className="profileSection">
-          <div className="profileContentHeader">
-            <div>
-              <img
-                src={require("../../assets/images/placeholder-profile.png")}
-                alt="Profile"
-                className="profileImg"
-              />
+          <div className="profileHeaderSection">
+            <div className="profileAvatarSection">
+              <Avatar className="profileAvatar"/>
             </div>
-            <h2>
-              {profileData.fullName} · {profileData.SID}
-            </h2>
-            <div>
-              <b>Electrical Engineering</b>
+            <div className="title">
+              {profileData.fullName} 
             </div>
-            <div>
-              <b>PEC (DEEMED TO BE UNIVERSITY)</b>
+            <div className="heading1" style={{marginBottom: "16px"}}>{sidToPassoutBatch(profileData.SID)} · {profileData.SID}</div>
+            <div className="heading3">
+              Electrical Engineering
+            </div>
+            <div className="heading3">
+              PEC (DEEMED TO BE UNIVERSITY)
             </div>
           </div>
-          <SummarySection refreshPage={refreshPage} />
+          {/* <SummarySection refreshPage={refreshPage} /> */}
         </div>
         <div className="profileSection">
           <ResumeSection refreshPage={refreshPage} />
