@@ -27,3 +27,19 @@
   height: 100vh;
   overflow: hidden;
 }
+
+.title {
+  font-size: var(--font-title);
+}
+
+.heading1 {
+  font-size: var(--font-header);
+}
+
+.heading2 {
+  font-size: var(--font-header2);
+}
+
+.heading3 {
+  font-size: var(--font-header3);
+}

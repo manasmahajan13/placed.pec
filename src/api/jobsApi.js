@@ -45,33 +45,37 @@ export const getAllJobs = async (pageSize, lastDoc) => {
 };
 
 export const getJobs = async (pageSize, lastDoc) => {
-  var Query;
-  if (lastDoc) {
-    Query = query(
-      collection(db, "jobPostings"),
-      orderBy("published","desc"),
-      limit(pageSize),
-      startAfter(lastDoc)
-    );
-  } else {
-    Query = query(
-      collection(db, "jobPostings"),
-      orderBy("published","desc"),
-      limit(pageSize)
-    );
+  try {
+    var Query;
+    if (lastDoc) {
+      Query = query(
+        collection(db, "jobPostings"),
+        orderBy("published", "desc"),
+        limit(pageSize),
+        startAfter(lastDoc)
+      );
+    } else {
+      Query = query(
+        collection(db, "jobPostings"),
+        orderBy("published", "desc"),
+        limit(pageSize)
+      );
+    }
+    const jobsList = [];
+    const documentSnapshots = await getDocs(Query);
+    documentSnapshots.docs.forEach((doc) => {
+      jobsList.push(doc.data());
+    });
+
+    const response = {
+      lastDoc: documentSnapshots.docs[documentSnapshots.docs.length - 1],
+      jobsList: jobsList,
+    };
+
+    return response;
+  } catch (e) {
+    return e;
   }
-  const jobsList = [];
-  const documentSnapshots = await getDocs(Query);
-  documentSnapshots.docs.forEach((doc) => {
-    jobsList.push(doc.data());
-  });
-
-  const response = {
-    lastDoc: documentSnapshots.docs[documentSnapshots.docs.length - 1],
-    jobsList: jobsList,
-  };
-
-  return response;
 };
 
 export const getJobDetails = async (jobId) => {
