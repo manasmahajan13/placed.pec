@@ -107,7 +107,7 @@ export const listOfusersApplied = async (compId) => {
   const jobSnap = await getDoc(jobRef);
   const appliedUsers = jobSnap.data()["applications"];
   const usersApplicant = [];
-  for (let i = 0; i < appliedUsers.length; i++) {
+  for (let i = 0; i < appliedUsers?.length; i++) {
     const docRef = doc(db, "users", appliedUsers[i].userId);
     const docSnap = await getDoc(docRef);
     const name = docSnap.data()["fullName"];

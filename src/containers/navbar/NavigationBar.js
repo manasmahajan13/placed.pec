@@ -5,6 +5,10 @@ import { useAuth } from "../../contexts/AuthContext";
 import "./NavigationBar.css";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 
 const adminTabs = [
   {
@@ -12,11 +16,11 @@ const adminTabs = [
     link: "/admin/dashboard",
   },
   {
-    displayName: "Jobs List",
+    displayName: "Jobs",
     link: "/admin/jobs",
   },
   {
-    displayName: "Student's CGPA",
+    displayName: "Grades",
     link: "/admin/studentCG"
   },
 ];
@@ -24,14 +28,17 @@ const adminTabs = [
 const userTabs = [
   {
     displayName: "Home",
+    // icon: <HomeOutlinedIcon />,
     link: "/",
   },
   {
     displayName: "Jobs",
+    // icon: <WorkOutlineOutlinedIcon />,
     link: "/jobs",
   },
   {
     displayName: "Profile",
+    // icon: <PersonOutlineOutlinedIcon/>,
     link: "/profile",
   },
 ];
@@ -43,10 +50,10 @@ function NavBar(props) {
 
   const initialTab = location.pathname.includes("admin")
     ? adminTabs.findIndex((obj) => {
-        return obj.link === location.pathname;
+        return location.pathname.includes(obj.link);
       })
     : userTabs.findIndex((obj) => {
-        return obj.link === location.pathname;
+        return location.pathname.includes(obj.link);
       });
 
   const [value, setValue] = React.useState(initialTab);
@@ -89,6 +96,8 @@ function NavBar(props) {
                         className="navLink"
                         key={tab.link}
                         id={tab.link}
+                        icon={tab.icon}
+                        iconPosition="start"
                         label={tab.displayName}
                         disableRipple
                       />
@@ -100,6 +109,8 @@ function NavBar(props) {
                         className="navLink"
                         key={tab.link}
                         id={tab.link}
+                        icon={tab.icon}
+                        iconPosition="start"
                         label={tab.displayName}
                         disableRipple
                       />
@@ -111,7 +122,13 @@ function NavBar(props) {
         <div className="navBottomArea">
           <Button
             onClick={() => logoutFunction()}
-            sx={{ color: "red", fontWeight: "600", padding: "16px", width: "100%" }}
+            sx={{
+              color: "red",
+              fontWeight: "600",
+              padding: "16px",
+              width: "100%",
+            }}
+            startIcon={<ExitToAppOutlinedIcon />}
           >
             Logout
           </Button>

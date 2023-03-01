@@ -11,7 +11,7 @@ import { db } from "../firebase-config";
 import { getDoc } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 
-export function handleResumeUpload(file, name) {
+export function handleResumeUpload(file, name, onComplete) {
   if (!file) {
     alert("Please upload a file first!");
   }
@@ -44,6 +44,8 @@ export function handleResumeUpload(file, name) {
         });
         updateDoc(docRef, {
           resume: resumeData,
+        }).then(()=>{
+          onComplete();
         });
       });
     }

@@ -25,7 +25,7 @@ function JobProfile({ jobData }) {
           onClick={() => navigate(`/admin/jobs/${job.documentID}`)}
           className="adminJobRow"
         >
-          <TableCell><b>{job.name}</b></TableCell>
+          <TableCell>{job.name}</TableCell>
           <TableCell>{job.jobProfile}</TableCell>
           <TableCell>{job.applications?.length || 0}</TableCell>
         </TableRow>
