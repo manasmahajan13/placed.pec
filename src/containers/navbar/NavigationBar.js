@@ -12,11 +12,11 @@ const adminTabs = [
     link: "/admin/dashboard",
   },
   {
-    displayName: "Jobs List",
+    displayName: "Jobs",
     link: "/admin/jobs",
   },
   {
-    displayName: "Student's CGPA",
+    displayName: "Grades",
     link: "/admin/studentCG"
   },
 ];

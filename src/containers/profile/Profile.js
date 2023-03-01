@@ -5,7 +5,15 @@ import "./profile.css";
 import { setUserData } from "../../redux/slice/user.slice";
 import ResumeSection from "./ResumeSection";
 import SummarySection from "./SummarySection";
-import { Avatar } from "@mui/material";
+import { Avatar, Switch } from "@mui/material";
+
+export const branchMappings = {
+  102: "CIVIL ENGINEERING",
+  103: "COMPUTER SCIENCE ENGINEERING",
+  104: "ELECTRICAL ENGINEERING",
+  105: "ELECTRONICS AND COMMUNICATION ENGINEERING",
+  107: "MECHANICAL ENGINEERING"
+}
 
 const Profile = () => {
   const profileData = useSelector((state) => state.user.userData);
@@ -17,8 +25,25 @@ const Profile = () => {
   };
 
   const sidToPassoutBatch = (sid) => {
-    const passingYear = +("20" + sid.substring(0, 2)) + 4;
+    const passingYear = +("20" + sid?.substring(0, 2)) + 4;
     return `${passingYear} Passout Batch`;
+  };
+
+  const sidToBranch = (sid) => {
+    switch (sid?.substring(2, 5)) {
+      case "102":
+        return branchMappings[102];
+      case "103":
+        return branchMappings[103];
+      case "104":
+        return branchMappings[104];
+      case "105":
+        return branchMappings[105];
+      case "107":
+        return branchMappings[107];
+      default:
+        return "ENGINEERING";
+    }
   };
 
   useEffect(() => {
@@ -38,7 +63,7 @@ const Profile = () => {
             </div>
             <div className="heading1" style={{marginBottom: "16px"}}>{sidToPassoutBatch(profileData.SID)} · {profileData.SID}</div>
             <div className="heading3">
-              Electrical Engineering
+              {sidToBranch(profileData.SID)}
             </div>
             <div className="heading3">
               PEC (DEEMED TO BE UNIVERSITY)
