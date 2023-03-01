@@ -53,7 +53,11 @@ const StudentCG = () => {
         size="small"
       >
         {coursesList.map((course) => {
-          return <MenuItem value={course}>{course}</MenuItem>;
+          return (
+            <MenuItem value={course} key={course}>
+              {course}
+            </MenuItem>
+          );
         })}
       </Select>
       <TableContainer

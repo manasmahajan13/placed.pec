@@ -8,11 +8,11 @@ import SummarySection from "./SummarySection";
 import { Avatar, Switch } from "@mui/material";
 
 export const branchMappings = {
-  102: "CIVIL ENGINEERING",
-  103: "COMPUTER SCIENCE ENGINEERING",
-  104: "ELECTRICAL ENGINEERING",
-  105: "ELECTRONICS AND COMMUNICATION ENGINEERING",
-  107: "MECHANICAL ENGINEERING"
+  102: "Civil Engineering",
+  103: "Computer Science Engineering",
+  104: "Electrical Engineering",
+  105: "Electronics and Communication Engineering",
+  107: "Mechanical Engineering"
 }
 
 const Profile = () => {
@@ -66,7 +66,7 @@ const Profile = () => {
               {sidToBranch(profileData.SID)}
             </div>
             <div className="heading3">
-              PEC (DEEMED TO BE UNIVERSITY)
+              PEC (Deemed to be University)
             </div>
           </div>
           {/* <SummarySection refreshPage={refreshPage} /> */}

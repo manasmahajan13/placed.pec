@@ -22,6 +22,7 @@ export const HeaderTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: "var(--accent)",
     color: "var(--primary-inverted)",
     fontWeight: "600",
+    fontSize: "18px"
   },
 }));
 

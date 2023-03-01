@@ -42,4 +42,5 @@
 
 .heading3 {
   font-size: var(--font-header3);
+  color: var(--text-secondary);
 }
