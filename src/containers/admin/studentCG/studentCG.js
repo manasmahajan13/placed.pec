@@ -93,6 +93,7 @@ const StudentCG = () => {
                       size="small"
                       inputRef={(ref) => (inputRefs.current[index] = ref)}
                       sx={{ width: "100px" }}
+                      placeholder={user.cgpa}
                       onKeyDown={(event) => {
                         if (event.code === "Enter") {
                           const docRef = doc(db, "users", user.id);
