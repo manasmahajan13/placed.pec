@@ -74,6 +74,13 @@ function AdminJobDetails() {
             </TableRow>
           </TableHead>
           <TableBody>
+            {applicants.length == 0 && (
+              <TableRow className="applicantRow">
+                <TableCell colSpan={3} align="center">
+                  No Applicants
+                </TableCell>
+              </TableRow>
+            )}
             {applicants.map((applicant) => {
               return (
                 <TableRow className="applicantRow" key={applicant.id}>

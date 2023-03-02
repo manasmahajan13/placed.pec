@@ -6,6 +6,7 @@ import {
   DialogActions,
   TextField,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { openInNewTab } from "../../helpers/UtilityFunctions";
@@ -27,6 +28,7 @@ function ResumeSection({ refreshPage }) {
   const [selectedResumeId, setSelectedResumeId] = useState(null);
   const [file, setFile] = useState("");
   const [name, setName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const resumeUploadRef = useRef();
 
@@ -51,6 +53,17 @@ function ResumeSection({ refreshPage }) {
       enqueueSnackbar("Failed to delete resume!", { variant: "error" });
     }
   };
+
+  const uploadResume = (file, name) => {
+    setIsLoading(true);
+    handleResumeUpload(file, name, () => {
+      setIsLoading(false);
+      refreshPage();
+      enqueueSnackbar("Resume uploaded successfully!", { variant: "success" });
+      setAddResumeModalOpen(false);
+    });
+  }
+
   return (
     <>
       <div className="profileResumeSection">
@@ -76,17 +89,21 @@ function ResumeSection({ refreshPage }) {
                     <StarIcon fontSize="small" />
                   )}
                 </div>
-                <div>
-                  <IconButton
-                    color="error"
-                    onClick={() => {
-                      setDeleteDialogOpen(true);
-                      setSelectedResumeId(resume.id);
-                    }}
-                  >
-                    <DeleteOutlinedIcon />
-                  </IconButton>
-                </div>
+                {resume.id === profileData.primaryResume ? (
+                  <></>
+                ) : (
+                  <div>
+                    <IconButton
+                      color="error"
+                      onClick={() => {
+                        setDeleteDialogOpen(true);
+                        setSelectedResumeId(resume.id);
+                      }}
+                    >
+                      <DeleteOutlinedIcon />
+                    </IconButton>
+                  </div>
+                )}
               </div>
             );
           })
@@ -110,30 +127,36 @@ function ResumeSection({ refreshPage }) {
             }}
           >
             <label>
-              <Button
-                onClick={() => resumeUploadRef.current.click()}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  height: "100px",
-                  width: "100px",
-                  borderRadius: "50%",
-                  fontSize: "12px",
-                }}
-                variant="contained"
-              >
-                <FileUploadIcon fontSize="large" />
-                Choose File
-              </Button>
-              <br />
-              {file ? file.name : "No file selected"}
+              {isLoading ? (
+                <CircularProgress />
+              ) : (
+                <Button
+                  onClick={() => resumeUploadRef.current.click()}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100px",
+                    width: "100px",
+                    borderRadius: "50%",
+                    fontSize: "12px",
+                  }}
+                  variant="contained"
+                  disabled={isLoading}
+                >
+                  <FileUploadIcon fontSize="large" />
+                  Choose File
+                </Button>
+              )}
             </label>
+            <br />
+            {file ? file.name : "No file selected"}
             <input
               type="file"
               onChange={handleChange}
               ref={resumeUploadRef}
               accept="application/pdf"
               hidden
+              disabled={isLoading}
             />
             <br />
             <h3>Resume Name</h3>
@@ -145,15 +168,19 @@ function ResumeSection({ refreshPage }) {
             />
             <br />
             <div>
-              <Button onClick={() => setAddResumeModalOpen(false)} style={{marginRight: "16px"}}>
+              <Button
+                onClick={() => setAddResumeModalOpen(false)}
+                style={{ marginRight: "16px" }}
+                disabled={isLoading}
+              >
                 Cancel
               </Button>
               <Button
                 onClick={() => {
-                  handleResumeUpload(file, name);
-                  refreshPage();
+                  uploadResume(file, name);
                 }}
                 variant="contained"
+                disabled={isLoading}
               >
                 Upload
               </Button>

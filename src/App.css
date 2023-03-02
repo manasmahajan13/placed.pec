@@ -3,6 +3,10 @@
   color: var(--primary);
 }
 
+.MuiPaper-root {
+  color: var(--primary) !important;
+}
+
 .loginContainer,
 .signupContainer {
   display: flex;
@@ -28,12 +32,17 @@
   overflow: hidden;
 }
 
+.textSecondary {
+  color: var(--text-secondary);
+}
+
 .title {
   font-size: var(--font-title);
 }
 
 .heading1 {
   font-size: var(--font-header);
+  color: var(--text-secondary);
 }
 
 .heading2 {
@@ -42,4 +51,8 @@
 
 .heading3 {
   font-size: var(--font-header3);
+}
+
+.shadowed {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
 }

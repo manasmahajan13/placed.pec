@@ -22,6 +22,7 @@ export const HeaderTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: "var(--accent)",
     color: "var(--primary-inverted)",
     fontWeight: "600",
+    fontSize: "18px"
   },
 }));
 
@@ -55,7 +56,7 @@ const Jobs = () => {
   }, []);
   return (
     <div className="jobSection">
-      <div className="componentWrapper">
+      <div className="componentWrapper shadowed">
         <TableContainer sx={{ maxHeight: "calc(100vh - 66px)" }}>
           <Table stickyHeader>
             <TableHead>
