@@ -34,6 +34,7 @@ const JobDetails = () => {
   const [applyModalOpen, setApplyModalOpen] = useState(false);
   const [selectedResume, setSelectedResume] = useState(false);
   const [tabValue, setTabValue] = useState("description");
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchJobDetails = async () => {
     const details = await getJobDetails(id);
@@ -41,13 +42,16 @@ const JobDetails = () => {
   };
 
   const applyForJob = async () => {
+    setIsLoading(true);
     try {
       await applyJobs(jobDetails.documentID, selectedResume);
       enqueueSnackbar("Successfully applied", { variant: "success" });
       setCompanyApplicationStatus("Applied");
       setApplyModalOpen(false);
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -226,8 +230,8 @@ const JobDetails = () => {
           </Select>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setApplyModalOpen(false)}>Cancel</Button>
-          <Button onClick={() => applyForJob()}>Save</Button>
+          <Button onClick={() => setApplyModalOpen(false)} disabled={isLoading}>Cancel</Button>
+          <Button onClick={() => applyForJob()} disabled={isLoading}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>
