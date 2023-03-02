@@ -86,9 +86,9 @@ const StudentCG = () => {
             {userData.map((user, index) => {
               return (
                 <TableRow key={user.id}>
-                  <TableCell>{user.SID}</TableCell>
-                  <TableCell>{user.fullName}</TableCell>
-                  <TableCell align="right">
+                  <TableCell className="tableCell">{user.SID}</TableCell>
+                  <TableCell className="tableCell">{user.fullName}</TableCell>
+                  <TableCell align="right" className="tableCell">
                     <TextField
                       size="small"
                       inputRef={(ref) => (inputRefs.current[index] = ref)}

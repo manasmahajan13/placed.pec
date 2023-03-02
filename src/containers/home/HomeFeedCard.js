@@ -4,11 +4,12 @@ import moment from "moment";
 import { Button, Paper } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useNavigate } from "react-router-dom";
+import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 
 const HomeFeedCard = ({ feedData }) => {
   const navigate = useNavigate();
   return (
-    <Paper className="HomeFeedCard" elevation={0} sx={{ borderRadius: "4px" }}>
+    <Paper className="HomeFeedCard shadowed" elevation={0} sx={{ borderRadius: "4px" }}>
       <div className="homeFeedCardHeader">
         <div>
           <div className="companyName">
@@ -49,6 +50,7 @@ const HomeFeedCard = ({ feedData }) => {
           </ul>
         </div>
         <div className="deadlineSection">
+          <TimerOutlinedIcon/>
           The deadline for applications is{" "}
           {moment(feedData.deadline.seconds * 1000).format(
             "DD-MMMM-YYYY hh:mm"

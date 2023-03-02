@@ -53,7 +53,7 @@ const Profile = () => {
   return (
     <div className="profilePage">
       <div className="profileContent">
-        <div className="profileSection">
+        <div className="profileSection shadowed">
           <div className="profileHeaderSection">
             <div className="profileAvatarSection">
               <Avatar className="profileAvatar"/>
@@ -71,7 +71,7 @@ const Profile = () => {
           </div>
           {/* <SummarySection refreshPage={refreshPage} /> */}
         </div>
-        <div className="profileSection">
+        <div className="profileSection shadowed">
           <ResumeSection refreshPage={refreshPage} />
         </div>
       </div>

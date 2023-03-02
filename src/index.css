@@ -27,4 +27,5 @@ code {
   --font-header3: 18px;
   --font-primary: 16px;
   --font-secondary: 14px;
+  --error: #cc0000;
 }

@@ -15,3 +15,7 @@
   justify-content: space-between;
   height: 68px;
 }
+
+.adminJobDataCell {
+  font-size: var(--font-primary) !important;
+}

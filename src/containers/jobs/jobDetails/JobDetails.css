@@ -24,3 +24,19 @@
   padding: 32px;
   width: 200px;
 }
+.jobDetailsTabs {
+  width: 100%;
+  border-bottom: 1px solid var(--border-colour);
+  margin: 32px 0px 0px 0px;
+}
+.jobDetailSectionHeader {
+  margin: 32px 0px 16px 0px;
+}
+.deadlineSection {
+  color: var(--error);
+  font-size: var(--font-secondary);
+  margin-top: 16px;
+}
+.MuiGrid-item {
+  margin-bottom: 8px !important;
+}
