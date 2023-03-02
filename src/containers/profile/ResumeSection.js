@@ -89,17 +89,21 @@ function ResumeSection({ refreshPage }) {
                     <StarIcon fontSize="small" />
                   )}
                 </div>
-                <div>
-                  <IconButton
-                    color="error"
-                    onClick={() => {
-                      setDeleteDialogOpen(true);
-                      setSelectedResumeId(resume.id);
-                    }}
-                  >
-                    <DeleteOutlinedIcon />
-                  </IconButton>
-                </div>
+                {resume.id === profileData.primaryResume ? (
+                  <></>
+                ) : (
+                  <div>
+                    <IconButton
+                      color="error"
+                      onClick={() => {
+                        setDeleteDialogOpen(true);
+                        setSelectedResumeId(resume.id);
+                      }}
+                    >
+                      <DeleteOutlinedIcon />
+                    </IconButton>
+                  </div>
+                )}
               </div>
             );
           })
