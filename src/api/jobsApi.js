@@ -112,11 +112,13 @@ export const listOfusersApplied = async (compId) => {
     const docSnap = await getDoc(docRef);
     const name = docSnap.data()["fullName"];
     const cgpa = docSnap.data()["cgpa"];
+    const sid = docSnap.data()["SID"];
     const resume = appliedUsers[i].resume;
     usersApplicant.push({
       name: name,
       resume: resume,
       cgpa: cgpa,
+      SID: sid,
       id: appliedUsers[i].userId,
     });
   }

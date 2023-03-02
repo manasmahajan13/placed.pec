@@ -7,6 +7,9 @@ import { openInNewTab } from "../../../../helpers/UtilityFunctions.js";
 import {
   Button,
   Checkbox,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Table,
   TableBody,
   TableCell,
@@ -24,6 +27,7 @@ function AdminJobDetails() {
   const [applicants, setApplicants] = useState([]);
   const [jobDetails, setJobDetails] = useState([]);
   const [selectedCandidateList, setSelectedCandidateList] = useState([]);
+  const [selectedDialogOpen, setSelectedDialogOpen] = useState(false);
 
   const getApplicants = async () => {
     const applicantsList = await listOfusersApplied(id);
@@ -47,17 +51,17 @@ function AdminJobDetails() {
           onClick={() => {
             const jobDocRef = doc(db, "jobPostings", id);
             const jobData = {
-              selectedCandidates: selectedCandidateList
+              selectedCandidates: selectedCandidateList,
             };
 
-            updateDoc(jobDocRef, jobData)
+            updateDoc(jobDocRef, jobData);
             selectedCandidateList.forEach((candidate) => {
               const candidateDocRef = doc(db, "users", candidate);
               const candidateData = {
-                selectedCompany: id
+                selectedCompany: id,
               };
               updateDoc(candidateDocRef, candidateData);
-            })
+            });
           }}
         >
           Set as Selected
@@ -120,6 +124,62 @@ function AdminJobDetails() {
           </TableBody>
         </Table>
       </TableContainer>
+      <Button
+        variant="contained"
+        onClick={() => {
+          setSelectedDialogOpen(true);
+        }}
+        style={{ margin: "16px 0px" }}
+      >
+        View Selected Candidates
+      </Button>
+      <Dialog
+        open={selectedDialogOpen}
+        fullWidth
+        onClose={() => {
+          setSelectedDialogOpen(false);
+        }}
+      >
+        <DialogTitle>
+          <div className="heading2">Selected Candidates</div>
+        </DialogTitle>
+        <DialogContent>
+          <TableContainer className="jobApplicantsTable">
+            <Table>
+              <TableHead className="applicantsHeader">
+                <TableRow>
+                  <HeaderTableCell>SID</HeaderTableCell>
+                  <HeaderTableCell>Name</HeaderTableCell>
+                  <HeaderTableCell>CGPA</HeaderTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {applicants.length == 0 && (
+                  <TableRow className="applicantRow">
+                    <TableCell colSpan={3} align="center">
+                      None Selected
+                    </TableCell>
+                  </TableRow>
+                )}
+                {applicants
+                  .filter((applicant) =>
+                    selectedCandidateList.includes(applicant.id)
+                  )
+                  .map((applicant) => {
+                    console.log(applicant);
+                    return (
+                      <TableRow className="applicantRow" key={applicant.id}>
+                        <TableCell>{applicant.SID}</TableCell>
+                        <TableCell>{applicant.name}</TableCell>
+                        <TableCell>{applicant.cgpa}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
