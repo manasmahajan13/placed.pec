@@ -218,7 +218,25 @@ function CreateJobPosting() {
               </Select>
             </div>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12}>
+            <h3>Job Description</h3>
+            <TextField
+              id="job-description"
+              label="Job Description"
+              variant="outlined"
+              rows={4}
+              fullWidth
+              multiline
+              onChange={(event) => {
+                setJobData({
+                  ...jobData,
+                  jobDescription: event.target.value,
+                });
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
             <h3>Eligible Disciplines</h3>
             {coursesList.map((course) => {
               return (

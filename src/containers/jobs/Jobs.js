@@ -56,7 +56,7 @@ const Jobs = () => {
   }, []);
   return (
     <div className="jobSection">
-      <div className="componentWrapper">
+      <div className="componentWrapper shadowed">
         <TableContainer sx={{ maxHeight: "calc(100vh - 66px)" }}>
           <Table stickyHeader>
             <TableHead>

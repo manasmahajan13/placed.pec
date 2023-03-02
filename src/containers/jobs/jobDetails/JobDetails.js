@@ -8,6 +8,9 @@ import {
   DialogActions,
   Select,
   MenuItem,
+  Grid,
+  Tabs,
+  Tab
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -30,6 +33,7 @@ const JobDetails = () => {
   );
   const [applyModalOpen, setApplyModalOpen] = useState(false);
   const [selectedResume, setSelectedResume] = useState(false);
+  const [tabValue, setTabValue] = useState("description");
 
   const fetchJobDetails = async () => {
     const details = await getJobDetails(id);
@@ -89,22 +93,99 @@ const JobDetails = () => {
 
   return (
     <div className="jobDetails">
-      <div className="jobDetailsContainer">
+      <div className="jobDetailsContainer shadowed">
         <div className="detailsSection">
-          <h1>{jobDetails.jobProfile}</h1>
-          <h2>
+          <div className="title">{jobDetails.jobProfile}</div>
+          <div className="heading1">
             {jobDetails.name} | {jobDetails.location}
-          </h2>
-          <h3>Salary Break-up</h3>
+          </div>
 
-          {jobDetails.description &&
-            Object.entries(jobDetails.description).map(([key, value]) => {
-              return (
-                <div key={key}>
-                  {key} - {value}
+          <div className="jobOverview">
+            <div className="jobDetailsTabs">
+              <Tabs
+                value={tabValue}
+                onChange={(_, value) => setTabValue(value)}
+              >
+                <Tab value="description" label="Job Description" />
+                <Tab value="eligibility" label="Eligibility Criterea" />
+              </Tabs>
+            </div>
+            <div className="tabContent">
+              {tabValue == "description" ? (
+                <div>
+                  <div className="heading3 jobDetailSectionHeader">
+                    Opening Overview
+                  </div>
+                  <Grid container>
+                    <Grid item xs={4} className="textSecondary">
+                      Fixed CTC
+                    </Grid>
+                    <Grid item xs={8}>
+                      {jobDetails.description?.fixedCTC}
+                    </Grid>
+                    <Grid item xs={4} className="textSecondary">
+                      Variable CTC
+                    </Grid>
+                    <Grid item xs={8}>
+                      {jobDetails.description?.variableCTC}
+                    </Grid>
+                    <Grid item xs={4} className="textSecondary">
+                      Job Functions
+                    </Grid>
+                    <Grid item xs={8}>
+                      {jobDetails.jobProfile}
+                    </Grid>
+                  </Grid>
+                  <div className="heading3 jobDetailSectionHeader">
+                    Job Description
+                  </div>
+                  <div className="textSecondary">
+                    {jobDetails.jobDescription
+                      ? jobDetails.jobDescription
+                      : "No description added"}
+                  </div>
+                  <div className="heading3 jobDetailSectionHeader">
+                    Required Skills
+                  </div>
+                  <div className="textSecondary">
+                    {jobDetails.skills
+                      ? jobDetails.skills
+                      : "No required skills added"}
+                  </div>
                 </div>
-              );
-            })}
+              ) : (
+                <div>
+                  <div className="heading3 jobDetailSectionHeader">
+                    Eligibility Criterea
+                  </div>
+                  <Grid container>
+                    <Grid item xs={4} className="textSecondary">
+                      Minimum CGPA
+                    </Grid>
+                    <Grid item xs={8}>
+                      {jobDetails.eligibility?.minCGPA} CG
+                    </Grid>
+                    <Grid item xs={4} className="textSecondary">
+                      Backlogs
+                    </Grid>
+                    <Grid item xs={8}>
+                      {jobDetails.eligibility?.backlogsAllowed
+                        ? "Backlogs allowed"
+                        : "No backlogs"}
+                    </Grid>
+                    <Grid item xs={12} className="textSecondary">
+                      Eligible Courses
+                    </Grid>
+                    <Grid item xs={12}>
+                      {jobDetails.eligibleCourses.map(course=>{
+                        return <li>{course}</li>;
+                      })}
+                    </Grid>
+                  </Grid>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         <div className="applySection">
@@ -115,6 +196,14 @@ const JobDetails = () => {
           >
             {companyApplicationStatus}
           </Button>
+          {moment(jobDetails?.deadline?.seconds * 1000).isAfter() && (
+            <div className="deadlineSection">
+              Deadline:{" "}
+              {moment(jobDetails?.deadline?.seconds * 1000).format(
+                "DD MMMM hh:mm A"
+              )}
+            </div>
+          )}
         </div>
       </div>
       <Dialog open={applyModalOpen} onClose={() => setApplyModalOpen(false)}>

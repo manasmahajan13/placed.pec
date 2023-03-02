@@ -2,6 +2,10 @@
   cursor: pointer;
 }
 
+.jobDataElement {
+  font-size: var(----font-primary) !important;
+}
+
 .jobRow:hover {
   background-color: whitesmoke;
 }

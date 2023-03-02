@@ -3,3 +3,7 @@
   max-width: 1000px;
   overflow: hidden;
 }
+
+.tableCell {
+  font-size: var(--font-primary) !important;
+}
