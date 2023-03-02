@@ -20,10 +20,11 @@ import {
 import { HeaderTableCell } from "../../../jobs/Jobs.js";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../../firebase-config.js";
+import { useSnackbar } from "notistack";
 
 function AdminJobDetails() {
   const { id } = useParams();
-
+  const { enqueueSnackbar } = useSnackbar();
   const [applicants, setApplicants] = useState([]);
   const [jobDetails, setJobDetails] = useState([]);
   const [selectedCandidateList, setSelectedCandidateList] = useState([]);
@@ -62,6 +63,7 @@ function AdminJobDetails() {
               };
               updateDoc(candidateDocRef, candidateData);
             });
+            enqueueSnackbar("Successfully applied", { variant: "success" });
           }}
         >
           Set as Selected
