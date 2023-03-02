@@ -3,6 +3,10 @@
   color: var(--primary);
 }
 
+.MuiPaper-root {
+  color: var(--primary) !important;
+}
+
 .loginContainer,
 .signupContainer {
   display: flex;
