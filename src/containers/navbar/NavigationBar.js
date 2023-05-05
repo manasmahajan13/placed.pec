@@ -23,6 +23,10 @@ const adminTabs = [
     displayName: "Grades",
     link: "/admin/studentCG"
   },
+  {
+    displayName: "Placement Cycle",
+    link: "/admin/placementCycle"
+  },
 ];
 
 const userTabs = [

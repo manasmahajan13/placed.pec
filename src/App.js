@@ -19,6 +19,7 @@ import { SnackbarProvider } from "notistack";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import ResetPassword from "./containers/login-registration/ResetPassword";
+import PlacementCycle from "./containers/admin/placementCycle/PlacementCycle";
 
 
 function App() {
@@ -48,6 +49,10 @@ function App() {
                         element={<AdminDashboard />}
                       />
                       <Route path="/admin/jobs" element={<AdminJobs />} />
+                      <Route
+                        path="/admin/placementCycle"
+                        element={<PlacementCycle />}
+                      />
                       <Route path="/admin/studentCG" element={<StudentCG />} />
                       <Route
                         path="/admin/jobs/:id"
