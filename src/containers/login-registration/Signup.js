@@ -62,6 +62,8 @@ function Signup() {
         };
         const usersRef = collection(db, "users");
         setDoc(doc(db, "users", user.uid), data);
+        const userRef = doc(db, "users" , user.uid);
+        updateDoc(userRef,{placementCycleId: id})
         console.log("successful creation of user!", user);
         navigate("/");
       })

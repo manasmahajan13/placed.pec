@@ -92,14 +92,21 @@ export const getJobDetails = async (jobId) => {
   }
 };
 
-export const createJobPosting = async (data) => {
+export const createJobPosting = async (data,id) => {
   const docRef = await addDoc(collection(db, "jobPostings"), data);
   await updateDoc(docRef, {
     documentID: docRef.id,
     published: serverTimestamp(),
+    placementCycleId: id
   });
 
   console.log("successful creation of jobPostings!:::::", docRef.id);
+
+  const placeRef = doc(db, "placementCycle", id);
+  const placeSnap = await getDoc(placeRef);
+  const jobPosting = placeSnap.data()["jobPostings"];
+  jobPosting.push(docRef.id);
+  updateDoc(placeRef, {jobPostings : jobPosting})
 };
 
 export const listOfusersApplied = async (compId) => {
