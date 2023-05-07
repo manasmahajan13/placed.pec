@@ -8,8 +8,30 @@ import {
 } from "firebase/auth";
 import { Button, TextField } from "@mui/material";
 import { getAuth } from "firebase/auth";
-import { collection, doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc, getDoc, updateDoc,getDocs, orderBy,query } from "firebase/firestore";
 import { db } from "../../firebase-config";
+import { sidToBranch } from "../profile/Profile";
+import { sidToPassoutBatch } from "../profile/Profile";
+
+
+export async function findPlacementcycleId  (batch, year)  {
+  const Query = query(
+    collection(db, "placementCycle"),
+    orderBy("type","desc")
+  );
+  var placeId = "";
+  const placeSnap = await getDocs(Query);
+  placeSnap.docs.forEach((doc) => {
+    const Batch = doc.data()["batch"];
+    const Year = doc.data()["year"];
+    // console.log(batch,Batch,year,Year);
+    if(batch==Batch&&Year==year){
+      placeId = doc.data()["id"];
+    }
+  });
+  return placeId;
+};
+
 
 function Signup() {
   const navigate = useNavigate();
@@ -22,6 +44,7 @@ function Signup() {
   const [cgpa, setCgpa] = useState("");
 
   const [signupErrorCode, setsignupErrorCode] = useState("");
+
 
   const register = async () => {
     const auth = getAuth();
@@ -62,8 +85,29 @@ function Signup() {
         };
         const usersRef = collection(db, "users");
         setDoc(doc(db, "users", user.uid), data);
-        console.log("successful creation of user!", user);
-        navigate("/");
+        const userRef = doc(db, "users" , user.uid);
+        var year = sidToPassoutBatch(sid);
+        year = year.substring(0,4);
+        const batch = "btech";
+        var placeId ="";
+        const temp=findPlacementcycleId(batch,year);
+        temp.then(async(result)=>{
+          
+          updateDoc(userRef, { placementCycleId: result });
+
+          console.log("successful creation of user!", user);
+          const placeRef = doc(db, "placementCycle", result);
+          const placeSnap = await getDoc(placeRef);
+          const usersPost = placeSnap.data()["users"];
+          usersPost.push(user.uid);
+          // for(let i=0;i<usersPost.length;i++)
+          // {
+          //   console.log(usersPost[i]);
+          // }
+          updateDoc(placeRef, {users : usersPost});
+        });
+          navigate("/");
+        
       })
       .catch((error) => {
         switch (error.code) {
