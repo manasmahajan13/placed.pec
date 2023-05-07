@@ -15,6 +15,28 @@ export const branchMappings = {
   107: "Mechanical Engineering"
 }
 
+export const sidToBranch = (sid) => {
+  switch (sid?.substring(2, 5)) {
+    case "102":
+      return branchMappings[102];
+    case "103":
+      return branchMappings[103];
+    case "104":
+      return branchMappings[104];
+    case "105":
+      return branchMappings[105];
+    case "107":
+      return branchMappings[107];
+    default:
+      return "ENGINEERING";
+  }
+};
+
+export const sidToPassoutBatch = (sid) => {
+  const passingYear = +("20" + sid?.substring(0, 2)) + 4;
+  return `${passingYear} Passout Batch`;
+};
+
 const Profile = () => {
   const profileData = useSelector((state) => state.user.userData);
   const dispatch = useDispatch();
@@ -24,27 +46,9 @@ const Profile = () => {
     dispatch(setUserData(data));
   };
 
-  const sidToPassoutBatch = (sid) => {
-    const passingYear = +("20" + sid?.substring(0, 2)) + 4;
-    return `${passingYear} Passout Batch`;
-  };
+  
 
-  const sidToBranch = (sid) => {
-    switch (sid?.substring(2, 5)) {
-      case "102":
-        return branchMappings[102];
-      case "103":
-        return branchMappings[103];
-      case "104":
-        return branchMappings[104];
-      case "105":
-        return branchMappings[105];
-      case "107":
-        return branchMappings[107];
-      default:
-        return "ENGINEERING";
-    }
-  };
+  
 
   useEffect(() => {
     refreshPage();
