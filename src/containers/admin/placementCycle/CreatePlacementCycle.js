@@ -81,17 +81,6 @@ export default function CreatePlacementCycle() {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <h3>Year</h3>
-            <TextField
-              id="year"
-              variant="outlined"
-              size="small"
-              onChange={(event) => {
-                setYear(event.target.value);
-              }}
-            />
-          </Grid>
-          <Grid item xs={12}>
             <FormControl sx={{ m: 1, width: 300 }}>
               <InputLabel id="demo-multiple-checkbox-label">Type</InputLabel>
               <Select
@@ -114,6 +103,17 @@ export default function CreatePlacementCycle() {
                 ))}
               </Select>
             </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <h3>Year</h3>
+            <TextField
+              id="year"
+              variant="outlined"
+              size="small"
+              onChange={(event) => {
+                setYear(event.target.value);
+              }}
+            />
           </Grid>
         </Grid>
         <br />
