@@ -15,10 +15,23 @@ import {
 import { getAuth } from "firebase/auth";
 
 export const createPlacementCycle = async (data) => {
-    const docRef = await addDoc(collection(db, "placementCycle"), data);
-    await updateDoc(docRef, {
-      jobPostings: [],
-      users: [],
-      id: docRef.id
+  const docRef = await addDoc(collection(db, "placementCycle"), data);
+  await updateDoc(docRef, {
+    jobPostings: [],
+    users: [],
+    id: docRef.id,
+  });
+};
+
+export const placementCycleListing = async () => {
+  var Query = query(collection(db, "placementCycle"), orderBy("year", "desc"));
+  const cycleList = [];
+    const documentSnapshots = await getDocs(Query);
+    documentSnapshots.docs.forEach((doc) => {
+      cycleList.push(doc.data());
     });
-  };
+    const response = cycleList;
+    return response;
+
+}
+

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Checkbox,
   FormControlLabel,
@@ -8,6 +8,8 @@ import {
   TextField,
   Button,
   InputAdornment,
+  InputLabel,
+  OutlinedInput,
 } from "@mui/material";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -17,6 +19,20 @@ import { Timestamp } from "firebase/firestore";
 import moment from "moment/moment";
 import "./CreateJobPosting.css";
 import { useSnackbar } from "notistack";
+import FormControl from "@mui/material/FormControl";
+import ListItemText from "@mui/material/ListItemText";
+import { placementCycleListing } from "../../../api/placementCycleApi";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 export const coursesList = [
   "Computer Science Engineering",
@@ -54,6 +70,21 @@ function CreateJobPosting() {
   };
 
   const [jobData, setJobData] = useState(initialData);
+  const [cycleList, setCycleList] = useState([]);
+  const [cycleid, setCycleid] = useState("");
+
+  const fetchOnLoad = async () => {
+    try {
+      const response = await placementCycleListing();
+      setCycleList(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchOnLoad();
+  }, []);
+  const [eligiblePlacementCycle, setEligiblePlacementCycle] = useState([]);
 
   const handleSubmission = () => {
     const jobDataToSubmit = jobData;
@@ -74,7 +105,7 @@ function CreateJobPosting() {
     jobDataToSubmit.eligibleCourses = eligibleCoursesArray;
     console.log(jobDataToSubmit);
     try {
-      createJobPosting(jobDataToSubmit);
+      createJobPosting(jobDataToSubmit, cycleid);
       enqueueSnackbar("Job created successfully", { variant: "success" });
       setJobData(initialData);
     } catch (error) {
@@ -263,6 +294,28 @@ function CreateJobPosting() {
                 </div>
               );
             })}
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Eligible Placement Cycles</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={eligiblePlacementCycle}
+                label="Eligible Placement Cycles"
+                onChange={(event) => {
+                  setEligiblePlacementCycle(event.target.value);
+                }}
+              >
+                {cycleList.map((item) => (
+                  <MenuItem key={item.year + " " + item.batch + " " + item.type} value={item.year + " " + item.batch + " " + item.type} onClick={() => {
+                    setCycleid(item.id);
+                  }}>
+                    <ListItemText primary={item.year + " " + item.batch + " " + item.type} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
         </Grid>
 

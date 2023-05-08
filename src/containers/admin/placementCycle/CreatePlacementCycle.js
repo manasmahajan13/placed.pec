@@ -23,8 +23,8 @@ const MenuProps = {
 };
 
 export default function CreatePlacementCycle() {
-  const batchItems = ["B. Tech", "M. Tech", "P.H.D."];
-  const typeItems = ["Intern", "Full Time"];
+  const batchItems = ['', "B. Tech", "M. Tech", "P.H.D."];
+  const typeItems = ['', "Intern", "Full Time"];
   const [batch, setBatch] = useState([]);
   const [year, setYear] = useState("");
   const [type, setType] = useState([]);
@@ -56,48 +56,40 @@ export default function CreatePlacementCycle() {
       </div>
       <div className="newPlacementCycleBody">
         <Grid container spacing={4}>
-          <Grid item xs={12}>
-            <FormControl sx={{ m: 1, width: 300 }}>
-              <InputLabel id="demo-multiple-checkbox-label">Batch</InputLabel>
+        <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Batch</InputLabel>
               <Select
-                labelId="demo-multiple-checkbox-label"
-                id="demo-multiple-checkbox"
-                multiple
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
                 value={batch}
+                label="Batch"
                 onChange={(event) => {
                   setBatch(event.target.value);
                 }}
-                input={<OutlinedInput label="Batch" />}
-                renderValue={(selected) => selected.join(", ")}
-                MenuProps={MenuProps}
               >
-                {batchItems.map((batchItem) => (
-                  <MenuItem key={batchItem} value={batchItem}>
-                    <Checkbox checked={batch.indexOf(batchItem) > -1} />
-                    <ListItemText primary={batchItem} />
+                {batchItems.map((typeItem) => (
+                  <MenuItem key={typeItem} value={typeItem}>
+                    <ListItemText primary={typeItem} />
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <FormControl sx={{ m: 1, width: 300 }}>
-              <InputLabel id="demo-multiple-checkbox-label">Type</InputLabel>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Type</InputLabel>
               <Select
-                labelId="demo-multiple-checkbox-label"
-                id="demo-multiple-checkbox"
-                multiple
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
                 value={type}
+                label="Type"
                 onChange={(event) => {
                   setType(event.target.value);
                 }}
-                input={<OutlinedInput label="Type" />}
-                renderValue={(selected) => selected.join(", ")}
-                MenuProps={MenuProps}
               >
                 {typeItems.map((typeItem) => (
                   <MenuItem key={typeItem} value={typeItem}>
-                    <Checkbox checked={batch.indexOf(typeItem) > -1} />
                     <ListItemText primary={typeItem} />
                   </MenuItem>
                 ))}
