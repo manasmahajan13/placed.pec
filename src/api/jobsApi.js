@@ -14,7 +14,7 @@ import {
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-export const getAllJobs = async (pageSize, lastDoc) => {
+export const getAllJobs = async (pageSize, lastDoc, placementCycleId = "") => {
   var Query;
   if (lastDoc) {
     Query = query(
@@ -33,9 +33,14 @@ export const getAllJobs = async (pageSize, lastDoc) => {
   const jobsList = [];
   const documentSnapshots = await getDocs(Query);
   documentSnapshots.docs.forEach((doc) => {
-    jobsList.push(doc.data());
+    if (
+      placementCycleId == "all" ||
+      placementCycleId === doc.data().placementCycleId
+    ) {
+      jobsList.push(doc.data());
+    }
   });
-
+  // console.log(jobsList, placementCycleId)
   const response = {
     lastDoc: documentSnapshots.docs[documentSnapshots.docs.length - 1],
     jobsList: jobsList,

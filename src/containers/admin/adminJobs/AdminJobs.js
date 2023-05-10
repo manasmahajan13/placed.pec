@@ -12,6 +12,7 @@ import {
   Select,
   MenuItem,
   ListItemText,
+  CircularProgress,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -48,9 +49,17 @@ const AdminJobs = () => {
   const [lastDoc, setLastDoc] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [hasNextPage, setHasNextPage] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [cycleList, setCycleList] = useState([{}]);
+  const [currentCycle, setCurrentCycle] = useState("all");
 
   const getMoreJobs = async (firstPage = false) => {
-    const response = await getAllJobs(PAGE_SIZE, lastDoc);
+    setIsLoading(true);
+    const response = await getAllJobs(
+      PAGE_SIZE,
+      firstPage ? null : lastDoc,
+      currentCycle
+    );
     setLastDoc(response.lastDoc);
     if (firstPage) {
       setJobs(response.jobsList);
@@ -60,24 +69,24 @@ const AdminJobs = () => {
     if (response.jobsList == null || response.jobsList.length < PAGE_SIZE) {
       setHasNextPage(false);
     }
+    setIsLoading(false);
   };
-
-  const [cycleList, setCycleList] = useState([]);
-  const [currentCycle, setCurrentCycle] = useState("");
 
   const fetchOnLoad = async () => {
     try {
       const response = await placementCycleListing();
       setCycleList(response);
+      console.log(cycleList);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
+    setLastDoc(null);
     getMoreJobs(true);
     fetchOnLoad();
-  }, []);
+  }, [currentCycle]);
 
   return (
     <div className="jobsAdmin">
@@ -94,7 +103,7 @@ const AdminJobs = () => {
         <Grid item>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">
-              Placement Cycle Filter
+              Cycle
             </InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -102,6 +111,14 @@ const AdminJobs = () => {
               value={currentCycle}
               label="Batch"
             >
+              <MenuItem value="all">
+                <ListItemText
+                  primary="All"
+                  onClick={() => {
+                    setCurrentCycle("all");
+                  }}
+                />
+              </MenuItem>
               {cycleList.map((item, index) => (
                 <MenuItem
                   key={item.year + " -- " + item.batch + " -- " + item.type}
@@ -137,16 +154,26 @@ const AdminJobs = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <JobProfile jobData={jobs} />
-
-            {hasNextPage && (
+            {isLoading ? (
               <TableRow>
-                <TableCell>
-                  <Button variant="contained" onClick={() => getMoreJobs()}>
-                    Load more
-                  </Button>
+                <TableCell colSpan={3} align="center">
+                  <CircularProgress />
                 </TableCell>
               </TableRow>
+            ) : (
+              <>
+                <JobProfile jobData={jobs} />
+
+                {hasNextPage && (
+                  <TableRow>
+                    <TableCell>
+                      <Button variant="contained" onClick={() => getMoreJobs()}>
+                        Load more
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </>
             )}
           </TableBody>
         </Table>
