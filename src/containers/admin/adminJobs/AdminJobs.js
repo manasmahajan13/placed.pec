@@ -6,12 +6,19 @@ import {
   TableHead,
   TableRow,
   TableContainer,
+  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  ListItemText,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllJobs } from "../../../api/jobsApi.js";
 import { HeaderTableCell } from "../../jobs/Jobs.js";
 import "./AdminJobs.css";
+import { placementCycleListing } from "../../../api/placementCycleApi.js";
 
 const PAGE_SIZE = 20;
 
@@ -27,7 +34,9 @@ function JobProfile({ jobData }) {
         >
           <TableCell className="adminJobDataCell">{job.name}</TableCell>
           <TableCell className="adminJobDataCell">{job.jobProfile}</TableCell>
-          <TableCell className="adminJobDataCell">{job.applications?.length || 0}</TableCell>
+          <TableCell className="adminJobDataCell">
+            {job.applications?.length || 0}
+          </TableCell>
         </TableRow>
       ))}
     </>
@@ -53,9 +62,23 @@ const AdminJobs = () => {
     }
   };
 
+  const [cycleList, setCycleList] = useState([]);
+  const [currentCycle, setCurrentCycle] = useState("");
+
+  const fetchOnLoad = async () => {
+    try {
+      const response = await placementCycleListing();
+      setCycleList(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getMoreJobs(true);
+    fetchOnLoad();
   }, []);
+
   return (
     <div className="jobsAdmin">
       <div className="jobsAdminHeader">
@@ -67,7 +90,44 @@ const AdminJobs = () => {
           New
         </Button>
       </div>
-      <TableContainer sx={{ maxHeight: "calc(100vh - 66px - 60px)", backgroundColor: "white", borderRadius: "4px" }}>
+      <div>
+        <Grid item>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">
+              Placement Cycle Filter
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={currentCycle}
+              label="Batch"
+            >
+              {cycleList.map((item, index) => (
+                <MenuItem
+                  key={item.year + " -- " + item.batch + " -- " + item.type}
+                  value={item.id}
+                >
+                  <ListItemText
+                    primary={
+                      item.year + " -- " + item.batch + " -- " + item.type
+                    }
+                    onClick={() => {
+                      setCurrentCycle(item.id);
+                    }}
+                  />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+      </div>
+      <TableContainer
+        sx={{
+          maxHeight: "calc(100vh - 66px - 60px)",
+          backgroundColor: "white",
+          borderRadius: "4px",
+        }}
+      >
         <Table stickyHeader>
           <TableHead>
             <TableRow>
@@ -78,15 +138,16 @@ const AdminJobs = () => {
           </TableHead>
           <TableBody>
             <JobProfile jobData={jobs} />
-            <TableRow>
-              <TableCell>
-                {hasNextPage && (
+
+            {hasNextPage && (
+              <TableRow>
+                <TableCell>
                   <Button variant="contained" onClick={() => getMoreJobs()}>
                     Load more
                   </Button>
-                )}
-              </TableCell>
-            </TableRow>
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

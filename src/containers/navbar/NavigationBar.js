@@ -11,10 +11,10 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 
 const adminTabs = [
-  {
-    displayName: "Dashboard",
-    link: "/admin/dashboard",
-  },
+  // {
+  //   displayName: "Dashboard",
+  //   link: "/admin/dashboard",
+  // },
   {
     displayName: "Jobs",
     link: "/admin/jobs",

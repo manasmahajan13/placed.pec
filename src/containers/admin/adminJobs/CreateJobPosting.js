@@ -84,7 +84,7 @@ function CreateJobPosting() {
   useEffect(() => {
     fetchOnLoad();
   }, []);
-  const [eligiblePlacementCycle, setEligiblePlacementCycle] = useState([]);
+  const [eligiblePlacementCycle, setEligiblePlacementCycle] = useState("");
 
   const handleSubmission = () => {
     const jobDataToSubmit = jobData;
@@ -308,7 +308,7 @@ function CreateJobPosting() {
                 }}
               >
                 {cycleList.map((item) => (
-                  <MenuItem key={item.year + " " + item.batch + " " + item.type} value={item.year + " " + item.batch + " " + item.type} onClick={() => {
+                  <MenuItem key={item.year + " " + item.batch + " " + item.type} value={item.id} onClick={() => {
                     setCycleid(item.id);
                   }}>
                     <ListItemText primary={item.year + " " + item.batch + " " + item.type} />

@@ -45,10 +45,10 @@ function App() {
 
                   <Route element={<RequireAuth />}>
                     <Route element={<AdminPanel />}>
-                      <Route
+                      {/* <Route
                         path="/admin/dashboard"
                         element={<AdminDashboard />}
-                      />
+                      /> */}
                       <Route path="/admin/jobs" element={<AdminJobs />} />
                       <Route
                         path="/admin/placementCycle"
