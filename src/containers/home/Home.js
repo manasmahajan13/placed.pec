@@ -43,7 +43,7 @@ const Home = () => {
   const getMoreJobs = async (firstPage = false) => {
     setLoading(true);
     try {
-      const response = await getJobs(PAGE_SIZE, lastDoc);
+      const response = await getJobs(PAGE_SIZE, lastDoc, "all");
       setLastDoc(response.lastDoc);
       if (firstPage) {
         setJobs(response.jobsList);

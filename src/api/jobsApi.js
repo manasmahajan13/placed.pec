@@ -70,28 +70,48 @@ export const getAllJobs = async (pageSize, lastDoc, currentCycle = "") => {
 export const getJobs = async (pageSize, lastDoc, currentCycle) => {
   try {
     var Query;
-    if (lastDoc) {
-      Query = query(
-        collection(db, "jobPostings"),
-        where("placementCycleId", "==", currentCycle),
-        orderBy("published", "desc"),
-        limit(pageSize),
-        startAfter(lastDoc),
-      );
-    } else {
-      Query = query(
-        collection(db, "jobPostings"),
-        where("placementCycleId", "==", currentCycle),
-        orderBy("published", "desc"),
-        limit(pageSize),
-      );
+    console.log(currentCycle);
+    if(currentCycle == "all")
+    {
+      if (lastDoc) {
+        Query = query(
+          collection(db, "jobPostings"),
+          orderBy("published", "desc"),
+          limit(pageSize),
+          startAfter(lastDoc),
+        );
+      } else {
+        Query = query(
+          collection(db, "jobPostings"),
+          orderBy("published", "desc"),
+          limit(pageSize),
+        );
+      }
+    }
+    else {
+      if (lastDoc) {
+        Query = query(
+          collection(db, "jobPostings"),
+          where("placementCycleId", "==", currentCycle),
+          orderBy("published", "desc"),
+          limit(pageSize),
+          startAfter(lastDoc),
+        );
+      } else {
+        Query = query(
+          collection(db, "jobPostings"),
+          where("placementCycleId", "==", currentCycle),
+          orderBy("published", "desc"),
+          limit(pageSize),
+        );
+      }
     }
     const jobsList = [];
     const documentSnapshots = await getDocs(Query);
     documentSnapshots.docs.forEach((doc) => {
       jobsList.push(doc.data());  
     });
-
+    console.log(jobsList);
     const response = {
       lastDoc: documentSnapshots.docs[documentSnapshots.docs.length - 1],
       jobsList: jobsList,
