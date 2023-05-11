@@ -29,7 +29,7 @@ function JobProfile({ jobData }) {
     <>
       {jobData?.map((job) => (
         <TableRow
-          key={`${job.name}${job.jobProfile}`}
+          key={`${job.name}${job.jobProfile}${job.placementCycleId}`}
           onClick={() => navigate(`/admin/jobs/${job.documentID}`)}
           className="adminJobRow"
         >
@@ -60,6 +60,7 @@ const AdminJobs = () => {
       firstPage ? null : lastDoc,
       currentCycle
     );
+    console.log(response)
     setLastDoc(response.lastDoc);
     if (firstPage) {
       setJobs(response.jobsList);
@@ -76,7 +77,6 @@ const AdminJobs = () => {
     try {
       const response = await placementCycleListing();
       setCycleList(response);
-      console.log(cycleList);
     } catch (error) {
       console.error(error);
     }

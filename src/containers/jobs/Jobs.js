@@ -11,19 +11,22 @@ import {
   TableRow,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { getAuth } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { getJobs } from "../../api/jobsApi.js";
+import { db } from "../../firebase-config.js";
 import JobProfile from "./jobProfiles/JobProfile.js";
 import "./jobs.css";
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 export const HeaderTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "var(--accent)",
     color: "var(--primary-inverted)",
     fontWeight: "600",
-    fontSize: "18px"
+    fontSize: "18px",
   },
 }));
 
@@ -37,7 +40,12 @@ const Jobs = () => {
   const getMoreJobs = async (firstPage = false) => {
     setLoading(true);
     try {
-      const response = await getJobs(PAGE_SIZE, lastDoc);
+      const auth = getAuth();
+      const user = auth.currentUser;
+      let docRef = doc(db, "users", user.uid);
+      let docSnap = await getDoc(docRef);
+      const response = await getJobs(PAGE_SIZE, lastDoc, docSnap.data().placementCycleId);
+      setJobs((prev) => [...prev, ...response.jobsList]);
       setLastDoc(response.lastDoc);
       if (firstPage) {
         setJobs(response.jobsList);
@@ -56,7 +64,6 @@ const Jobs = () => {
   useEffect(() => {
     getMoreJobs(true);
   }, []);
-
 
   const lastItemRef = useCallback(
     (node) => {
@@ -115,11 +122,13 @@ const Jobs = () => {
                     </TableCell>
                   </TableRow>
                 ))}
-              <TableRow>
-                <TableCell>
-                  <div ref={lastItemRef}></div>
-                </TableCell>
-              </TableRow>
+              {hasNextPage && (
+                <TableRow>
+                  <TableCell>
+                    <div ref={lastItemRef}></div>
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>

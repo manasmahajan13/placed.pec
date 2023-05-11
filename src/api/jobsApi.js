@@ -11,47 +11,14 @@ import {
   serverTimestamp,
   doc,
   getDoc,
+  where,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-export const getAllJobs = async (pageSize, lastDoc, placementCycleId = "") => {
+export const getAllJobs = async (pageSize, lastDoc, currentCycle = "") => {
   var Query;
-  if (lastDoc) {
-    Query = query(
-      collection(db, "jobPostings"),
-      orderBy("published","desc"),
-      limit(pageSize),
-      startAfter(lastDoc)
-    );
-  } else {
-    Query = query(
-      collection(db, "jobPostings"),
-      orderBy("published","desc"),
-      limit(pageSize)
-    );
-  }
-  const jobsList = [];
-  const documentSnapshots = await getDocs(Query);
-  documentSnapshots.docs.forEach((doc) => {
-    if (
-      placementCycleId == "all" ||
-      placementCycleId === doc.data().placementCycleId
-    ) {
-      jobsList.push(doc.data());
-    }
-  });
-  // console.log(jobsList, placementCycleId)
-  const response = {
-    lastDoc: documentSnapshots.docs[documentSnapshots.docs.length - 1],
-    jobsList: jobsList,
-  };
-
-  return response;
-};
-
-export const getJobs = async (pageSize, lastDoc) => {
-  try {
-    var Query;
+  if(currentCycle=="all")
+  {
     if (lastDoc) {
       Query = query(
         collection(db, "jobPostings"),
@@ -66,10 +33,63 @@ export const getJobs = async (pageSize, lastDoc) => {
         limit(pageSize)
       );
     }
+  }
+  else {if (lastDoc) {
+    Query = query(
+      collection(db, "jobPostings"),
+      where("placementCycleId","==",currentCycle),
+      orderBy("published", "desc"),
+      limit(pageSize),
+      startAfter(lastDoc)
+    );
+  } else {
+    Query = query(
+      collection(db, "jobPostings"),
+      where("placementCycleId","==",currentCycle),
+      orderBy("published", "desc"),
+      limit(pageSize)
+    );
+  }
+}
+  const jobsList = [];
+  const documentSnapshots = await getDocs(Query);
+  documentSnapshots.docs.forEach((doc) => {
+    
+      jobsList.push(doc.data());
+    
+  });
+  // console.log(jobsList, currentCycle)
+  const response = {
+    lastDoc: documentSnapshots.docs[documentSnapshots.docs.length - 1],
+    jobsList: jobsList,
+  };
+
+  return response;
+};
+
+export const getJobs = async (pageSize, lastDoc, currentCycle) => {
+  try {
+    var Query;
+    if (lastDoc) {
+      Query = query(
+        collection(db, "jobPostings"),
+        where("placementCycleId", "==", currentCycle),
+        orderBy("published", "desc"),
+        limit(pageSize),
+        startAfter(lastDoc),
+      );
+    } else {
+      Query = query(
+        collection(db, "jobPostings"),
+        where("placementCycleId", "==", currentCycle),
+        orderBy("published", "desc"),
+        limit(pageSize),
+      );
+    }
     const jobsList = [];
     const documentSnapshots = await getDocs(Query);
     documentSnapshots.docs.forEach((doc) => {
-      jobsList.push(doc.data());
+      jobsList.push(doc.data());  
     });
 
     const response = {
@@ -88,30 +108,26 @@ export const getJobDetails = async (jobId) => {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    // console.log("Document data:", docSnap.data());
     return docSnap.data();
   } else {
     // doc.data() will be undefined in this case
-    // console.log("No such document!");
     return "No such document!";
   }
 };
 
-export const createJobPosting = async (data,id) => {
+export const createJobPosting = async (data, id) => {
   const docRef = await addDoc(collection(db, "jobPostings"), data);
   await updateDoc(docRef, {
     documentID: docRef.id,
     published: serverTimestamp(),
-    placementCycleId: id
+    placementCycleId: id,
   });
-
-  console.log("successful creation of jobPostings!:::::", docRef.id);
 
   const placeRef = doc(db, "placementCycle", id);
   const placeSnap = await getDoc(placeRef);
   const jobPosting = placeSnap.data()["jobPostings"];
   jobPosting.push(docRef.id);
-  updateDoc(placeRef, {jobPostings : jobPosting})
+  updateDoc(placeRef, { jobPostings: jobPosting });
 };
 
 export const listOfusersApplied = async (compId) => {
