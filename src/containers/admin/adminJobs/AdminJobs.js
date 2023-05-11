@@ -102,9 +102,7 @@ const AdminJobs = () => {
       <div>
         <Grid item>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Cycle
-            </InputLabel>
+            <InputLabel id="demo-simple-select-label">Cycle</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -140,7 +138,7 @@ const AdminJobs = () => {
       </div>
       <TableContainer
         sx={{
-          maxHeight: "calc(100vh - 66px - 60px)",
+          maxHeight: "calc(100vh - 66px - 60px - 65px)",
           backgroundColor: "white",
           borderRadius: "4px",
         }}
@@ -154,26 +152,22 @@ const AdminJobs = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {isLoading ? (
+            <JobProfile jobData={jobs} />
+            {isLoading && (
               <TableRow>
                 <TableCell colSpan={3} align="center">
                   <CircularProgress />
                 </TableCell>
               </TableRow>
-            ) : (
-              <>
-                <JobProfile jobData={jobs} />
-
-                {hasNextPage && (
-                  <TableRow>
-                    <TableCell>
-                      <Button variant="contained" onClick={() => getMoreJobs()}>
-                        Load more
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </>
+            )}
+            {hasNextPage && !isLoading && (
+              <TableRow>
+                <TableCell>
+                  <Button variant="contained" onClick={() => getMoreJobs()}>
+                    Load more
+                  </Button>
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>

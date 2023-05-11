@@ -1,19 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getProfile } from "../../api/profileApi";
 import { useSelector, useDispatch } from "react-redux";
 import "./profile.css";
 import { setUserData } from "../../redux/slice/user.slice";
 import ResumeSection from "./ResumeSection";
 import SummarySection from "./SummarySection";
-import { Avatar, Switch } from "@mui/material";
+import { Avatar, Skeleton, Switch } from "@mui/material";
 
 export const branchMappings = {
   102: "Civil Engineering",
   103: "Computer Science Engineering",
   104: "Electrical Engineering",
   105: "Electronics and Communication Engineering",
-  107: "Mechanical Engineering"
-}
+  107: "Mechanical Engineering",
+};
 
 export const sidToBranch = (sid) => {
   switch (sid?.substring(2, 5)) {
@@ -38,17 +38,16 @@ export const sidToPassoutBatch = (sid) => {
 };
 
 const Profile = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const profileData = useSelector((state) => state.user.userData);
   const dispatch = useDispatch();
 
   const refreshPage = async () => {
+    setIsLoading(true);
     const data = await getProfile();
     dispatch(setUserData(data));
+    setIsLoading(false);
   };
-
-  
-
-  
 
   useEffect(() => {
     refreshPage();
@@ -60,18 +59,37 @@ const Profile = () => {
         <div className="profileSection shadowed">
           <div className="profileHeaderSection">
             <div className="profileAvatarSection">
-              <Avatar className="profileAvatar"/>
+              <Avatar className="profileAvatar" />
             </div>
             <div className="title">
-              {profileData.fullName} 
+              {isLoading ? (
+                <div style={{ display: "flex", gap: "16px" }}>
+                  <Skeleton width={120} />
+                  <Skeleton width={80} />
+                </div>
+              ) : (
+                profileData.fullName
+              )}
             </div>
-            <div className="heading1" style={{marginBottom: "16px"}}>{sidToPassoutBatch(profileData.SID)} · {profileData.SID}</div>
+            <div
+              className="heading1"
+              style={{ marginBottom: "16px", display: "flex" }}
+            >
+              {isLoading ? (
+                <Skeleton width={120} />
+              ) : (
+                sidToPassoutBatch(profileData.SID)
+              )}{" "}
+              · {isLoading ? <Skeleton width={80} /> : profileData.SID}
+            </div>
             <div className="heading3">
-              {sidToBranch(profileData.SID)}
+              {isLoading ? (
+                <Skeleton width={120} />
+              ) : (
+                sidToBranch(profileData.SID)
+              )}
             </div>
-            <div className="heading3">
-              PEC (Deemed to be University)
-            </div>
+            <div className="heading3">PEC (Deemed to be University)</div>
           </div>
           {/* <SummarySection refreshPage={refreshPage} /> */}
         </div>
