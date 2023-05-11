@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Skeleton,
   Table,
   TableBody,
@@ -10,7 +11,7 @@ import {
   TableRow,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { getJobs } from "../../api/jobsApi.js";
 import JobProfile from "./jobProfiles/JobProfile.js";
 import "./jobs.css";
@@ -27,6 +28,7 @@ export const HeaderTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const Jobs = () => {
+  const observer = useRef();
   const [lastDoc, setLastDoc] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [hasNextPage, setHasNextPage] = useState(true);
@@ -54,6 +56,33 @@ const Jobs = () => {
   useEffect(() => {
     getMoreJobs(true);
   }, []);
+
+
+  const lastItemRef = useCallback(
+    (node) => {
+      if (loading) {
+        return;
+      }
+      if (!hasNextPage) {
+        return;
+      }
+      if (observer.current) {
+        observer.current.disconnect();
+      }
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          getMoreJobs();
+        }
+      });
+
+      if (node) {
+        observer.current.observe(node);
+      }
+    },
+    [loading]
+  );
+
   return (
     <div className="jobSection">
       <div className="componentWrapper shadowed">
@@ -88,11 +117,7 @@ const Jobs = () => {
                 ))}
               <TableRow>
                 <TableCell>
-                  {hasNextPage && (
-                    <Button variant="contained" onClick={() => getMoreJobs()}>
-                      Load more
-                    </Button>
-                  )}
+                  <div ref={lastItemRef}></div>
                 </TableCell>
               </TableRow>
             </TableBody>
