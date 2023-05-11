@@ -24,11 +24,11 @@ export async function findPlacementcycleId  (batch, year)  {
   placeSnap.docs.forEach((doc) => {
     const Batch = doc.data()["batch"];
     const Year = doc.data()["year"];
-    // console.log(batch,Batch,year,Year);
     if(batch==Batch&&Year==year){
       placeId = doc.data()["id"];
     }
   });
+  console.log(placeId);
   return placeId;
 };
 
@@ -96,10 +96,9 @@ function Signup() {
         year = year.substring(0,4);
         const codeForBatch = sid.substring(2,1);
         const batch = checkForBatch(codeForBatch);
-        var placeId ="";
-        const temp=findPlacementcycleId(batch,year);
+        const temp = findPlacementcycleId(batch,year);
         temp.then(async(result)=>{
-          
+          console.log(result)
           updateDoc(userRef, { placementCycleId: result });
 
           console.log("successful creation of user!", user);
@@ -107,10 +106,6 @@ function Signup() {
           const placeSnap = await getDoc(placeRef);
           const usersPost = placeSnap.data()["users"];
           usersPost.push(user.uid);
-          // for(let i=0;i<usersPost.length;i++)
-          // {
-          //   console.log(usersPost[i]);
-          // }
           updateDoc(placeRef, {users : usersPost});
         });
           navigate("/");
