@@ -32,6 +32,12 @@ export async function findPlacementcycleId  (batch, year)  {
   return placeId;
 };
 
+function checkForBatch (codeForBatch) {
+  if(codeForBatch=='1') return "B. Tech";
+  else if(codeForBatch=='2') return "M. Tech";
+  else return "P.H.D."
+}
+
 
 function Signup() {
   const navigate = useNavigate();
@@ -88,7 +94,8 @@ function Signup() {
         const userRef = doc(db, "users" , user.uid);
         var year = sidToPassoutBatch(sid);
         year = year.substring(0,4);
-        const batch = "btech";
+        const codeForBatch = sid.substring(2,1);
+        const batch = checkForBatch(codeForBatch);
         var placeId ="";
         const temp=findPlacementcycleId(batch,year);
         temp.then(async(result)=>{
