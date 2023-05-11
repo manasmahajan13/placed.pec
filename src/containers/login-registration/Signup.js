@@ -36,7 +36,6 @@ export async function findPlacementcycleId(batch, year) {
       placeId = doc.data()["id"];
     }
   });
-  console.log(placeId);
   return placeId;
 }
 
@@ -62,7 +61,7 @@ function Signup() {
 
   const register = async () => {
     const auth = getAuth();
-    const re = /^[0-9\b]+$/;
+    const re = /^\d+(\.\d{1,2})?$/;
     if (cgpa === "" || re.test(cgpa)) {
     } else {
       setCgpa("");
@@ -103,7 +102,7 @@ function Signup() {
         const userRef = doc(db, "users", user.uid);
         var year = sidToPassoutBatch(sid);
         year = year.substring(0, 4);
-        const codeForBatch = sid.substring(2, 1);
+        const codeForBatch = sid.substring(2,3);
         const batch = checkForBatch(codeForBatch);
         const temp = findPlacementcycleId(batch, year);
         temp.then(async (result) => {
