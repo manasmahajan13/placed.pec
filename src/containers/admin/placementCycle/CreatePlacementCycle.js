@@ -44,6 +44,9 @@ export default function CreatePlacementCycle() {
       setCreatePlacementCycleStatusCode(
         "Placement Cycle Created Successfully."
       );
+      setBatch([]);
+      setType([]);
+      setYear("");
     } catch (error) {
       setCreatePlacementCycleStatusCode(error);
     }
@@ -102,6 +105,7 @@ export default function CreatePlacementCycle() {
               id="year"
               variant="outlined"
               size="small"
+              value={year}
               onChange={(event) => {
                 setYear(event.target.value);
               }}
