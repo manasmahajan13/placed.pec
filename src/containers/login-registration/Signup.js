@@ -6,18 +6,26 @@ import {
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
-import { Button, TextField } from "@mui/material";
+import { Button, FormControl, Grid, InputLabel, ListItemText, MenuItem, Select, TextField } from "@mui/material";
 import { getAuth } from "firebase/auth";
-import { collection, doc, setDoc, getDoc, updateDoc,getDocs, orderBy,query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { db } from "../../firebase-config";
 import { sidToBranch } from "../profile/Profile";
 import { sidToPassoutBatch } from "../profile/Profile";
 
-
-export async function findPlacementcycleId  (batch, year)  {
+export async function findPlacementcycleId(batch, year) {
   const Query = query(
     collection(db, "placementCycle"),
-    orderBy("type","desc")
+    orderBy("type", "desc")
   );
   var placeId = "";
   const placeSnap = await getDocs(Query);
@@ -30,14 +38,13 @@ export async function findPlacementcycleId  (batch, year)  {
   });
   console.log(placeId);
   return placeId;
-};
-
-function checkForBatch (codeForBatch) {
-  if(codeForBatch=='1') return "B. Tech";
-  else if(codeForBatch=='2') return "M. Tech";
-  else return "P.H.D."
 }
 
+function checkForBatch(codeForBatch) {
+  if (codeForBatch == "1") return "B. Tech";
+  else if (codeForBatch == "2") return "M. Tech";
+  else return "P.H.D.";
+}
 
 function Signup() {
   const navigate = useNavigate();
@@ -48,9 +55,10 @@ function Signup() {
   const [fullName, setFullName] = useState("");
   const [sid, setSid] = useState("");
   const [cgpa, setCgpa] = useState("");
-
+  const [type, setType] = useState("");
   const [signupErrorCode, setsignupErrorCode] = useState("");
 
+  const typeItems = ["Intern", "Full Time"];
 
   const register = async () => {
     const auth = getAuth();
@@ -88,19 +96,18 @@ function Signup() {
           cgpa: cgpa,
           statusListOfCompany: {},
           cgpaVerificationStatus: "Not Verified",
+          type: type,
         };
         const usersRef = collection(db, "users");
         setDoc(doc(db, "users", user.uid), data);
-        const userRef = doc(db, "users" , user.uid);
+        const userRef = doc(db, "users", user.uid);
         var year = sidToPassoutBatch(sid);
-        year = year.substring(0,4);
-        const codeForBatch = sid.substring(2,1);
+        year = year.substring(0, 4);
+        const codeForBatch = sid.substring(2, 1);
         const batch = checkForBatch(codeForBatch);
-        const temp = findPlacementcycleId(batch,year);
-        temp.then(async(result)=>{
-          console.log(result)
+        const temp = findPlacementcycleId(batch, year);
+        temp.then(async (result) => {
           updateDoc(userRef, { placementCycleId: result });
-
           console.log("successful creation of user!", user);
           const placeRef = doc(db, "placementCycle", result);
           const placeSnap = await getDoc(placeRef);
@@ -108,8 +115,7 @@ function Signup() {
           usersPost.push(user.uid);
           updateDoc(placeRef, {users : usersPost});
         });
-          navigate("/");
-        
+        navigate("/");
       })
       .catch((error) => {
         switch (error.code) {
@@ -200,6 +206,27 @@ function Signup() {
             }}
             sx={{ paddingBottom: "16px" }}
           />
+
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Type</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={type}
+                label="Type"
+                onChange={(event) => {
+                  setType(event.target.value);
+                }}
+              >
+                {typeItems.map((typeItem) => (
+                  <MenuItem key={typeItem} value={typeItem}>
+                    <ListItemText primary={typeItem} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
 
           <Button onClick={register} variant="contained">
             Signup
