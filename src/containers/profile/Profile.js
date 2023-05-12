@@ -86,6 +86,13 @@ const Profile = () => {
               {isLoading ? (
                 <Skeleton width={120} />
               ) : (
+                <div>CGPA: {profileData.cgpa}</div>
+              )}
+            </div>
+            <div className="heading3">
+              {isLoading ? (
+                <Skeleton width={120} />
+              ) : (
                 sidToBranch(profileData.SID)
               )}
             </div>
