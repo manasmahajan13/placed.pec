@@ -50,7 +50,6 @@ function Login(props) {
       <div className="loginDialogContainer">
         <div className="loginDialog">
           <h1>Sign in</h1>
-          <h2>{currentUser?.email}</h2>
           <TextField
             id="email"
             label="Email"

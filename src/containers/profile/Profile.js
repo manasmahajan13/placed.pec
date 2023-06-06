@@ -98,7 +98,7 @@ const Profile = () => {
             </div>
             <div className="heading3">PEC (Deemed to be University)</div>
           </div>
-          {/* <SummarySection refreshPage={refreshPage} /> */}
+          <SummarySection refreshPage={refreshPage} />
         </div>
         <div className="profileSection shadowed">
           <ResumeSection refreshPage={refreshPage} />
