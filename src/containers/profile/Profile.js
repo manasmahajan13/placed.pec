@@ -5,7 +5,8 @@ import "./profile.css";
 import { setUserData } from "../../redux/slice/user.slice";
 import ResumeSection from "./ResumeSection";
 import SummarySection from "./SummarySection";
-import { Avatar, Skeleton, Switch } from "@mui/material";
+import { Avatar, Button, Skeleton, Switch } from "@mui/material";
+import { openInNewTab } from "../../helpers/UtilityFunctions";
 
 export const branchMappings = {
   102: "Civil Engineering",
@@ -96,20 +97,8 @@ const Profile = () => {
                 sidToBranch(profileData.SID)
               )}
             </div>
-<div className="heading3">PEC (Deemed to be University)</div>
-            {profileData.urlResume ? (
-              <div className="resumeRow">
-                <div>{profileData.nameOfMainResume}</div>
-                <Button
-                  onClick={() => openInNewTab(profileData.urlResume)}
-                  variant="contained"
-                >
-                  Resume
-                </Button>
-              </div>
-            ) : (
-              <ResumeUpload />
-            )}
+            <div className="heading3">PEC (Deemed to be University)</div>
+            
           </div>
           <SummarySection refreshPage={refreshPage} />
         </div>
