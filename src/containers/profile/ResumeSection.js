@@ -61,6 +61,8 @@ function ResumeSection({ refreshPage }) {
       refreshPage();
       enqueueSnackbar("Resume uploaded successfully!", { variant: "success" });
       setAddResumeModalOpen(false);
+      setFile("");
+      setName("");
     });
   }
 
