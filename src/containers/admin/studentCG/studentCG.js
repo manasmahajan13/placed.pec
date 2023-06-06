@@ -30,8 +30,8 @@ const StudentCG = () => {
     const response = await fetchUsers();
     const filteredUsers = response.filter(
       (user) =>
-        branchMappings[user.SID.substring(2, 5)].toLowerCase() ==
-        branch.toLowerCase()
+        branchMappings[user.SID.substring(2, 5)]?.toLowerCase() ==
+        branch?.toLowerCase()
     );
     setUserData(filteredUsers);
   };
