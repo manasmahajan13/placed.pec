@@ -11,31 +11,54 @@ import {
   serverTimestamp,
   doc,
   getDoc,
+  where,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-export const getAllJobs = async (pageSize, lastDoc) => {
+export const getAllJobs = async (pageSize, lastDoc, currentCycle = "") => {
   var Query;
-  if (lastDoc) {
+  if(currentCycle=="all")
+  {
+    if (lastDoc) {
+      Query = query(
+        collection(db, "jobPostings"),
+        orderBy("published", "desc"),
+        limit(pageSize),
+        startAfter(lastDoc)
+      );
+    } else {
+      Query = query(
+        collection(db, "jobPostings"),
+        orderBy("published", "desc"),
+        limit(pageSize)
+      );
+    }
+  }
+  else {if (lastDoc) {
     Query = query(
       collection(db, "jobPostings"),
-      orderBy("published","desc"),
+      where("placementCycleId","==",currentCycle),
+      orderBy("published", "desc"),
       limit(pageSize),
       startAfter(lastDoc)
     );
   } else {
     Query = query(
       collection(db, "jobPostings"),
-      orderBy("published","desc"),
+      where("placementCycleId","==",currentCycle),
+      orderBy("published", "desc"),
       limit(pageSize)
     );
   }
+}
   const jobsList = [];
   const documentSnapshots = await getDocs(Query);
   documentSnapshots.docs.forEach((doc) => {
-    jobsList.push(doc.data());
+    
+      jobsList.push(doc.data());
+    
   });
-
+  // console.log(jobsList, currentCycle)
   const response = {
     lastDoc: documentSnapshots.docs[documentSnapshots.docs.length - 1],
     jobsList: jobsList,
@@ -44,34 +67,60 @@ export const getAllJobs = async (pageSize, lastDoc) => {
   return response;
 };
 
-export const getJobs = async (pageSize, lastDoc) => {
-  var Query;
-  if (lastDoc) {
-    Query = query(
-      collection(db, "jobPostings"),
-      orderBy("published","desc"),
-      limit(pageSize),
-      startAfter(lastDoc)
-    );
-  } else {
-    Query = query(
-      collection(db, "jobPostings"),
-      orderBy("published","desc"),
-      limit(pageSize)
-    );
+export const getJobs = async (pageSize, lastDoc, currentCycle) => {
+  try {
+    var Query;
+    console.log(currentCycle);
+    if(currentCycle == "all")
+    {
+      if (lastDoc) {
+        Query = query(
+          collection(db, "jobPostings"),
+          orderBy("published", "desc"),
+          limit(pageSize),
+          startAfter(lastDoc),
+        );
+      } else {
+        Query = query(
+          collection(db, "jobPostings"),
+          orderBy("published", "desc"),
+          limit(pageSize),
+        );
+      }
+    }
+    else {
+      if (lastDoc) {
+        Query = query(
+          collection(db, "jobPostings"),
+          where("placementCycleId", "==", currentCycle),
+          orderBy("published", "desc"),
+          limit(pageSize),
+          startAfter(lastDoc),
+        );
+      } else {
+        Query = query(
+          collection(db, "jobPostings"),
+          where("placementCycleId", "==", currentCycle),
+          orderBy("published", "desc"),
+          limit(pageSize),
+        );
+      }
+    }
+    const jobsList = [];
+    const documentSnapshots = await getDocs(Query);
+    documentSnapshots.docs.forEach((doc) => {
+      jobsList.push(doc.data());  
+    });
+    console.log(jobsList);
+    const response = {
+      lastDoc: documentSnapshots.docs[documentSnapshots.docs.length - 1],
+      jobsList: jobsList,
+    };
+
+    return response;
+  } catch (e) {
+    return e;
   }
-  const jobsList = [];
-  const documentSnapshots = await getDocs(Query);
-  documentSnapshots.docs.forEach((doc) => {
-    jobsList.push(doc.data());
-  });
-
-  const response = {
-    lastDoc: documentSnapshots.docs[documentSnapshots.docs.length - 1],
-    jobsList: jobsList,
-  };
-
-  return response;
 };
 
 export const getJobDetails = async (jobId) => {
@@ -79,42 +128,52 @@ export const getJobDetails = async (jobId) => {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    // console.log("Document data:", docSnap.data());
     return docSnap.data();
   } else {
     // doc.data() will be undefined in this case
-    // console.log("No such document!");
     return "No such document!";
   }
 };
 
-export const createJobPosting = async (data) => {
+export const createJobPosting = async (data, id) => {
   const docRef = await addDoc(collection(db, "jobPostings"), data);
   await updateDoc(docRef, {
     documentID: docRef.id,
     published: serverTimestamp(),
+    placementCycleId: id,
   });
 
-  console.log("successful creation of jobPostings!:::::", docRef.id);
+  const placeRef = doc(db, "placementCycle", id);
+  const placeSnap = await getDoc(placeRef);
+  const jobPosting = placeSnap.data()["jobPostings"];
+  jobPosting.push(docRef.id);
+  updateDoc(placeRef, { jobPostings: jobPosting });
 };
 
 export const listOfusersApplied = async (compId) => {
   const jobRef = doc(db, "jobPostings", compId);
   const jobSnap = await getDoc(jobRef);
-  const appliedUsers = jobSnap.data()["usersApplied"];
+  const appliedUsers = jobSnap.data()["applications"];
   const usersApplicant = [];
-  for (let i = 0; i < appliedUsers.length; i++) {
-    const docRef = doc(db, "users", appliedUsers[i]);
+  for (let i = 0; i < appliedUsers?.length; i++) {
+    const docRef = doc(db, "users", appliedUsers[i].userId);
     const docSnap = await getDoc(docRef);
     const name = docSnap.data()["fullName"];
     const cgpa = docSnap.data()["cgpa"];
-    const resume = docSnap.data()["urlResume"];
-    usersApplicant.push({ name: name, resume: resume, cgpa: cgpa });
+    const sid = docSnap.data()["SID"];
+    const resume = appliedUsers[i].resume;
+    usersApplicant.push({
+      name: name,
+      resume: resume,
+      cgpa: cgpa,
+      SID: sid,
+      id: appliedUsers[i].userId,
+    });
   }
   return usersApplicant;
 };
 
-export const applyJobs = async (compId) => {
+export const applyJobs = async (compId, resumeUrl) => {
   //users
   const auth = getAuth();
   const user = auth.currentUser;
@@ -133,14 +192,8 @@ export const applyJobs = async (compId) => {
   //company
   let jobRef = doc(db, "jobPostings", compId);
   let jobSnap = await getDoc(jobRef);
-  let appliedUsers = jobSnap.data()["usersApplied"];
-  if (!appliedUsers) {
-    updateDoc(jobRef, { usersApplied: [] });
-    jobRef = doc(db, "jobPostings", compId);
-    jobSnap = await getDoc(jobRef);
-    appliedUsers = jobSnap.data()["usersApplied"];
-  }
-  appliedUsers.push(user.uid);
-  updateDoc(jobRef, { usersApplied: appliedUsers });
+  let appliedUsers = jobSnap.data()["applications"] || [];
+  appliedUsers.push({ userId: user.uid, resume: resumeUrl });
+  updateDoc(jobRef, { applications: appliedUsers });
 };
  

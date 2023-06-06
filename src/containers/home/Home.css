@@ -9,3 +9,8 @@
   max-width: 800px;
   width: 100%;
 }
+
+.homeLoadingIndicator {
+  display: flex;
+  justify-content: center;
+}

@@ -1,5 +1,18 @@
 .newJobPostingWrapper {
-  padding: 32px;
+  margin: 32px;
   background-color: #fff;
-  border: 1px solid rgb(219, 219, 219);
+  border-radius: 4px;
+  overflow-y: hidden;
+}
+
+.newJobPostingHeader {
+  padding: 16px 32px;
+  background-color: var(--accent);
+  color: var(--primary-inverted);
+}
+
+.newJobPostingBody {
+  padding: 16px 32px 32px 32px;
+  overflow-y: auto;
+  height: calc(100% - 116px);
 }

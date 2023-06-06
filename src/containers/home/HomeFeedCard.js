@@ -1,15 +1,17 @@
 import "./HomeFeedCard.css";
-import React, { useState } from "react";
+import React from "react";
 import moment from "moment";
 import { Button, Paper } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { useNavigate } from "react-router-dom";
+import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 
 const HomeFeedCard = ({ feedData }) => {
+  const navigate = useNavigate();
   return (
-    <Paper className="HomeFeedCard" elevation={3} sx={{ borderRadius: "16px" }}>
+    <Paper className="HomeFeedCard shadowed" elevation={0} sx={{ borderRadius: "4px" }}>
       <div className="homeFeedCardHeader">
         <div>
-          <div className="newJobNotificationText">Open for Applications</div>
           <div className="companyName">
             {feedData.name} - {feedData.jobProfile}
           </div>
@@ -48,13 +50,19 @@ const HomeFeedCard = ({ feedData }) => {
           </ul>
         </div>
         <div className="deadlineSection">
+          <TimerOutlinedIcon/>
           The deadline for applications is{" "}
           {moment(feedData.deadline.seconds * 1000).format(
             "DD-MMMM-YYYY hh:mm"
           )}
         </div>
         <div className="homeFeedCardApply">
-          <Button variant="contained">Apply Now</Button>
+          <Button
+            variant="contained"
+            onClick={()=>navigate(`/jobs/${feedData.documentID}`)}
+          >
+            Apply Now
+          </Button>
         </div>
       </div>
     </Paper>

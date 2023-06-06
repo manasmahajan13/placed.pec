@@ -31,6 +31,9 @@ function Login(props) {
         case "auth/user-not-found":
           setLoginCodeMessage("User doesn't exist");
           break;
+        case "auth/invalid-email":
+          setLoginCodeMessage("Invalid email");
+          break;
         default:
           setLoginCodeMessage(error.message);
       }
@@ -47,7 +50,6 @@ function Login(props) {
       <div className="loginDialogContainer">
         <div className="loginDialog">
           <h1>Sign in</h1>
-          <h2>{currentUser?.email}</h2>
           <TextField
             id="email"
             label="Email"
@@ -72,7 +74,7 @@ function Login(props) {
           <Button onClick={login} variant="contained" disabled={loading}>
             Login
           </Button>
-          <p>{loginCodeMessage}</p>
+          <p style={{color: "red"}}>{loginCodeMessage}</p>
           <div>
             Don't have an account yet? <Link to="/signup">Sign Up</Link> instead
           </div>

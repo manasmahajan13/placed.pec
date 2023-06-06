@@ -7,14 +7,10 @@
 .homeFeedCardHeader {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background-color: var(--accent);
   padding: 16px;
   color: var(--primary-inverted);
-}
-
-.newJobNotificationText {
-  font-size: var(--font-secondary);
-  margin-bottom: 4px;
 }
 
 .companyName {
@@ -32,9 +28,11 @@
 }
 
 .deadlineSection {
-  color: red;
+  color: var(--error);
   padding: 0px 16px 24px 16px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
 .homeFeedCardApply {

@@ -1,3 +1,6 @@
 .adminWrapper {
-  padding: 64px;
+  padding: 0px 32px;
+  max-height: 100vh;
+  display: flex;
+  justify-content: center;
 }

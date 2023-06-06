@@ -1,4 +1,17 @@
-import { Button, CircularProgress, Paper } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Select,
+  MenuItem,
+  Grid,
+  Tabs,
+  Tab
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { applyJobs, getJobDetails } from "../../../api/jobsApi";
@@ -18,6 +31,10 @@ const JobDetails = () => {
   const [companyApplicationStatus, setCompanyApplicationStatus] = useState(
     <CircularProgress size={24.5} />
   );
+  const [applyModalOpen, setApplyModalOpen] = useState(false);
+  const [selectedResume, setSelectedResume] = useState(false);
+  const [tabValue, setTabValue] = useState("description");
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchJobDetails = async () => {
     const details = await getJobDetails(id);
@@ -25,12 +42,16 @@ const JobDetails = () => {
   };
 
   const applyForJob = async () => {
+    setIsLoading(true);
     try {
-      await applyJobs(jobDetails.documentID);
+      await applyJobs(jobDetails.documentID, selectedResume);
       enqueueSnackbar("Successfully applied", { variant: "success" });
       setCompanyApplicationStatus("Applied");
+      setApplyModalOpen(false);
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -76,91 +97,143 @@ const JobDetails = () => {
 
   return (
     <div className="jobDetails">
-      <div className="jobDetailsContainer">
+      <div className="jobDetailsContainer shadowed">
         <div className="detailsSection">
-          <h1>{jobDetails.jobProfile}</h1>
-          <h2>
+          <div className="title">{jobDetails.jobProfile}</div>
+          <div className="heading1">
             {jobDetails.name} | {jobDetails.location}
-          </h2>
-          <hr />
-          <h3>Opening Overview</h3>
-          <hr />
-          <table>
-            <tbody>
-              {/* <tr>
-              <td>
-                <b>Category</b>
-              </td>
-              <td>Tier Fantasy</td>
-            </tr> */}
-              <tr>
-                <td>
-                  <b>Job Functions</b>
-                </td>
-                <td>{jobDetails.jobProfile}</td>
-              </tr>
-              {/* <tr>
-              <td>
-                <b>CTC</b>
-              </td>
-              <td>Rs 8300000</td>
-            </tr> */}
-              <tr>
-                <td>
-                  <b>Salary Break-up</b>
-                </td>
-                <td>
-                  <ul>
-                    {jobDetails.description &&
-                      Object.entries(jobDetails.description).map(
-                        ([key, value]) => {
-                          return (
-                            <li key={key}>
-                              {key} - {value}
-                            </li>
-                          );
-                        }
-                      )}
-                    {/* <li>BASE PAY – {jobDetails?.description?.fixedCTC}</li>
-                  <li>Restricted Stock Units – USD 75,000</li>
-                  <li>SIGN-ON BONUS – INR 50,000</li> */}
-                  </ul>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <h3>About {jobDetails.name}</h3>
-          <hr />
-          <b>1000+ Employees | Private | Founded 2002</b>
-          <h3>Job Description</h3>
-          <hr />
-          <p>
-            We’re the global software company that makes over a dozen products
-            like Jira, Bitbucket, Trello, and Confluence. We help teams of all
-            sizes all over the world unleash their full potential. From coding
-            and collaborating, to just getting stuff done—we’re all about
-            empowering teams to innovate better and faster. Learn more about who
-            we are, our growth journey and how we are changing the way teams
-            work together - Development and Collaboration Software Company |
-            Atlassian
-          </p>
-        </div>
-        {/* {moment(jobDetails.deadline.seconds * 1000)} */}
-        <div className="applySection">
-          {companyApplicationStatus == "Apply" ? (
-            <Button onClick={() => applyForJob()} variant="contained">
-              {companyApplicationStatus}
-            </Button>
-          ) : (
-            <Button onClick={() => applyForJob()} disabled variant="contained">
-              {companyApplicationStatus}
-            </Button>
-          )}
+          </div>
 
-          {/* Applications are now closed. You were not eligible to apply for this
-          Job Profile */}
+          <div className="jobOverview">
+            <div className="jobDetailsTabs">
+              <Tabs
+                value={tabValue}
+                onChange={(_, value) => setTabValue(value)}
+              >
+                <Tab value="description" label="Job Description" />
+                <Tab value="eligibility" label="Eligibility Criterea" />
+              </Tabs>
+            </div>
+            <div className="tabContent">
+              {tabValue == "description" ? (
+                <div>
+                  <div className="heading3 jobDetailSectionHeader">
+                    Opening Overview
+                  </div>
+                  <Grid container>
+                    <Grid item xs={4} className="textSecondary">
+                      Fixed CTC
+                    </Grid>
+                    <Grid item xs={8}>
+                      {jobDetails.description?.fixedCTC}
+                    </Grid>
+                    <Grid item xs={4} className="textSecondary">
+                      Variable CTC
+                    </Grid>
+                    <Grid item xs={8}>
+                      {jobDetails.description?.variableCTC}
+                    </Grid>
+                    <Grid item xs={4} className="textSecondary">
+                      Job Functions
+                    </Grid>
+                    <Grid item xs={8}>
+                      {jobDetails.jobProfile}
+                    </Grid>
+                  </Grid>
+                  <div className="heading3 jobDetailSectionHeader">
+                    Job Description
+                  </div>
+                  <div className="textSecondary">
+                    {jobDetails.jobDescription
+                      ? jobDetails.jobDescription
+                      : "No description added"}
+                  </div>
+                  <div className="heading3 jobDetailSectionHeader">
+                    Required Skills
+                  </div>
+                  <div className="textSecondary">
+                    {jobDetails.skills
+                      ? jobDetails.skills
+                      : "No required skills added"}
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div className="heading3 jobDetailSectionHeader">
+                    Eligibility Criterea
+                  </div>
+                  <Grid container>
+                    <Grid item xs={4} className="textSecondary">
+                      Minimum CGPA
+                    </Grid>
+                    <Grid item xs={8}>
+                      {jobDetails.eligibility?.minCGPA} CG
+                    </Grid>
+                    <Grid item xs={4} className="textSecondary">
+                      Backlogs
+                    </Grid>
+                    <Grid item xs={8}>
+                      {jobDetails.eligibility?.backlogsAllowed
+                        ? "Backlogs allowed"
+                        : "No backlogs"}
+                    </Grid>
+                    <Grid item xs={12} className="textSecondary">
+                      Eligible Courses
+                    </Grid>
+                    <Grid item xs={12}>
+                      {jobDetails.eligibleCourses.map(course=>{
+                        return <li>{course}</li>;
+                      })}
+                    </Grid>
+                  </Grid>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="applySection">
+          <Button
+            onClick={() => setApplyModalOpen(true)}
+            disabled={companyApplicationStatus != "Apply"}
+            variant="contained"
+          >
+            {companyApplicationStatus}
+          </Button>
+          {moment(jobDetails?.deadline?.seconds * 1000).isAfter() && (
+            <div className="deadlineSection">
+              Deadline:{" "}
+              {moment(jobDetails?.deadline?.seconds * 1000).format(
+                "DD MMMM hh:mm A"
+              )}
+            </div>
+          )}
         </div>
       </div>
+      <Dialog open={applyModalOpen} onClose={() => setApplyModalOpen(false)}>
+        <DialogTitle>Apply for profile</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Select resume</DialogContentText>
+          <Select
+            value={selectedResume}
+            onChange={(e) => setSelectedResume(e.target.value)}
+            sx={{ width: "400px" }}
+            size="small"
+          >
+            {profileData.resume?.map((resume) => {
+              return (
+                <MenuItem key={resume.id} value={resume.url}>
+                  {resume.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setApplyModalOpen(false)} disabled={isLoading}>Cancel</Button>
+          <Button onClick={() => applyForJob()} disabled={isLoading}>Save</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

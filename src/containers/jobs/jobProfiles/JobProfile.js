@@ -10,7 +10,7 @@ export default function JobProfile({ jobData }) {
       {jobData?.map((job) => (
         <TableRow
           className="jobRow"
-          key={`${job.name}${job.jobProfile}`}
+          key={`${job.name}${job.jobProfile}${job.placementCycleId}`}
           onClick={() => navigate(`/jobs/${job.documentID}`)}
         >
           <TableCell className="jobDataElement">{job.jobProfile}</TableCell>

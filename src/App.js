@@ -14,10 +14,13 @@ import AdminJobs from "./containers/admin/adminJobs/AdminJobs";
 import AdminDashboard from "./containers/admin/adminDashboard/AdminDashboard";
 import AdminJobDetails from "./containers/admin/adminJobs/adminJobDetails/AdminJobDetails";
 import CreateJobPosting from "./containers/admin/adminJobs/CreateJobPosting";
+import StudentCG from "./containers/admin/studentCG/studentCG";
 import { SnackbarProvider } from "notistack";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import ResetPassword from "./containers/login-registration/ResetPassword";
+import PlacementCycle from "./containers/admin/placementCycle/PlacementCycle";
+import CreatePlacementCycle from "./containers/admin/placementCycle/CreatePlacementCycle";
 
 
 function App() {
@@ -42,11 +45,16 @@ function App() {
 
                   <Route element={<RequireAuth />}>
                     <Route element={<AdminPanel />}>
-                      <Route
+                      {/* <Route
                         path="/admin/dashboard"
                         element={<AdminDashboard />}
-                      />
+                      /> */}
                       <Route path="/admin/jobs" element={<AdminJobs />} />
+                      <Route
+                        path="/admin/placementCycle"
+                        element={<PlacementCycle />}
+                      />
+                      <Route path="/admin/studentCG" element={<StudentCG />} />
                       <Route
                         path="/admin/jobs/:id"
                         element={<AdminJobDetails />}
@@ -54,6 +62,10 @@ function App() {
                       <Route
                         path="/admin/jobs/create-new"
                         element={<CreateJobPosting />}
+                      />
+                      <Route
+                        path="/admin/placementCycle/create-new"
+                        element={<CreatePlacementCycle />}
                       />
                     </Route>
                   </Route>

@@ -6,10 +6,44 @@ import {
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
-import { Button, TextField } from "@mui/material";
+import { Button, FormControl, Grid, InputLabel, ListItemText, MenuItem, Select, TextField } from "@mui/material";
 import { getAuth } from "firebase/auth";
-import { collection, doc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { db } from "../../firebase-config";
+import { sidToBranch } from "../profile/Profile";
+import { sidToPassoutBatch } from "../profile/Profile";
+
+export async function findPlacementcycleId(batch, year) {
+  const Query = query(
+    collection(db, "placementCycle"),
+    orderBy("type", "desc")
+  );
+  var placeId = "";
+  const placeSnap = await getDocs(Query);
+  placeSnap.docs.forEach((doc) => {
+    const Batch = doc.data()["batch"];
+    const Year = doc.data()["year"];
+    if(batch==Batch&&Year==year){
+      placeId = doc.data()["id"];
+    }
+  });
+  return placeId;
+}
+
+function checkForBatch(codeForBatch) {
+  if (codeForBatch == "1") return "B. Tech";
+  else if (codeForBatch == "2") return "M. Tech";
+  else return "P.H.D.";
+}
 
 function Signup() {
   const navigate = useNavigate();
@@ -20,15 +54,31 @@ function Signup() {
   const [fullName, setFullName] = useState("");
   const [sid, setSid] = useState("");
   const [cgpa, setCgpa] = useState("");
-
+  const [type, setType] = useState("");
   const [signupErrorCode, setsignupErrorCode] = useState("");
+
+  const typeItems = ["Intern", "Full Time"];
 
   const register = async () => {
     const auth = getAuth();
-    if(registerPassword !== checkRegisterPassword){
+    const re = /^\d+(\.\d{1,2})?$/;
+    if (cgpa === "" || re.test(cgpa)) {
+    } else {
+      setCgpa("");
       setsignupErrorCode(
-        "Passwords do not match"
+        "Please Enter a valid CGPA. CGPA must lie in the range 1.0 to 10.0"
       );
+      return;
+    }
+    if (cgpa < 1.0 || cgpa > 10.0) {
+      setCgpa("");
+      setsignupErrorCode(
+        "Please Enter a valid CGPA. CGPA must lie in the range 1.0 to 10.0"
+      );
+      return;
+    }
+    if (registerPassword !== checkRegisterPassword) {
+      setsignupErrorCode("Passwords do not match");
       return;
     }
     const user = await createUserWithEmailAndPassword(
@@ -44,10 +94,26 @@ function Signup() {
           SID: sid,
           cgpa: cgpa,
           statusListOfCompany: {},
+          cgpaVerificationStatus: "Not Verified",
+          type: type,
         };
         const usersRef = collection(db, "users");
         setDoc(doc(db, "users", user.uid), data);
-        console.log("successful creation of user!", user);
+        const userRef = doc(db, "users", user.uid);
+        var year = sidToPassoutBatch(sid);
+        year = year.substring(0, 4);
+        const codeForBatch = sid.substring(2,3);
+        const batch = checkForBatch(codeForBatch);
+        const temp = findPlacementcycleId(batch, year);
+        temp.then(async (result) => {
+          updateDoc(userRef, { placementCycleId: result });
+          console.log("successful creation of user!", user);
+          const placeRef = doc(db, "placementCycle", result);
+          const placeSnap = await getDoc(placeRef);
+          const usersPost = placeSnap.data()["users"];
+          usersPost.push(user.uid);
+          updateDoc(placeRef, {users : usersPost});
+        });
         navigate("/");
       })
       .catch((error) => {
@@ -139,6 +205,27 @@ function Signup() {
             }}
             sx={{ paddingBottom: "16px" }}
           />
+
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Type</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={type}
+                label="Type"
+                onChange={(event) => {
+                  setType(event.target.value);
+                }}
+              >
+                {typeItems.map((typeItem) => (
+                  <MenuItem key={typeItem} value={typeItem}>
+                    <ListItemText primary={typeItem} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
 
           <Button onClick={register} variant="contained">
             Signup
