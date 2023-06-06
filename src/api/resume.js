@@ -20,35 +20,70 @@ export function handleResumeUpload(file, name, onComplete) {
 
   const uploadTask = uploadBytesResumable(storageRef, file);
 
-  uploadTask.on(
-    "state_changed",
-    (snapshot) => {
-      const percent = Math.round(
-        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-      );
-    },
-    (err) => console.log(err),
-    () => {
-      getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
-        const auth = getAuth();
-        const user = auth.currentUser;
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-        const resumeData = docSnap.data().resume ? docSnap.data().resume : [];
+// <<<<<<< multipleResume
+    const storageRef = ref(storage, `/files/${file.name}`);
+    const name = storageRef.name
+    const uploadTask = uploadBytesResumable(storageRef, file);
 
-        if (resumeData.length == 0) updateDoc(docRef, { primaryResume: id });
-        resumeData.push({
-          id: id,
-          name: name,
-          url: url,
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const percent = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setPercent(percent);
+      },
+      (err) => console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+          const auth = getAuth();
+          const user = auth.currentUser;
+          const docRef = doc(db, "users", user.uid);
+          const docSnap = getDoc(docRef);
+          updateDoc(docRef, { urlResume: url });
+          updateDoc(docRef, { nameOfMainResume: name });
         });
-        updateDoc(docRef, {
-          resume: resumeData,
-        }).then(()=>{
-          onComplete();
-        });
-      });
-    }
+      }
+    );
+  };
+
+  return (
+    <div>
+      <input type="file" onChange={handleChange} accept="application/pdf" />
+      <button onClick={handleUpload}>Upload to Firebase</button>
+      <p>{percent} "% done"</p>
+    </div> 
+// =======
+//   uploadTask.on(
+//     "state_changed",
+//     (snapshot) => {
+//       const percent = Math.round(
+//         (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+//       );
+//     },
+//     (err) => console.log(err),
+//     () => {
+//       getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+//         const auth = getAuth();
+//         const user = auth.currentUser;
+//         const docRef = doc(db, "users", user.uid);
+//         const docSnap = await getDoc(docRef);
+//         const resumeData = docSnap.data().resume ? docSnap.data().resume : [];
+
+//         if (resumeData.length == 0) updateDoc(docRef, { primaryResume: id });
+//         resumeData.push({
+//           id: id,
+//           name: name,
+//           url: url,
+//         });
+//         updateDoc(docRef, {
+//           resume: resumeData,
+//         }).then(()=>{
+//           onComplete();
+//         });
+//       });
+//     }
+// >>>>>>> main
   );
 }
 

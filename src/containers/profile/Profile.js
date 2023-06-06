@@ -96,7 +96,20 @@ const Profile = () => {
                 sidToBranch(profileData.SID)
               )}
             </div>
-            <div className="heading3">PEC (Deemed to be University)</div>
+<div className="heading3">PEC (Deemed to be University)</div>
+            {profileData.urlResume ? (
+              <div className="resumeRow">
+                <div>{profileData.nameOfMainResume}</div>
+                <Button
+                  onClick={() => openInNewTab(profileData.urlResume)}
+                  variant="contained"
+                >
+                  Resume
+                </Button>
+              </div>
+            ) : (
+              <ResumeUpload />
+            )}
           </div>
           <SummarySection refreshPage={refreshPage} />
         </div>
