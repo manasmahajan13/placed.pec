@@ -60,11 +60,11 @@ function ResumeSection({ refreshPage }) {
       setIsLoading(false);
       refreshPage();
       enqueueSnackbar("Resume uploaded successfully!", { variant: "success" });
-      setAddResumeModalOpen(false);
       setFile("");
       setName("");
+      setAddResumeModalOpen(false);
     });
-  }
+  };
 
   return (
     <>
@@ -82,8 +82,11 @@ function ResumeSection({ refreshPage }) {
           profileData.resume.map((resume) => {
             return (
               <div className="resumeRow" key={resume.id}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <IconButton onClick={() => openInNewTab(resume.url)}>
+                <div
+                  style={{ display: "flex", alignItems: "center", cursor: 'pointer' }}
+                  onClick={() => openInNewTab(resume.url)}
+                >
+                  <IconButton>
                     <AssignmentOutlinedIcon fontSize="large" />
                   </IconButton>
                   <span>{resume.name}</span>
