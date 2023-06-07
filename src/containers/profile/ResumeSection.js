@@ -8,7 +8,7 @@ import {
   IconButton,
   CircularProgress,
 } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { openInNewTab } from "../../helpers/UtilityFunctions";
 import { useSelector } from "react-redux";
 import "./profile.css";
@@ -16,7 +16,7 @@ import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import StarIcon from "@mui/icons-material/Star";
-import { handleResumeUpload, deleteResume } from "../../api/resume";
+import { handleResumeUpload, deleteResume, starResume } from "../../api/resume";
 import { useSnackbar } from "notistack";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 
@@ -26,6 +26,7 @@ function ResumeSection({ refreshPage }) {
   const [addResumeModalOpen, setAddResumeModalOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedResumeId, setSelectedResumeId] = useState(null);
+  const [starResumeId, setStarResumeId] = useState(profileData.primaryResume);
   const [file, setFile] = useState("");
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -36,6 +37,9 @@ function ResumeSection({ refreshPage }) {
     setFile(event.target.files[0]);
   }
 
+  useEffect(() => {
+    setStarResumeId(profileData.primaryResume);
+  }, [profileData]);
   const handleResumeDelete = async () => {
     if (selectedResumeId === profileData.primaryResume) {
       enqueueSnackbar("Primary resume cannot be deleted!", {
@@ -83,31 +87,57 @@ function ResumeSection({ refreshPage }) {
             return (
               <div className="resumeRow" key={resume.id}>
                 <div
-                  style={{ display: "flex", alignItems: "center", cursor: 'pointer' }}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    cursor: "pointer",
+                  }}
                   onClick={() => openInNewTab(resume.url)}
                 >
                   <IconButton>
                     <AssignmentOutlinedIcon fontSize="large" />
                   </IconButton>
                   <span>{resume.name}</span>
-                  {resume.id === profileData.primaryResume && (
-                    <StarIcon fontSize="small" />
-                  )}
+                  {resume.id === starResumeId && <StarIcon fontSize="small" />}
                 </div>
-                {resume.id === profileData.primaryResume ? (
+                {resume.id === starResumeId ? (
                   <></>
                 ) : (
-                  <div>
-                    <IconButton
-                      color="error"
+                  <>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        cursor: "pointer",
+                      }}
                       onClick={() => {
-                        setDeleteDialogOpen(true);
-                        setSelectedResumeId(resume.id);
+                        try {
+                          starResume(resume.id);
+                          setStarResumeId(resume.id);
+                          enqueueSnackbar("Primary Resume Updated!", {
+                            variant: "success",
+                          });
+                        } catch (error) {
+                          enqueueSnackbar("Error updating Primary Resume!", {
+                            variant: "error",
+                          });
+                        }
                       }}
                     >
-                      <DeleteOutlinedIcon />
-                    </IconButton>
-                  </div>
+                      Star Mark
+                    </div>
+                    <div>
+                      <IconButton
+                        color="error"
+                        onClick={() => {
+                          setDeleteDialogOpen(true);
+                          setSelectedResumeId(resume.id);
+                        }}
+                      >
+                        <DeleteOutlinedIcon />
+                      </IconButton>
+                    </div>
+                  </>
                 )}
               </div>
             );
