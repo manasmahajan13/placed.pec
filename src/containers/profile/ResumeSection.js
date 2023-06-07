@@ -19,6 +19,7 @@ import StarIcon from "@mui/icons-material/Star";
 import { handleResumeUpload, deleteResume, starResume } from "../../api/resume";
 import { useSnackbar } from "notistack";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
+import { EditOutlined } from "@mui/icons-material";
 
 function ResumeSection({ refreshPage }) {
   const { enqueueSnackbar } = useSnackbar();
@@ -60,7 +61,7 @@ function ResumeSection({ refreshPage }) {
 
   const uploadResume = (file, name) => {
     setIsLoading(true);
-    handleResumeUpload(file, name, () => {
+    handleResumeUpload(file, name, setIsLoading, () => {
       setIsLoading(false);
       refreshPage();
       enqueueSnackbar("Resume uploaded successfully!", { variant: "success" });
@@ -115,8 +116,11 @@ function ResumeSection({ refreshPage }) {
                         cursor: "pointer",
                       }}
                     >
-                      <div
-                        style={{ cursor: "pointer", paddingRight: "16px" }}
+                      <IconButton>
+                        <EditOutlined></EditOutlined>
+                      </IconButton>
+                      <Button
+                        style={{ paddingLeft: "12px", paddingRight: "16px" }}
                         onClick={() => {
                           try {
                             starResume(resume.id);
@@ -132,7 +136,7 @@ function ResumeSection({ refreshPage }) {
                         }}
                       >
                         Star Mark
-                      </div>
+                      </Button>
                       <div>
                         <IconButton
                           color="error"
