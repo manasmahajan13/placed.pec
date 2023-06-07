@@ -11,11 +11,14 @@ import { db } from "../firebase-config";
 import { getDoc } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 
-export function handleResumeUpload(file, name, setIsLoading, onComplete) {
+export function handleResumeUpload(file, name, onComplete) {
   if (!file) {
     alert("Please upload a file first!");
-    setIsLoading(false);
-    return;
+    return false;
+  }
+  if(!name){
+    alert("Please enter a file name!");
+    return false;
   }
   const id = uuid();
   const storageRef = ref(storage, `/resume/${id}`);

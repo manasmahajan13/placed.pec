@@ -61,14 +61,20 @@ function ResumeSection({ refreshPage }) {
 
   const uploadResume = (file, name) => {
     setIsLoading(true);
-    handleResumeUpload(file, name, setIsLoading, () => {
-      setIsLoading(false);
-      refreshPage();
-      enqueueSnackbar("Resume uploaded successfully!", { variant: "success" });
-      setFile("");
-      setName("");
-      setAddResumeModalOpen(false);
-    });
+    try {
+      handleResumeUpload(file, name, () => {
+        refreshPage();
+        enqueueSnackbar("Resume uploaded successfully!", {
+          variant: "success",
+        });
+        setAddResumeModalOpen(false);
+      });
+    } catch (error) {
+
+    }
+        setIsLoading(false);
+        setFile("");
+        setName("");
   };
 
   return (
