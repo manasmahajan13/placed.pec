@@ -85,7 +85,11 @@ function ResumeSection({ refreshPage }) {
         {profileData.resume?.length ? (
           profileData.resume.map((resume) => {
             return (
-              <div className="resumeRow" key={resume.id}>
+              <div
+                className="resumeRow"
+                key={resume.id}
+                style={{ display: "flex" }}
+              >
                 <div
                   style={{
                     display: "flex",
@@ -110,32 +114,36 @@ function ResumeSection({ refreshPage }) {
                         alignItems: "center",
                         cursor: "pointer",
                       }}
-                      onClick={() => {
-                        try {
-                          starResume(resume.id);
-                          setStarResumeId(resume.id);
-                          enqueueSnackbar("Primary Resume Updated!", {
-                            variant: "success",
-                          });
-                        } catch (error) {
-                          enqueueSnackbar("Error updating Primary Resume!", {
-                            variant: "error",
-                          });
-                        }
-                      }}
                     >
-                      Star Mark
-                    </div>
-                    <div>
-                      <IconButton
-                        color="error"
+                      <div
+                        style={{ cursor: "pointer", paddingRight: "16px" }}
                         onClick={() => {
-                          setDeleteDialogOpen(true);
-                          setSelectedResumeId(resume.id);
+                          try {
+                            starResume(resume.id);
+                            setStarResumeId(resume.id);
+                            enqueueSnackbar("Primary Resume Updated!", {
+                              variant: "success",
+                            });
+                          } catch (error) {
+                            enqueueSnackbar("Error updating Primary Resume!", {
+                              variant: "error",
+                            });
+                          }
                         }}
                       >
-                        <DeleteOutlinedIcon />
-                      </IconButton>
+                        Star Mark
+                      </div>
+                      <div>
+                        <IconButton
+                          color="error"
+                          onClick={() => {
+                            setDeleteDialogOpen(true);
+                            setSelectedResumeId(resume.id);
+                          }}
+                        >
+                          <DeleteOutlinedIcon />
+                        </IconButton>
+                      </div>
                     </div>
                   </>
                 )}
