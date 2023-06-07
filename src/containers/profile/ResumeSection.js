@@ -77,6 +77,10 @@ function ResumeSection({ refreshPage }) {
         setName("");
   };
 
+  const editResumeName = (resume) => {
+    enqueueSnackbar("Functionality Inactive. Would be available soon!", {variant: "info"})
+  };
+
   return (
     <>
       <div className="profileResumeSection">
@@ -122,7 +126,8 @@ function ResumeSection({ refreshPage }) {
                         cursor: "pointer",
                       }}
                     >
-                      <IconButton>
+                      <IconButton onClick={() => {
+                        editResumeName(resume)}}>
                         <EditOutlined></EditOutlined>
                       </IconButton>
                       <Button
