@@ -148,26 +148,45 @@ export const createJobPosting = async (data, id) => {
 };
 
 export const listOfusersApplied = async (compId) => {
-  const jobRef = doc(db, "jobPostings", compId);
-  const jobSnap = await getDoc(jobRef);
-  const appliedUsers = jobSnap.data()["applications"];
-  const usersApplicant = [];
-  for (let i = 0; i < appliedUsers?.length; i++) {
-    const docRef = doc(db, "users", appliedUsers[i].userId);
-    const docSnap = await getDoc(docRef);
-    const name = docSnap.data()["fullName"];
-    const cgpa = docSnap.data()["cgpa"];
-    const sid = docSnap.data()["SID"];
-    const resume = appliedUsers[i].resume;
-    usersApplicant.push({
-      name: name,
-      resume: resume,
-      cgpa: cgpa,
-      SID: sid,
-      id: appliedUsers[i].userId,
+  // Previous implemented logic
+  // const jobRef = doc(db, "jobPostings", compId);
+  // const jobSnap = await getDoc(jobRef);
+  // const appliedUsers = jobSnap.data()["applications"];
+  // const usersApplicant = [];
+  // for (let i = 0; i < appliedUsers?.length; i++) {
+  //   const docRef = doc(db, "users", appliedUsers[i].userId);
+  //   const docSnap = await getDoc(docRef);
+  //   const name = docSnap.data()["fullName"];
+  //   const cgpa = docSnap.data()["cgpa"];
+  //   const sid = docSnap.data()["SID"];
+  //   const resume = appliedUsers[i].resume;
+  //   console.log(resume);
+  //   usersApplicant.push({
+  //     name: name,
+  //     resume: resume,
+  //     cgpa: cgpa,
+  //     SID: sid,
+  //     id: appliedUsers[i].userId,
+  //   });
+  // }
+  // return usersApplicant;
+
+
+  // new logic
+  var temp="statusListOfCompany."+compId;
+  var Query = query(
+    collection(db, "users"),
+    where(temp, "==", "applied"),
+    orderBy("SID", "asc"),
+  );
+  const jobSnap = await getDocs(Query);
+  const applicants = [];
+    jobSnap.docs.forEach((doc) => {
+      applicants.push(doc.data());  
+      console.log(doc.data());
     });
-  }
-  return usersApplicant;
+    return applicants;
+
 };
 
 export const applyJobs = async (compId, resumeUrl) => {

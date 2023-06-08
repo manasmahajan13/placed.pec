@@ -127,13 +127,16 @@ function AdminJobDetails() {
                       }}
                     />
                   </TableCell>
-                  <TableCell>{applicant.name}</TableCell>
+                  <TableCell>{applicant.fullName}</TableCell>
                   <TableCell>{applicant.cgpa}</TableCell>
                   <TableCell>
                     <ResumeSvg
                       height="20px"
                       width="20px"
-                      onClick={() => openInNewTab(applicant.resume)}
+                      onClick={() =>{
+                        console.log(typeof(applicant.resume));
+                        console.log(applicant.resume.url);
+                        openInNewTab(applicant.resume.url)}}
                       style={{ cursor: "pointer" }}
                     />
                   </TableCell>
@@ -188,7 +191,7 @@ function AdminJobDetails() {
                     return (
                       <TableRow className="applicantRow" key={applicant.id}>
                         <TableCell>{applicant.SID}</TableCell>
-                        <TableCell>{applicant.name}</TableCell>
+                        <TableCell>{applicant.fullName}</TableCell>
                         <TableCell>{applicant.cgpa}</TableCell>
                       </TableRow>
                     );
