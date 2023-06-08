@@ -107,7 +107,6 @@ function Signup() {
         const temp = findPlacementcycleId(batch, year);
         temp.then(async (result) => {
           updateDoc(userRef, { placementCycleId: result });
-          console.log("successful creation of user!", user);
           const placeRef = doc(db, "placementCycle", result);
           const placeSnap = await getDoc(placeRef);
           const usersPost = placeSnap.data()["users"];

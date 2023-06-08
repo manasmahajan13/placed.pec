@@ -103,7 +103,6 @@ function CreateJobPosting() {
     });
 
     jobDataToSubmit.eligibleCourses = eligibleCoursesArray;
-    console.log(jobDataToSubmit);
     try {
       createJobPosting(jobDataToSubmit, cycleid);
       enqueueSnackbar("Job created successfully", { variant: "success" });

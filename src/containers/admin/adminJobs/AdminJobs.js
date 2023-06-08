@@ -60,7 +60,6 @@ const AdminJobs = () => {
       firstPage ? null : lastDoc,
       currentCycle
     );
-    console.log(response)
     setLastDoc(response.lastDoc);
     if (firstPage) {
       setJobs(response.jobsList);

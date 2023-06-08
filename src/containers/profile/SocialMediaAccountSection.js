@@ -14,7 +14,7 @@ import "./profile.css";
 import EditIcon from "@mui/icons-material/Edit";
 import { useSelector } from "react-redux";
 
-function LinkedInDetails( {refreshPage} ) {
+function SocialMediaAccountSection( {refreshPage} ) {
   const [addLinkedInOpen, setAddLinkedInOpen] = useState(false);
   const [linkedinUpdateText, setLinkedinUpdateText] = useState("");
   const profileData = useSelector((state) => state.user.userData);
@@ -80,4 +80,4 @@ function LinkedInDetails( {refreshPage} ) {
   );
 }
 
-export default LinkedInDetails;
+export default SocialMediaAccountSection;

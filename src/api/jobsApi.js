@@ -58,7 +58,6 @@ export const getAllJobs = async (pageSize, lastDoc, currentCycle = "") => {
       jobsList.push(doc.data());
     
   });
-  // console.log(jobsList, currentCycle)
   const response = {
     lastDoc: documentSnapshots.docs[documentSnapshots.docs.length - 1],
     jobsList: jobsList,
@@ -70,7 +69,6 @@ export const getAllJobs = async (pageSize, lastDoc, currentCycle = "") => {
 export const getJobs = async (pageSize, lastDoc, currentCycle) => {
   try {
     var Query;
-    console.log(currentCycle);
     if(currentCycle == "all")
     {
       if (lastDoc) {
@@ -111,7 +109,6 @@ export const getJobs = async (pageSize, lastDoc, currentCycle) => {
     documentSnapshots.docs.forEach((doc) => {
       jobsList.push(doc.data());  
     });
-    console.log(jobsList);
     const response = {
       lastDoc: documentSnapshots.docs[documentSnapshots.docs.length - 1],
       jobsList: jobsList,

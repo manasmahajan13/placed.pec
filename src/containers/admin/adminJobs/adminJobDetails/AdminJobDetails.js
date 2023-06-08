@@ -168,7 +168,6 @@ function AdminJobDetails() {
                     selectedCandidateList.includes(applicant.id)
                   )
                   .map((applicant) => {
-                    console.log(applicant);
                     return (
                       <TableRow className="applicantRow" key={applicant.id}>
                         <TableCell>{applicant.SID}</TableCell>

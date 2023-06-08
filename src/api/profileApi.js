@@ -9,11 +9,9 @@ export const getProfile = async () => {
   try {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      // console.log("Document data:", docSnap.data());
       return docSnap.data();
     } else {
       // doc.data() will be undefined in this case
-      // console.log("No such document!");
       return "No such document!";
     }
   } catch (error) {
