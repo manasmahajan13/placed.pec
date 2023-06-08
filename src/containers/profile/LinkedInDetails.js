@@ -9,21 +9,28 @@ import {
   IconButton,
 } from "@mui/material";
 import React, { useState } from "react";
-import { updateProfile } from "../../api/profileApi";
+import { getProfile, updateProfile } from "../../api/profileApi";
 import "./profile.css";
 import EditIcon from "@mui/icons-material/Edit";
+import { useSelector } from "react-redux";
 
-function LinkedInDetails() {
+function LinkedInDetails( {refreshPage} ) {
   const [addLinkedInOpen, setAddLinkedInOpen] = useState(false);
   const [linkedinUpdateText, setLinkedinUpdateText] = useState("");
-  const handleUpdateLinkedIn = () => {
+  const profileData = useSelector((state) => state.user.userData);
+  const handleUpdateLinkedIn = async () => {
     updateProfile({ linkedin: linkedinUpdateText });
-    getProfileData();
+    getProfile();
+    await refreshPage();
     setLinkedinUpdateText("");
     setAddLinkedInOpen(false);
   };
   return (
     <>
+    <div className="profileSummarySection">
+        <div className="sectionHeaders">
+          <h3>Social Media Accounts and Profiles</h3>
+          </div>
       {profileData.linkedin ? (
         <div>
           <a href={profileData.linkedin}>{profileData.linkedin}</a>
@@ -36,13 +43,16 @@ function LinkedInDetails() {
             <EditIcon />
           </IconButton>
         </div>
-      ) : (
+        
+      )
+       : (
         <div>
           <Button onClick={() => setAddLinkedInOpen(true)}>
             Add you linkedIn account
           </Button>
         </div>
       )}
+      </div>
       <Dialog open={addLinkedInOpen} onClose={() => setAddLinkedInOpen(false)}>
         <DialogTitle>Add LinkedIn Account</DialogTitle>
         <DialogContent>

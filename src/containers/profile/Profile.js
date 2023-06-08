@@ -7,6 +7,7 @@ import ResumeSection from "./ResumeSection";
 import SummarySection from "./SummarySection";
 import { Avatar, Button, Skeleton, Switch } from "@mui/material";
 import { openInNewTab } from "../../helpers/UtilityFunctions";
+import LinkedInDetails from "./LinkedInDetails";
 
 export const branchMappings = {
   102: "Civil Engineering",
@@ -104,6 +105,9 @@ const Profile = () => {
         </div>
         <div className="profileSection shadowed">
           <ResumeSection refreshPage={refreshPage} />
+        </div>
+        <div className="profileSection shadowed">
+          <LinkedInDetails refreshPage={refreshPage}></LinkedInDetails>
         </div>
       </div>
     </div>
