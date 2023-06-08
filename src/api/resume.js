@@ -93,3 +93,18 @@ export async function deleteResume(id) {
     }
   }
 }
+
+export async function handleEditResumeName(name, selectedResumeId, onComplete) {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const docRef = doc(db, "users", user.uid);
+  const docSnap = await getDoc(docRef);
+  const resumeData = docSnap.data().resume;
+  resumeData.map((resumeItem) => {
+    if (resumeItem.id === selectedResumeId) {
+      resumeItem.name = name;
+      updateDoc(docRef, { resume: resumeData });
+      onComplete();
+    }
+  });
+};

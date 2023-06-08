@@ -16,14 +16,23 @@ import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import StarIcon from "@mui/icons-material/Star";
-import { handleResumeUpload, deleteResume, starResume } from "../../api/resume";
+import {
+  handleResumeUpload,
+  deleteResume,
+  starResume,
+  handleEditResumeName,
+} from "../../api/resume";
 import { useSnackbar } from "notistack";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { EditOutlined } from "@mui/icons-material";
+import { getAuth } from "firebase/auth";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase-config";
 
 function ResumeSection({ refreshPage }) {
   const { enqueueSnackbar } = useSnackbar();
   const profileData = useSelector((state) => state.user.userData);
+  const [editResumeNameModalOpen, setEditResumeNameModalOpen] = useState(false);
   const [addResumeModalOpen, setAddResumeModalOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedResumeId, setSelectedResumeId] = useState(null);
@@ -41,6 +50,7 @@ function ResumeSection({ refreshPage }) {
   useEffect(() => {
     setStarResumeId(profileData.primaryResume);
   }, [profileData]);
+
   const handleResumeDelete = async () => {
     if (selectedResumeId === profileData.primaryResume) {
       enqueueSnackbar("Primary resume cannot be deleted!", {
@@ -69,16 +79,28 @@ function ResumeSection({ refreshPage }) {
         });
         setAddResumeModalOpen(false);
       });
-    } catch (error) {
-
-    }
-        setIsLoading(false);
-        setFile("");
-        setName("");
+    } catch (error) {}
+    setIsLoading(false);
+    setFile("");
+    setName("");
   };
 
-  const editResumeName = (resume) => {
-    enqueueSnackbar("Functionality Inactive. Would be available soon!", {variant: "info"})
+  const EditResumeName = async () => {
+    try {
+      await handleEditResumeName(name, selectedResumeId, async () => {
+        await refreshPage();
+        enqueueSnackbar("Resume name updated successfully.", {
+          variant: "success",
+        });
+        setEditResumeNameModalOpen(false);
+        setSelectedResumeId("");
+        setName("");
+      });
+    } catch {
+      enqueueSnackbar("Cannot Update Resume Name.", {
+        variant: "error",
+      });
+    }
   };
 
   return (
@@ -126,8 +148,13 @@ function ResumeSection({ refreshPage }) {
                         cursor: "pointer",
                       }}
                     >
-                      <IconButton onClick={() => {
-                        editResumeName(resume)}}>
+                      <IconButton
+                        onClick={() => {
+                          setEditResumeNameModalOpen(true);
+                          setSelectedResumeId(resume.id);
+                          setName(resume.name);
+                        }}
+                      >
                         <EditOutlined></EditOutlined>
                       </IconButton>
                       <Button
@@ -266,6 +293,55 @@ function ResumeSection({ refreshPage }) {
           </Button>
           <Button onClick={handleResumeDelete}>Yes</Button>
         </DialogActions>
+      </Dialog>
+      <Dialog
+        open={editResumeNameModalOpen}
+        onClose={() => {
+          setEditResumeNameModalOpen(false);
+          setName("");
+        }}
+      >
+        <DialogTitle>Edit Resume Name</DialogTitle>
+        <DialogContent>
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "400px",
+            }}
+          >
+            <br />
+            <h3>Enter new name</h3>
+            <TextField
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+            />
+            <br />
+            <div>
+              <Button
+                onClick={() => {
+                  setEditResumeNameModalOpen(false);
+                  setName("");
+                  setSelectedResumeId(null);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  EditResumeName();
+                }}
+                variant="contained"
+              >
+                Save
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
       </Dialog>
     </>
   );
