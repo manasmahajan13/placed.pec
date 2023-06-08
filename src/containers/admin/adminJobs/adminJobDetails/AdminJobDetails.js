@@ -51,19 +51,36 @@ function AdminJobDetails() {
         <Button
           onClick={() => {
             const jobDocRef = doc(db, "jobPostings", id);
-            const jobData = {
-              selectedCandidates: selectedCandidateList,
-            };
+            if (!selectedCandidateList.length) {
+              enqueueSnackbar("No Applicant Marked as Selected!", {
+                variant: "warning",
+              });
+            } else {
+              try {
+                const jobData = {
+                  selectedCandidates: selectedCandidateList,
+                };
 
-            updateDoc(jobDocRef, jobData);
-            selectedCandidateList.forEach((candidate) => {
-              const candidateDocRef = doc(db, "users", candidate);
-              const candidateData = {
-                selectedCompany: id,
-              };
-              updateDoc(candidateDocRef, candidateData);
-            });
-            enqueueSnackbar("Successfully applied", { variant: "success" });
+                updateDoc(jobDocRef, jobData);
+                selectedCandidateList.forEach((candidate) => {
+                  const candidateDocRef = doc(db, "users", candidate);
+                  const candidateData = {
+                    selectedCompany: id,
+                  };
+                  updateDoc(candidateDocRef, candidateData);
+                });
+                enqueueSnackbar(
+                  "Selected Candidates List Updated Sucessfully!",
+                  {
+                    variant: "success",
+                  }
+                );
+              } catch (error) {
+                enqueueSnackbar("Some Problem Encountered. Please try again!", {
+                  variant: "error",
+                });
+              }
+            }
           }}
         >
           Set as Selected
