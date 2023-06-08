@@ -94,6 +94,11 @@ export async function deleteResume(id) {
 }
 
 export async function handleEditResumeName(name, selectedResumeId, onComplete) {
+  if(!name) 
+  {
+    alert("Input field cannot be empty!");
+    return false;
+  }
   try {
     const auth = getAuth();
     const user = auth.currentUser;

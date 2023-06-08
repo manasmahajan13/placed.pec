@@ -7,6 +7,7 @@ import {
   TextField,
   IconButton,
   CircularProgress,
+  DialogContentText,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { openInNewTab } from "../../helpers/UtilityFunctions";
@@ -303,25 +304,22 @@ function ResumeSection({ refreshPage }) {
       >
         <DialogTitle>Edit Resume Name</DialogTitle>
         <DialogContent>
-          <div
-            style={{
-              display: "flex",
-              width: "100%",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "400px",
-            }}
-          >
             <br />
-            <h3>Enter new name</h3>
+            <DialogContentText>Enter new name</DialogContentText>
+            <br></br>
             <TextField
+            autoFocus
+            id="summary"
+            multiline
+            sx={{ width: "400px" }}
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
               }}
             />
+              </DialogContent>
             <br />
-            <div>
+            <DialogActions>
               <Button
                 onClick={() => {
                   setEditResumeNameModalOpen(false);
@@ -339,9 +337,7 @@ function ResumeSection({ refreshPage }) {
               >
                 Save
               </Button>
-            </div>
-          </div>
-        </DialogContent>
+            </DialogActions>
       </Dialog>
     </>
   );
