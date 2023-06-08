@@ -16,7 +16,7 @@ export function handleResumeUpload(file, name, onComplete) {
     alert("Please upload a file first!");
     return false;
   }
-  if(!name){
+  if (!name) {
     alert("Please enter a file name!");
     return false;
   }
@@ -49,7 +49,7 @@ export function handleResumeUpload(file, name, onComplete) {
         });
         updateDoc(docRef, {
           resume: resumeData,
-        }).then(()=>{
+        }).then(() => {
           onComplete();
         });
       });
@@ -72,7 +72,6 @@ async function deleteRefFromStorage(id) {
   } catch (error) {
     throw error;
   }
-  
 }
 
 export async function deleteResume(id) {
@@ -95,16 +94,20 @@ export async function deleteResume(id) {
 }
 
 export async function handleEditResumeName(name, selectedResumeId, onComplete) {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  const docRef = doc(db, "users", user.uid);
-  const docSnap = await getDoc(docRef);
-  const resumeData = docSnap.data().resume;
-  resumeData.map((resumeItem) => {
-    if (resumeItem.id === selectedResumeId) {
-      resumeItem.name = name;
-      updateDoc(docRef, { resume: resumeData });
-      onComplete();
-    }
-  });
-};
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+    const resumeData = docSnap.data().resume;
+    resumeData.map((resumeItem) => {
+      if (resumeItem.id === selectedResumeId) {
+        resumeItem.name = name;
+        updateDoc(docRef, { resume: resumeData });
+        onComplete();
+      }
+    });
+  } catch (error) {
+    throw error;
+  }
+}
