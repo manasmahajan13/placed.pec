@@ -134,9 +134,7 @@ function AdminJobDetails() {
                       height="20px"
                       width="20px"
                       onClick={() =>{
-                        console.log(typeof(applicant.resume));
-                        console.log(applicant.resume.url);
-                        openInNewTab(applicant.resume.url)}}
+                        openInNewTab(applicant.resume)}}
                       style={{ cursor: "pointer" }}
                     />
                   </TableCell>

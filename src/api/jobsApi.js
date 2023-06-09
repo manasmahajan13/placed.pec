@@ -148,7 +148,7 @@ export const createJobPosting = async (data, id) => {
 };
 
 export const listOfusersApplied = async (compId) => {
-  // Previous implemented logic
+  // Previous implemented logic -> multiple backend calls
   // const jobRef = doc(db, "jobPostings", compId);
   // const jobSnap = await getDoc(jobRef);
   // const appliedUsers = jobSnap.data()["applications"];
@@ -172,18 +172,26 @@ export const listOfusersApplied = async (compId) => {
   // return usersApplicant;
 
 
-  // new logic
+  // new logic -> only 2 backend calls
   var temp="statusListOfCompany."+compId;
   var Query = query(
     collection(db, "users"),
     where(temp, "==", "applied"),
     orderBy("SID", "asc"),
   );
-  const jobSnap = await getDocs(Query);
+  const jobRef = doc(db, "jobPostings", compId);
+  const jobSnap = await getDoc(jobRef);
+  const appliedUsers = jobSnap.data()["applications"];
+  const userSnap = await getDocs(Query);
   const applicants = [];
-    jobSnap.docs.forEach((doc) => {
-      applicants.push(doc.data());  
-      console.log(doc.data());
+    userSnap.docs.forEach((doc) => {
+      applicants.push(doc.data());
+      appliedUsers.forEach((user) => {
+        if(user.userId == doc.id)
+        {
+          applicants[applicants.length-1].resume=user.resume;
+        }
+      })
     });
     return applicants;
 
