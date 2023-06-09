@@ -177,7 +177,6 @@ export const listOfusersApplied = async (compId) => {
   var Query = query(
     collection(db, "users"),
     where(temp, "==", "applied"),
-    orderBy("SID", "asc"),
   );
   const jobRef = doc(db, "jobPostings", compId);
   const jobSnap = await getDoc(jobRef);
