@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getJobDetails, listOfusersApplied } from "../../../../api/jobsApi.js";
+import { getJobDetails, listOfSelectedCandidates, listOfusersApplied } from "../../../../api/jobsApi.js";
 import "./AdminJobDetails.css";
 import { ReactComponent as ResumeSvg } from "../../../../assets/svg/file-icon.svg";
 import { openInNewTab } from "../../../../helpers/UtilityFunctions.js";
@@ -21,6 +21,7 @@ import { HeaderTableCell } from "../../../jobs/Jobs.js";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../../firebase-config.js";
 import { useSnackbar } from "notistack";
+import { set } from "date-fns";
 
 function AdminJobDetails() {
   const { id } = useParams();
@@ -29,6 +30,7 @@ function AdminJobDetails() {
   const [jobDetails, setJobDetails] = useState([]);
   const [selectedCandidateList, setSelectedCandidateList] = useState([]);
   const [selectedDialogOpen, setSelectedDialogOpen] = useState(false);
+  const [offeredCandidates, setOfferedCandidates] = useState([]);
 
   const getApplicants = async () => {
     const applicantsList = await listOfusersApplied(id);
@@ -36,6 +38,11 @@ function AdminJobDetails() {
     setApplicants(applicantsList);
     setJobDetails(details);
   };
+
+  const getOfferedApplicants = async () => {
+    const offeredList = await listOfSelectedCandidates(id);
+    setOfferedCandidates(offeredList);
+  }
 
   useEffect(() => {
     getApplicants();
@@ -146,7 +153,8 @@ function AdminJobDetails() {
       </TableContainer>
       <Button
         variant="contained"
-        onClick={() => {
+        onClick={ async () => {
+          await getOfferedApplicants();
           setSelectedDialogOpen(true);
         }}
         style={{ margin: "16px 0px" }}
@@ -181,9 +189,10 @@ function AdminJobDetails() {
                     </TableCell>
                   </TableRow>
                 )}
-                {applicants
+                {
+                applicants
                   .filter((applicant) =>
-                    selectedCandidateList.includes(applicant.id)
+                    offeredCandidates.includes(applicant.id)
                   )
                   .map((applicant) => {
                     return (

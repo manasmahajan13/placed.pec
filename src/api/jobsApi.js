@@ -197,6 +197,13 @@ export const listOfusersApplied = async (compId) => {
 
 };
 
+export const listOfSelectedCandidates = async (compId) => {
+  const jobRef = doc(db, "jobPostings", compId);
+  const jobSnap = await getDoc(jobRef);
+  const offeredUsersList = jobSnap.data()["selectedCandidates"];
+  return offeredUsersList;
+}
+
 export const applyJobs = async (compId, resumeUrl) => {
   //users
   const auth = getAuth();
