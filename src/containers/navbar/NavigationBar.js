@@ -72,7 +72,7 @@ function NavBar(props) {
       await logout();
       navigate("/login");
     } catch (error) {
-      console.log(error.message);
+      throw error;
     }
   };
 

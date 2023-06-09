@@ -185,6 +185,7 @@ export const listOfusersApplied = async (compId) => {
   const applicants = [];
     userSnap.docs.forEach((doc) => {
       applicants.push(doc.data());
+      applicants[applicants.length-1].id=doc.id;
       appliedUsers.forEach((user) => {
         if(user.userId == doc.id)
         {

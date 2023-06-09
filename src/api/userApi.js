@@ -19,7 +19,6 @@ export async function fetchUsers() {
     });
     return users;
   } catch (err) {
-    console.log(err);
     throw err;
   }
 }

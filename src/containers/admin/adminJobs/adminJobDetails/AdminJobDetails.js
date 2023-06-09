@@ -60,7 +60,7 @@ function AdminJobDetails() {
                 const jobData = {
                   selectedCandidates: selectedCandidateList,
                 };
-
+                console.log(selectedCandidateList);
                 updateDoc(jobDocRef, jobData);
                 selectedCandidateList.forEach((candidate) => {
                   const candidateDocRef = doc(db, "users", candidate);

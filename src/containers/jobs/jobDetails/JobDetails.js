@@ -83,7 +83,7 @@ const JobDetails = () => {
       await fetchJobDetails();
       await getProfileData();
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   };
 
