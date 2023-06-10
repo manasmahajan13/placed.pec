@@ -8,9 +8,10 @@ import {
   TableHead,
   Select,
   MenuItem,
-  InputLabel
+  InputLabel,
 } from "@mui/material";
 import { doc, updateDoc } from "firebase/firestore";
+import { useSnackbar } from "notistack";
 import React, { useRef, useState } from "react";
 import { useEffect } from "react";
 import { fetchUsers } from "../../../api/userApi";
@@ -18,13 +19,14 @@ import { db } from "../../../firebase-config";
 import { HeaderTableCell } from "../../jobs/Jobs";
 import { branchMappings } from "../../profile/Profile";
 import { coursesList } from "../adminJobs/CreateJobPosting";
-import "./studentCG.css"
+import "./studentCG.css";
 
 const StudentCG = () => {
   const [userData, setUserData] = useState([]);
   const [cgpaUpdateMessage, setCgpaUpdateMessage] = useState("");
   const [branch, setBranch] = useState(coursesList[0]);
   const inputRefs = useRef([]);
+  const { enqueueSnackbar } = useSnackbar();
 
   const fetchUsersData = async () => {
     const response = await fetchUsers();
@@ -74,13 +76,14 @@ const StudentCG = () => {
               <HeaderTableCell>Student ID</HeaderTableCell>
               <HeaderTableCell>Name</HeaderTableCell>
               <HeaderTableCell align="right">CGPA</HeaderTableCell>
-              {/* <HeaderTableCell align="right"></HeaderTableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
             {userData.length == 0 && (
               <TableRow>
-                <TableCell colSpan={3} align="center">No users found</TableCell>
+                <TableCell colSpan={3} align="center">
+                  No users found
+                </TableCell>
               </TableRow>
             )}
             {userData.map((user, index) => {
@@ -96,13 +99,47 @@ const StudentCG = () => {
                       placeholder={user.cgpa}
                       onKeyDown={(event) => {
                         if (event.code === "Enter") {
-                          const docRef = doc(db, "users", user.id);
-                          const data = {
-                            cgpa: event.target.value,
-                          };
-                          updateDoc(docRef, data);
-                          // setCgpaUpdateMessage("CGPA Updated.");
-                          inputRefs.current[index + 1].focus();
+                          const re = /^\d+(\.\d{1,2})?$/;
+                          if (event.target.value === "" || re.test(event.target.value)) {
+                          } else {
+                            enqueueSnackbar("CGPA must lie in the range 1.0 to 10.0. Maximum 2 decimal places allowed.", {variant: "info"});
+                            enqueueSnackbar(
+                              "Please Enter a valid CGPA.", {variant: "error"}
+                            );
+                            return;
+                          }
+                          if (event.target.value < 1.0 || event.target.value > 10.0) {
+                            enqueueSnackbar("CGPA must lie in the range 1.0 to 10.0. Maximum 2 decimal places allowed.", {variant: "info"});
+                            enqueueSnackbar(
+                              "Please Enter a valid CGPA.", {variant: "error"}
+                            );
+                            return;
+                          }
+                          try {
+                            const docRef = doc(db, "users", user.id);
+                            const data = {
+                              cgpa: event.target.value,
+                            };
+                            updateDoc(docRef, data);
+                            enqueueSnackbar(
+                              "CGPA updated for " +
+                                user.SID +
+                                " " +
+                                user.fullName +
+                                " successfully!",
+                              { variant: "success" }
+                            );
+                            inputRefs.current[index + 1].focus();
+                          } catch (error) {
+                            enqueueSnackbar(
+                              "Error updating CGPA for " +
+                                user.SID +
+                                " " +
+                                user.fullName,
+                              { variant: "error" }
+                            );
+                            return;
+                          }
                         }
                       }}
                     />

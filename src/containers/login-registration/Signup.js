@@ -66,14 +66,14 @@ function Signup() {
     } else {
       setCgpa("");
       setsignupErrorCode(
-        "Please Enter a valid CGPA. CGPA must lie in the range 1.0 to 10.0"
+        "Please Enter a valid CGPA. CGPA must lie in the range 1.0 to 10.0.  Maximum 2 decimal places allowed"
       );
       return;
     }
     if (cgpa < 1.0 || cgpa > 10.0) {
       setCgpa("");
       setsignupErrorCode(
-        "Please Enter a valid CGPA. CGPA must lie in the range 1.0 to 10.0"
+        "Please Enter a valid CGPA. CGPA must lie in the range 1.0 to 10.0.  Maximum 2 decimal places allowed."
       );
       return;
     }
