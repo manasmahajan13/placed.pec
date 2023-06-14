@@ -5,6 +5,7 @@ import { db } from "./firebase-config";
 
 export default function PublicElement({ children }) {
   const [renderChildren, setRenderChildren] = useState(<><div>Checking Authorization. Please Wait.</div></>);
+      const currentUrl = window.location.pathname;
   useEffect(() => {
     const fetchData = async () => {
       const auth = getAuth();
@@ -22,6 +23,6 @@ export default function PublicElement({ children }) {
       }
     };
     fetchData();
-  }, []);
+  }, [currentUrl]);
   return renderChildren;
 }
