@@ -21,6 +21,7 @@ import { Provider } from "react-redux";
 import ResetPassword from "./containers/login-registration/ResetPassword";
 import PlacementCycle from "./containers/admin/placementCycle/PlacementCycle";
 import CreatePlacementCycle from "./containers/admin/placementCycle/CreatePlacementCycle";
+import PublicElement from "./PublicElement";
 
 
 function App() {
@@ -35,12 +36,52 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 {/* <Route path="/signup/user-data" element={<SignupUserData />} /> */}
-                <Route element={<NavBar />}>
-                  <Route element={<RequireAuth />}>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/jobs" element={<Jobs />} />
-                    <Route path="/jobs/:id" element={<JobDetails />} />
-                    <Route path="/profile" element={<Profile />} />
+                <Route
+                  element={
+                    <PublicElement>
+                      <NavBar />
+                    </PublicElement>
+                  }
+                >
+                  <Route
+                    element={
+                      <PublicElement>
+                        <RequireAuth />
+                      </PublicElement>
+                    }
+                  >
+                    <Route
+                      path="/"
+                      element={
+                        <PublicElement>
+                          <Home />
+                        </PublicElement>
+                      }
+                    />
+                    <Route
+                      path="/jobs"
+                      element={
+                        <PublicElement>
+                          <Jobs />
+                        </PublicElement>
+                      }
+                    />
+                    <Route
+                      path="/jobs/:id"
+                      element={
+                        <PublicElement>
+                          <JobDetails />
+                        </PublicElement>
+                      }
+                    />
+                    <Route
+                      path="/profile"
+                      element={
+                        <PublicElement>
+                          <Profile />
+                        </PublicElement>
+                      }
+                    />
                   </Route>
 
                   <Route element={<RequireAuth />}>
