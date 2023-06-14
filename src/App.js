@@ -21,8 +21,7 @@ import { Provider } from "react-redux";
 import ResetPassword from "./containers/login-registration/ResetPassword";
 import PlacementCycle from "./containers/admin/placementCycle/PlacementCycle";
 import CreatePlacementCycle from "./containers/admin/placementCycle/CreatePlacementCycle";
-import PublicElement from "./PublicElement";
-
+import StudentPanel from "./containers/student/StudentPanel";
 
 function App() {
   return (
@@ -36,60 +35,23 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 {/* <Route path="/signup/user-data" element={<SignupUserData />} /> */}
-                <Route
-                  element={
-                    <PublicElement>
-                      <NavBar />
-                    </PublicElement>
-                  }
-                >
-                  <Route
-                    element={
-                      <PublicElement>
-                        <RequireAuth />
-                      </PublicElement>
-                    }
-                  >
-                    <Route
-                      path="/"
-                      element={
-                        <PublicElement>
-                          <Home />
-                        </PublicElement>
-                      }
-                    />
-                    <Route
-                      path="/jobs"
-                      element={
-                        <PublicElement>
-                          <Jobs />
-                        </PublicElement>
-                      }
-                    />
-                    <Route
-                      path="/jobs/:id"
-                      element={
-                        <PublicElement>
-                          <JobDetails />
-                        </PublicElement>
-                      }
-                    />
-                    <Route
-                      path="/profile"
-                      element={
-                        <PublicElement>
-                          <Profile />
-                        </PublicElement>
-                      }
-                    />
+                <Route element={<RequireAuth />}>
+                  <Route element={<StudentPanel />}>
+                    <Route element={<NavBar />}>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/jobs" element={<Jobs />} />
+                      <Route path="/jobs/:id" element={<JobDetails />} />
+                      <Route path="/profile" element={<Profile />} />
+                    </Route>
                   </Route>
-
-                  <Route element={<RequireAuth />}>
-                    <Route element={<AdminPanel />}>
-                      {/* <Route
+                </Route>
+                <Route element={<RequireAuth />}>
+                  <Route element={<AdminPanel />}>
+                    <Route element={<NavBar />}>
+                      <Route
                         path="/admin/dashboard"
                         element={<AdminDashboard />}
-                      /> */}
+                      />
                       <Route path="/admin/jobs" element={<AdminJobs />} />
                       <Route
                         path="/admin/placementCycle"
