@@ -29,7 +29,7 @@ function Login(props) {
       const currentUser = auth.currentUser;
       let docRef = doc(db, "users", currentUser.uid);
       let docSnap = await getDoc(docRef);
-      if (docSnap.data().userType == "student") {
+      if (docSnap && docSnap.data().userType == "student") {
         navigate(from, { replace: true });
       }
       else{

@@ -17,7 +17,7 @@ export default function PublicElement() {
           const user = auth.currentUser;
           const docRef = doc(db, "users", user.uid);
           const docSnap = await getDoc(docRef);
-          if (docSnap.data().userType == "student") {
+          if (docSnap.data() && docSnap.data().userType == "student") {
             setRenderChildren(
                 <Outlet />
             );
