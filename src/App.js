@@ -22,6 +22,7 @@ import ResetPassword from "./containers/login-registration/ResetPassword";
 import PlacementCycle from "./containers/admin/placementCycle/PlacementCycle";
 import CreatePlacementCycle from "./containers/admin/placementCycle/CreatePlacementCycle";
 import StudentPanel from "./containers/student/StudentPanel";
+import AdminLogin from "./containers/admin/adminLogin/AdminLogin";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
                     </Route>
                   </Route>
                 </Route>
+                <Route path="/admin/login" element={<AdminLogin />} />
                 <Route element={<RequireAuth />}>
                   <Route element={<AdminPanel />}>
                     <Route element={<NavBar />}>

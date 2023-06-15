@@ -18,14 +18,13 @@ export default function PublicElement() {
           const docRef = doc(db, "users", user.uid);
           const docSnap = await getDoc(docRef);
           if (docSnap.data().userType == "student") {
-            console.log("d");
             setRenderChildren(
                 <Outlet />
             );
           } else {
             setRenderChildren(
               <>
-                <div>You are NOT AUTHORISED to view this webpage.</div>
+                <div style={{ color: "red" }}>You are <b>NOT AUTHORISED</b> to view this webpage.</div>
               </>
             );
           }
