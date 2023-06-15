@@ -6,17 +6,9 @@ import FormControl from "@mui/material/FormControl";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../../firebase-config";
 import { collection, doc, setDoc } from "firebase/firestore";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
 
 export default function CreateAdminUsers() {
   const [fullName, setFullName] = useState("");
@@ -25,9 +17,8 @@ export default function CreateAdminUsers() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [createAdminUserCode, setCreateAdminUserCode] = useState("");
 
+  const navigate = useNavigate();
   const submitData = async () => {
-    // const auth = getAuth();
-    
     if (password !== confirmPassword) {
       setCreateAdminUserCode("Passwords do not match");
       return;
@@ -47,8 +38,7 @@ export default function CreateAdminUsers() {
         const usersRef = collection(db, "adminUsers");
         setDoc(doc(db, "adminUsers", user.uid), data);
         const userRef = doc(db, "adminUsers", user.uid);
-        alert("all well");
-        // Navigate("/admin/createAdminUsers");
+        navigate("/admin/createAdminUsers");
       })
       .catch((error) => {
         switch (error.code) {
