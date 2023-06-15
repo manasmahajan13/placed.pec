@@ -23,6 +23,7 @@ import PlacementCycle from "./containers/admin/placementCycle/PlacementCycle";
 import CreatePlacementCycle from "./containers/admin/placementCycle/CreatePlacementCycle";
 import StudentPanel from "./containers/student/StudentPanel";
 import AdminLogin from "./containers/admin/adminLogin/AdminLogin";
+import CreateAdminUsers from "./containers/admin/createAdminUsers/CreateAdminUsers";
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
                         path="/admin/placementCycle/create-new"
                         element={<CreatePlacementCycle />}
                       />
+                      <Route path="/admin/createAdminUsers" element={<CreateAdminUsers />} />
                     </Route>
                   </Route>
                 </Route>

@@ -59,7 +59,7 @@ export default function PlacementCycle() {
           <TableBody>
             {cycleList.map((item) => {
               return (
-                <TableRow>
+                <TableRow key={`${item.id}`}>
                   <TableCell>{item.year}</TableCell>
                   <TableCell>{item.batch}</TableCell>
                   <TableCell>{item.type}</TableCell>

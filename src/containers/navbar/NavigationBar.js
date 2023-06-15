@@ -27,6 +27,10 @@ const adminTabs = [
     displayName: "Placement Cycle",
     link: "/admin/placementCycle"
   },
+  {
+    displayName: "Create Admin User",
+    link: "/admin/createAdminUsers"
+  }
 ];
 
 const userTabs = [
