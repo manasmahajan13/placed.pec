@@ -129,7 +129,6 @@ function Signup() {
           default:
             setsignupErrorCode(error.message);
         }
-        console.log(error);
       });
   };
 
