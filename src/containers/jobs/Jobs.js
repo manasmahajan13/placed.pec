@@ -107,7 +107,7 @@ const Jobs = () => {
               <JobProfile jobData={jobs} />
               {loading &&
                 [...Array(PAGE_SIZE)].map((e, i) => (
-                  <TableRow>
+                  <TableRow key={i}>
                     <TableCell>
                       <Skeleton width="100%" height="100%" />
                     </TableCell>
