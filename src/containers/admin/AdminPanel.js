@@ -19,9 +19,9 @@ export default function AdminPanel() {
     const fetchData = async () => {
       const auth = getAuth();
       const user = auth.currentUser;
-      const docRef = doc(db, "users", user.uid);
+      const docRef = doc(db, "adminUsers", user.uid);
       const docSnap = await getDoc(docRef);
-      if (docSnap.data().userType == "admin") {
+      if (docSnap.data() && docSnap.data().userType == "admin") {
         setRenderChildren(
             <Outlet />
         );
