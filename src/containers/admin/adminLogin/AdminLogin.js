@@ -3,11 +3,10 @@ import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../../contexts/AuthContext";
+import { db } from "../../../firebase-config";
 
-import { useAuth } from "../../contexts/AuthContext";
-import { db } from "../../firebase-config";
-
-function Login(props) {
+function AdminLogin(props) {
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
@@ -16,10 +15,10 @@ function Login(props) {
   const [loading, setLoading] = useState(false);
 
   const { signIn } = useAuth();
-
+    
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/admin/dashboard";
 
   const login = async () => {
     try {
@@ -27,13 +26,13 @@ function Login(props) {
       await signIn(loginEmail, loginPassword);
       const auth = getAuth();
       const currentUser = auth.currentUser;
-      let docRef = doc(db, "users", currentUser.uid);
+      let docRef = doc(db, "users", currentUser.uid); // change "users" to adminData
       let docSnap = await getDoc(docRef);
-      if (docSnap.data().userType == "student") {
+      if (docSnap.data().userType == "admin") {
         navigate(from, { replace: true });
       }
       else{
-        setLoginCodeMessage("Not a student account. Kindly login on admin's login Page.")
+        setLoginCodeMessage("You are not authorised to login here. Kindly login on student's login Page.")
       }
     } catch (error) {
       switch (error.code) {
@@ -50,18 +49,18 @@ function Login(props) {
           setLoginCodeMessage(error.message);
       }
     }
-    
+
     setLoading(false);
   };
 
   return (
     <div className="loginContainer">
       <div className="homeImg">
-        <img src={require("../../assets/images/pec-home.jpg")} />
+        <img src={require("../../../assets/images/pec-home.jpg")} />
       </div>
       <div className="loginDialogContainer">
         <div className="loginDialog">
-          <h1>Sign in</h1>
+          <h1>Admin Sign in</h1>
           <TextField
             id="email"
             label="Email"
@@ -88,9 +87,6 @@ function Login(props) {
           </Button>
           <p style={{ color: "red" }}>{loginCodeMessage}</p>
           <div>
-            Don't have an account yet? <Link to="/signup">Sign Up</Link> instead
-          </div>
-          <div>
             Forgot Password? <Link to="/reset-password">Reset</Link>
           </div>
         </div>
@@ -99,4 +95,4 @@ function Login(props) {
   );
 }
 
-export default Login;
+export default AdminLogin;

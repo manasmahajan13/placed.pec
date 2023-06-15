@@ -70,7 +70,7 @@ function NavBar(props) {
   const logoutFunction = async () => {
     try {
       await logout();
-      navigate("/login");
+      location.pathname.includes("admin") ? navigate("/admin/login") : navigate("/login");
     } catch (error) {
       throw error;
     }
