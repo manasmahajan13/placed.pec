@@ -19,7 +19,7 @@ export default function SignupUserData() {
   return (
     <div className="signupContainer">
       <div className="homeImg">
-        <img src={require("../../assets/images/pec-home.jpg")} />
+        <img src={require("../../../assets/images/pec-home.jpg")} />
       </div>
       <div className="signupDialogContainer">
         <div className="signupDialog">

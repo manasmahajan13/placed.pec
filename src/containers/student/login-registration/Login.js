@@ -57,7 +57,7 @@ function Login(props) {
   return (
     <div className="loginContainer">
       <div className="homeImg">
-        <img src={require("../../assets/images/pec-home.jpg")} />
+        <img src={require("../../../assets/images/pec-home.jpg")} />
       </div>
       <div className="loginDialogContainer">
         <div className="loginDialog">
