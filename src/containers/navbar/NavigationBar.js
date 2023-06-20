@@ -37,7 +37,7 @@ const userTabs = [
   {
     displayName: "Home",
     // icon: <HomeOutlinedIcon />,
-    link: "/",
+    link: "/home",
   },
   {
     displayName: "Jobs",

@@ -40,7 +40,7 @@ function App() {
                 <Route element={<RequireAuth />}>
                   <Route element={<StudentPanel />}>
                     <Route element={<NavBar />}>
-                      <Route path="/" element={<Home />} />
+                      <Route path="/home" element={<Home />} />
                       <Route path="/jobs" element={<Jobs />} />
                       <Route path="/jobs/:id" element={<JobDetails />} />
                       <Route path="/profile" element={<Profile />} />

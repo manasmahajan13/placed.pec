@@ -19,7 +19,7 @@ function Login(props) {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/home";
 
   const login = async () => {
     try {

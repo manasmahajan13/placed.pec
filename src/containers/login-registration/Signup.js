@@ -114,7 +114,7 @@ function Signup() {
           usersPost.push(user.uid);
           updateDoc(placeRef, {users : usersPost});
         });
-        navigate("/");
+        navigate("/home");
       })
       .catch((error) => {
         switch (error.code) {
