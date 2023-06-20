@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Button, TextField } from "@mui/material";
-import { resetPassword } from "../../api/userApi";
+import { resetPassword } from "../../../api/userApi";
 
 function ResetPassword() {
   const [registerEmail, setRegisterEmail] = useState("");

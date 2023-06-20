@@ -4,8 +4,8 @@ import { doc, getDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
-import { useAuth } from "../../contexts/AuthContext";
-import { db } from "../../firebase-config";
+import { useAuth } from "../../../contexts/AuthContext";
+import { db } from "../../../firebase-config";
 
 function Login(props) {
   const [loginEmail, setLoginEmail] = useState("");

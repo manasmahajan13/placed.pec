@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import {getAuth} from "firebase/auth"; 
 import {collection,doc,setDoc} from "firebase/firestore"
-import {db} from "../../firebase-config"
+import {db} from "../../../firebase-config"
 
 export default function SignupUserData() {
 

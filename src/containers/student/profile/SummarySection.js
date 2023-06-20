@@ -9,7 +9,7 @@ import {
   IconButton,
 } from "@mui/material";
 import React, { useState } from "react";
-import { updateProfile } from "../../api/profileApi";
+import { updateProfile } from "../../../api/profileApi";
 import { useSelector } from "react-redux";
 import "./profile.css";
 

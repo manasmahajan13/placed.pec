@@ -17,7 +17,7 @@ import { useEffect } from "react";
 import { fetchUsers } from "../../../api/userApi";
 import { db } from "../../../firebase-config";
 import { HeaderTableCell } from "../../jobs/Jobs";
-import { branchMappings } from "../../profile/Profile";
+import { branchMappings } from "../../student/profile/Profile";
 import { coursesList } from "../adminJobs/CreateJobPosting";
 import "./studentCG.css";
 

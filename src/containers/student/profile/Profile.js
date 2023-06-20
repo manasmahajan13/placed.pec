@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { getProfile } from "../../api/profileApi";
+import { getProfile } from "../../../api/profileApi";
 import { useSelector, useDispatch } from "react-redux";
 import "./profile.css";
-import { setUserData } from "../../redux/slice/user.slice";
+import { setUserData } from "../../../redux/slice/user.slice";
 import ResumeSection from "./ResumeSection";
 import SummarySection from "./SummarySection";
 import { Avatar, Button, Skeleton, Switch } from "@mui/material";
-import { openInNewTab } from "../../helpers/UtilityFunctions";
+import { openInNewTab } from "../../../helpers/UtilityFunctions";
 import SocialMediaAccountSection from "./SocialMediaAccountSection";
 
 export const branchMappings = {

@@ -18,7 +18,7 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import { db } from "../../firebase-config";
+import { db } from "../../../firebase-config";
 import { sidToBranch } from "../profile/Profile";
 import { sidToPassoutBatch } from "../profile/Profile";
 

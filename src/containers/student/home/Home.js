@@ -1,7 +1,7 @@
 import "./Home.css";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import HomeFeedCard from "./HomeFeedCard";
-import { getJobs } from "../../api/jobsApi";
+import { getJobs } from "../../../api/jobsApi";
 import { CircularProgress } from "@mui/material";
 import { useSnackbar } from "notistack";
 

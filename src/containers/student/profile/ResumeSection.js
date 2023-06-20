@@ -10,7 +10,7 @@ import {
   DialogContentText,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { openInNewTab } from "../../helpers/UtilityFunctions";
+import { openInNewTab } from "../../../helpers/UtilityFunctions";
 import { useSelector } from "react-redux";
 import "./profile.css";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
@@ -22,13 +22,13 @@ import {
   deleteResume,
   starResume,
   handleEditResumeName,
-} from "../../api/resume";
+} from "../../../api/resume";
 import { useSnackbar } from "notistack";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { EditOutlined } from "@mui/icons-material";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase-config";
+import { db } from "../../../firebase-config";
 
 function ResumeSection({ refreshPage }) {
   const { enqueueSnackbar } = useSnackbar();
