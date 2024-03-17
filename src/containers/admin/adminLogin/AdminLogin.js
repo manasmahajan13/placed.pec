@@ -28,7 +28,7 @@ function AdminLogin(props) {
       const currentUser = auth.currentUser;
       let docRef = doc(db, "adminUsers", currentUser.uid); // change "users" to adminData
       let docSnap = await getDoc(docRef);
-      if (docSnap && docSnap.data().userType == "admin") {
+      if (docSnap.data() && docSnap.data().userType == "admin") {
         navigate(from, { replace: true });
       }
       else{
